@@ -1,11 +1,4 @@
 <?php
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
  * Description of Transactions
  *
@@ -99,7 +92,7 @@ class Transactions extends CI_Controller{
         exit;
     }
     
-    /*function daily(){
+    function daily(){
         // validation
         $this->form_validation->set_rules("date","Date","trim|required|callback_check_future");
         $this->form_validation->set_rules("to_date","Date","trim|required|callback_check_dates");
@@ -117,13 +110,6 @@ class Transactions extends CI_Controller{
             $this->load->view("transactions/daily", $data);
             $this->load->view("common/footer");
         }
-    }*/
-    
-    function daily(){
-        $data['customers'] = $this->customer_model->get_customer();
-        $this->load->view("common/header");
-        $this->load->view("transactions/daily", $data);
-        $this->load->view("common/footer");
     }
     
     function get_daily_transaction(){
@@ -168,15 +154,24 @@ class Transactions extends CI_Controller{
         echo $this->datatables->generate();
     }
     
-    function dairy_txn(){
-        $this->load->view("common/header");
-        $this->load->view("transactions/dairy_txn");
-        $this->load->view("common/footer");
+    function daily_txn(){
+        $this->form_validation->set_rules("date","Date","trim|required|callback_check_future");
+        $this->form_validation->set_rules("to_date","Date","trim|required|callback_check_dates");
+        
+        if($this->form_validation->run() == TRUE){
+            $this->load->view("common/header");
+            $this->load->view("transactions/dairy_txn");
+            $this->load->view("common/footer");
+        }else{
+            $this->load->view("common/header");
+            $this->load->view("transactions/dairy_txn");
+            $this->load->view("common/footer");
+        }
     }
     
     function dairy_txn_datatable(){
         $id = $this->session->userdata("id");
-        $this->datatables->select("s.name, ROUND(AVG(t.fat), 2) as fat, ROUND(AVG(t.clr), 2) as clr, ROUND(AVG(t.snf), 2) as snf, ROUND(AVG(t.weight), 2) as weight, ROUND(AVG(t.rate), 2) as rate, ROUND(SUM(t.netamt), 2) as netamt, t.date")
+        $this->datatables->select("s.name, ROUND(AVG(t.fat), 2) as fat, ROUND(AVG(t.clr), 2) as clr, ROUND(AVG(t.snf), 2) as snf, ROUND(AVG(t.weight), 2) as weight, ROUND(SUM(t.netamt), 2) as netamt")
             ->from("transactions t")
             ->join("machines m","m.machine_id = t.deviceid","LEFT")
             ->join("society_machine_map smm","smm.machine_id = m.id","LEFT")
@@ -189,13 +184,37 @@ class Transactions extends CI_Controller{
     }
     
     function daily_admin(){
-        $this->load->view("common/header");
-        $this->load->view("transactions/dairy_admin");
-        $this->load->view("common/footer");
+        // validation
+        $this->form_validation->set_rules("date","Date","trim|required|callback_check_future");
+        $this->form_validation->set_rules("to_date","Date","trim|required|callback_check_dates");
+        
+        if($this->form_validation->run() == TRUE){
+            $this->load->view("common/header");
+            $this->load->view("transactions/daily_admin");
+            $this->load->view("common/footer");
+        }else{
+            $this->load->view("common/header");
+            $this->load->view("transactions/daily_admin");
+            $this->load->view("common/footer");
+        }
     }
     
-    function dairy_admin_txn_datatable(){
-        
+    function dairy_admin_txn_datatable($from = NULL, $to = NULL){
+        $id = $this->session->userdata("id");
+        $this->datatables->select("d.name, ROUND(AVG(t.fat), 2) as fat, ROUND(AVG(t.clr), 2) as clr, ROUND(AVG(t.snf), 2) as snf, ROUND(AVG(t.weight), 2) as weight, ROUND(AVG(t.rate), 2) as rate, ROUND(SUM(t.netamt), 2) as netamt, t.date")
+            ->from("transactions t")
+            ->join("machines m","m.machine_id = t.deviceid","LEFT")
+            ->join("society_machine_map smm","smm.machine_id = m.id","LEFT")
+            ->join("users s","s.id = smm.society_id","LEFT")
+            ->join("dairy_machine_map dmm","dmm.machine_id = m.id","LEFT")
+            ->join("users d","d.id = dmm.dairy_id","LEFT");
+            if($from && $to){
+                $this->datatables->where('t.date BETWEEN "'. date('Y-m-d', strtotime($from)). '" and "'. date('Y-m-d', strtotime($to)).'"');
+            }else{
+                $this->datatables->where("t.date", date("Y-m-d"));
+            }
+            $this->datatables->group_by("t.dairy_id");
+            echo $this->datatables->generate();
     }
     
     function monthly(){

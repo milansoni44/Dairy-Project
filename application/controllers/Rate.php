@@ -140,6 +140,12 @@ class Rate extends CI_Controller{
         }
     }
     
+    function import_bfat_snf(){
+        $this->load->view("common/header");
+        $this->load->view("rate/cfat_snf");
+        $this->load->view("common/footer");
+    }
+    
     function bfat_snf(){
         $id = $this->session->userdata("id");
         $q = $this->db->query("SELECT DISTINCT(Fat) FROM `buffalo_fat_snf` WHERE dairy_id = '$id'");
@@ -196,7 +202,167 @@ class Rate extends CI_Controller{
     }
     
     function cfat_snf(){
+        $id = $this->session->userdata("id");
+        $q = $this->db->query("SELECT DISTINCT(Fat) FROM `cow_fat_snf` WHERE dairy_id = '$id'");
+        $fat = $q->result_array();
+        $fat_arr = array("SNFTAB");
+
+        foreach($fat as $row_f){
+            array_push($fat_arr, $row_f['Fat']);
+            $q_s = $this->db->query("SELECT Snf FROM `cow_fat_snf` WHERE dairy_id = '$id' AND Fat = ".$row_f['Fat']);
+            $snf = $q_s->result_array();
+            $i = 0;
+            foreach($snf as $row_s){
+                $q_r = $this->db->query("SELECT Rate FROM `cow_fat_snf` WHERE dairy_id = '$id' AND Snf = ".$row_s['Snf']);
+                $rate = $q_r->result_array();
+                foreach($rate as $row_r){
+                    $rr = array(
+                        "Snf"=>$row_s['Snf'],
+                        "Rate"=>$row_r['Rate']
+                    );
+                    $a[$i] = $rr;
+                    $i++;
+                }
+            }
+        }
+        $Snf = "";
+        $output = array();
+        $key = 0;
+        foreach($a as $item=>$rate){
+            if($rate['Snf'] != $Snf){
+                if($item != 0){
+                    $key++;
+                }
+                $output[$key]['Snf'] =  $rate['Snf'];
+                $keyRate = 0;
+            }
+//            $output[$key]['Rate'][$keyRate] = $rate['Rate'];
+            $output[$key][$keyRate] = $rate['Rate'];
+            $Snf = $rate['Snf'];
+            $keyRate++;
+        }
+        // print the output
+//        echo "<pre>";
+//        print_r($output);
+//        echo "</pre>";exit;
+        foreach($output as $result){
+            $array[] = array_values($result);
+        }
+        
+        $data['fat'] = $fat_arr;
+        $data['vals'] = $array;
         $this->load->view("common/header");
+        $this->load->view("rate/cfat_snf_index", $data);
+        $this->load->view("common/footer");
+    }
+    
+    function cfat_clr(){
+        $id = $this->session->userdata("id");
+        $q = $this->db->query("SELECT DISTINCT(Fat) FROM `cow_fat_clr` WHERE dairy_id = '$id'");
+        $fat = $q->result_array();
+        $fat_arr = array("CLRTAB");
+
+        foreach($fat as $row_f){
+            array_push($fat_arr, $row_f['Fat']);
+            $q_s = $this->db->query("SELECT Clr FROM `cow_fat_clr` WHERE dairy_id = '$id' AND Fat = ".$row_f['Fat']);
+            $snf = $q_s->result_array();
+            $i = 0;
+            foreach($snf as $row_s){
+                $q_r = $this->db->query("SELECT Rate FROM `cow_fat_clr` WHERE dairy_id = '$id' AND Clr = ".$row_s['Clr']);
+                $rate = $q_r->result_array();
+                foreach($rate as $row_r){
+                    $rr = array(
+                        "Clr"=>$row_s['Clr'],
+                        "Rate"=>$row_r['Rate']
+                    );
+                    $a[$i] = $rr;
+                    $i++;
+                }
+            }
+        }
+        $Snf = "";
+        $output = array();
+        $key = 0;
+        foreach($a as $item=>$rate){
+            if($rate['Clr'] != $Snf){
+                if($item != 0){
+                    $key++;
+                }
+                $output[$key]['Clr'] =  $rate['Clr'];
+                $keyRate = 0;
+            }
+//            $output[$key]['Rate'][$keyRate] = $rate['Rate'];
+            $output[$key][$keyRate] = $rate['Rate'];
+            $Snf = $rate['Clr'];
+            $keyRate++;
+        }
+        // print the output
+//        echo "<pre>";
+//        print_r($output);
+//        echo "</pre>";exit;
+        foreach($output as $result){
+            $array[] = array_values($result);
+        }
+        
+        $data['fat'] = $fat_arr;
+        $data['vals'] = $array;
+        $this->load->view("common/header");
+        $this->load->view("rate/cfat_clr_index", $data);
+        $this->load->view("common/footer");
+    }
+    
+    function bfat_clr(){
+        $id = $this->session->userdata("id");
+        $q = $this->db->query("SELECT DISTINCT(Fat) FROM `buffalo_fat_clr` WHERE dairy_id = '$id'");
+        $fat = $q->result_array();
+        $fat_arr = array("CLRTAB");
+
+        foreach($fat as $row_f){
+            array_push($fat_arr, $row_f['Fat']);
+            $q_s = $this->db->query("SELECT Clr FROM `buffalo_fat_clr` WHERE dairy_id = '$id' AND Fat = ".$row_f['Fat']);
+            $snf = $q_s->result_array();
+            $i = 0;
+            foreach($snf as $row_s){
+                $q_r = $this->db->query("SELECT Rate FROM `buffalo_fat_clr` WHERE dairy_id = '$id' AND Clr = ".$row_s['Clr']);
+                $rate = $q_r->result_array();
+                foreach($rate as $row_r){
+                    $rr = array(
+                        "Clr"=>$row_s['Clr'],
+                        "Rate"=>$row_r['Rate']
+                    );
+                    $a[$i] = $rr;
+                    $i++;
+                }
+            }
+        }
+        $Snf = "";
+        $output = array();
+        $key = 0;
+        foreach($a as $item=>$rate){
+            if($rate['Clr'] != $Snf){
+                if($item != 0){
+                    $key++;
+                }
+                $output[$key]['Clr'] =  $rate['Clr'];
+                $keyRate = 0;
+            }
+//            $output[$key]['Rate'][$keyRate] = $rate['Rate'];
+            $output[$key][$keyRate] = $rate['Rate'];
+            $Snf = $rate['Clr'];
+            $keyRate++;
+        }
+        // print the output
+//        echo "<pre>";
+//        print_r($output);
+//        echo "</pre>";exit;
+        foreach($output as $result){
+            $array[] = array_values($result);
+        }
+        
+        $data['fat'] = $fat_arr;
+        $data['vals'] = $array;
+        $this->load->view("common/header");
+        $this->load->view("rate/bfat_clr_index", $data);
         $this->load->view("common/footer");
     }
 }

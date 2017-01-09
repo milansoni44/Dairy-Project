@@ -1,22 +1,22 @@
-            <script>
-                $(document).ready(function(){
-//                    $('.dataTables_filter').css("float","right");
-                    $('#example2').DataTable();
-                    $("#buffalo_fat_snf").on("click", function(e){
-                       e.preventDefault();
-                       location.href = "<?php echo base_url(); ?>index.php/rate/import_bfat_snf";
+                <script>
+                    $(document).ready(function(){
+    //                    $('.dataTables_filter').css("float","right");
+                        $('#example2').DataTable();
+                        $("#buffalo_fat").on("click", function(e){
+                           e.preventDefault();
+                           location.href = "<?php echo base_url(); ?>index.php/rate/import_bfat";
+                        });
                     });
-                });
-            </script>
-            <aside class="right-side">
+                </script>
+                <aside class="right-side">
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
                     <h1>
-                        Buffalo Fat SNF
+                        Cow Fat SNF
                     </h1>
                     <ol class="breadcrumb">
                         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-                        <li class="active">Buffalo Fat SNF</li>
+                        <li class="active">Cow Fat SNF</li>
                     </ol>
                 </section>
 
@@ -40,7 +40,7 @@
                             <div class="box">
                                 <div class="box-header">
                                     <h3 class="box-title">Hover Data Table</h3>
-                                    <span class="pull-right"><button class="btn btn-primary" id="buffalo_fat_snf">Import Buffalo SNF</button></span>
+                                    <span class="pull-right"><button class="btn btn-primary" id="cow_fat">Import Cow Fat</button></span>
                                 </div><!-- /.box-header -->
                                 <div class="box-body table-responsive">
                                     <table id="fixed_hdr1">

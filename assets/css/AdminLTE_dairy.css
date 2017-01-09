@@ -2605,7 +2605,7 @@ Component: timeline
 }
 /* skin-black logo */
 .skin-black .logo {
-  background-color: #333333;
+  background-color: #009688;
   color: #f9f9f9;
 }
 .skin-black .logo > a {
@@ -2632,11 +2632,11 @@ Component: timeline
   border-bottom: 1px solid #333;
 }
 .skin-black .sidebar > .sidebar-menu > li {
-  border-top: 1px solid #333;
-  border-bottom: 0px solid #444;
+  border-top: 1px solid #009688;
+  border-bottom: 0px solid #009688;
 }
 .skin-black .sidebar > .sidebar-menu > li:first-of-type {
-  border-top: 1px solid #444;
+  border-top: 1px solid #00695C;
 }
 .skin-black .sidebar > .sidebar-menu > li:first-of-type > a {
   border-top: 0px solid #333;
@@ -2647,14 +2647,14 @@ Component: timeline
 .skin-black .sidebar > .sidebar-menu > li > a:hover,
 .skin-black .sidebar > .sidebar-menu > li.active > a {
   color: #f6f6f6;
-  background: #444;
+  background: #00695C;
 }
 .skin-black .sidebar > .sidebar-menu > li > .treeview-menu {
   margin: 0 1px;
-  background: #444;
+  background: #00695C;
 }
 .skin-black .left-side {
-  background: #333;
+  background: #009688;
 }
 .skin-black .sidebar a {
   color: #eee;

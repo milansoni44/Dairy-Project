@@ -13,19 +13,31 @@ class Customers extends CI_Controller{
         $this->load->library('datatables');
         $this->load->model("customer_model");
         $this->load->model("machine_model");
+        $this->load->model("society_model");
         $this->load->database();
     }
     
     function index(){
-        $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
-        $data['customers'] = $this->customer_model->get_customer();
-        $this->load->view("common/header",$data);
-        $this->load->view("customers/index", $data);
-        $this->load->view("common/footer");
-//        $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
-//        $this->load->view('common/header', $data);
-//        $this->load->view('customers/index');
-//        $this->load->view('common/footer');
+        if($this->input->post()){
+            $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
+            $id = $this->input->post("society");
+            $data['customers'] = $this->customer_model->get_society_customer($id);
+            if($this->session->userdata("group") == "dairy"){
+                $data['society'] = $this->society_model->get_society();
+            }
+            $this->load->view("common/header",$data);
+            $this->load->view("customers/index", $data);
+            $this->load->view("common/footer");
+        }else{
+            $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
+            $data['customers'] = $this->customer_model->get_customer();
+            if($this->session->userdata("group") == "dairy"){
+                $data['society'] = $this->society_model->get_society();
+            }
+            $this->load->view("common/header",$data);
+            $this->load->view("customers/index", $data);
+            $this->load->view("common/footer");
+        }
     }
     
     function getDatatableAjax(){

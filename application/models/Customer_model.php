@@ -9,7 +9,7 @@
 /**
  * Description of Customer_model
  *
- * @author Intel
+ * @author Milan Soni
  */
 class Customer_model extends CI_Model{
     //put your code here
@@ -54,8 +54,20 @@ class Customer_model extends CI_Model{
     
     function get_customer_by_id($id = NULL){
         $q = $this->db->query("SELECT * FROM customers WHERE id = '$id'");
+//        echo $this->db->last_query();exit;
         if($q->num_rows() > 0){
             return $q->row();
+        }
+        return FALSE;
+    }
+    
+    function get_society_customer($soc_id = NULL){
+        $q = $this->db->query("SELECT customers.*, users.name FROM customers JOIN users ON users.id = customers.society_id WHERE society_id = '$soc_id'");
+        if($q->num_rows() > 0){
+            foreach($q->result() as $row){
+                $row1[] = $row;
+            }
+            return $row1;
         }
         return FALSE;
     }

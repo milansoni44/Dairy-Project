@@ -112,4 +112,13 @@ class Auth_model extends CI_Model{
         }
         return FALSE;
     }
+    
+    function get_dairy($id = NULL){
+        $q = $this->db->query("SELECT d.* FROM users d LEFT JOIN users s ON s.dairy_id = d.id WHERE s.id = '$id'");
+//        echo $this->db->last_query();exit;
+        if($q->num_rows() > 0){
+            return $q->row();
+        }
+        return FALSE;
+    }
 }

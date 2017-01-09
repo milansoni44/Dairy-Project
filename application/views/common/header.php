@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>AdminLTE | Dashboard</title>
+        <title>Dairysuite | Dashboard</title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
         <!-- bootstrap 3.0.2 -->
         <link href="<?php echo base_url(); ?>assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
@@ -22,7 +22,13 @@
         <link href="<?php echo base_url(); ?>assets/css/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />
         <link href="<?php echo base_url(); ?>assets/js/plugins/datepicker/datepicker3.css" rel="stylesheet" />
         <!-- Theme style -->
+        <?php if($this->session->userdata("group") == "dairy"){ ?>
+        <link href="<?php echo base_url(); ?>assets/css/AdminLTE_dairy.css" rel="stylesheet" type="text/css" />
+        <?php }else if($this->session->userdata("group") == "society"){ ?>
+        <link href="<?php echo base_url(); ?>assets/css/AdminLTE_society.css" rel="stylesheet" type="text/css" />
+        <?php }else{ ?>
         <link href="<?php echo base_url(); ?>assets/css/AdminLTE.css" rel="stylesheet" type="text/css" />
+        <?php } ?>
         <link href="<?php echo base_url(); ?>assets/css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
         <link href="<?php echo base_url(); ?>assets/js/plugins/jquery-validation/demo/css/screen.css" rel="stylesheet" type="text/css" />
         <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
@@ -42,7 +48,12 @@
         <header class="header">
             <a href="<?php echo base_url(); ?>" class="logo">
                 <!-- Add the class icon to your logo image or logo icon to add the margining -->
+                <?php if($this->session->userdata("group") == "dairy" || $this->session->userdata("group") == "admin"){ ?>
                 AdminLTE
+                <?php }else{ 
+                    echo $this->session->userdata("dairy"); 
+                }
+                ?>
             </a>
             <!-- Header Navbar: style can be found in header.less -->
             <nav class="navbar navbar-static-top" role="navigation">
@@ -177,7 +188,7 @@
                         <div class="pull-left info">
                             <p>Hello, <?php echo $this->session->userdata("username"); ?></p>
 
-                            <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+                            <!--<a href="#"><i class="fa fa-circle text-success"></i> Online</a>-->
                         </div>
                     </div>
                     <!-- search form -->
@@ -240,6 +251,7 @@
                         <?php 
                             }
                         ?>
+                        <?php if($this->session->userdata("group") == "dairy" || $this->session->userdata("group") == "society"){ ?>
                         <li class="treeview">
                             <a href="#">
                                 <i class="fa fa-bar-chart-o"></i>
@@ -248,9 +260,12 @@
                             </a>
                             <ul class="treeview-menu">
                                 <li><a href="<?php echo base_url(); ?>index.php/customers"> <span>Milk Supplier</span></a></li>
+                                <?php if($this->session->userdata("group") == "society"){ ?>
                                 <li><a href="<?php echo base_url(); ?>index.php/customers/import">Import Members</a></li>
+                                <?php } ?>
                             </ul>
                         </li>
+                        <?php } ?>
                         <li class="treeview">
                             <a href="#">
                                 <i class="fa fa-bar-chart-o"></i>
@@ -261,9 +276,9 @@
                                 <?php if($this->session->userdata("group") == "society"){ ?>
                                 <li><a href="<?php echo base_url(); ?>index.php/transactions/daily">Transactions</a></li>
                                 <?php }else if($this->session->userdata("group") == "dairy"){ ?>
-                                <li><a href="<?php echo base_url(); ?>index.php/transactions/dairy_txn">Transactions</a></li>
+                                <li><a href="<?php echo base_url(); ?>index.php/transactions/daily_txn">Transactions</a></li>
                                 <?php }else{ ?>
-                                <li><a href="<?php echo base_url(); ?>index.php/transactions/daily_admin">Transactions</a></li>
+<!--                                <li><a href="<?php echo base_url(); ?>index.php/transactions/daily_admin">Transactions</a></li>-->
                                 <?php } ?>
 <!--                                <li><a href="<?php echo base_url(); ?>index.php/transactions/monthly">Monthly</a></li>-->
                                 <li><a href="<?php echo base_url(); ?>index.php/transactions/customer">Customer Transaction</a></li>

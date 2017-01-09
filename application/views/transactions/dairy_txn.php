@@ -41,12 +41,14 @@
                             var iNet = 0;
                             for (var i = iStart; i < iEnd; i++) {
                               iLitre += aaData[aiDisplay[i]][4] * 1; // because you get string in aaData[aiDisplay[i]][1] so multiplying with 1 gives number 
-                              iNet += aaData[aiDisplay[i]][6] * 1;
+                              iNet += aaData[aiDisplay[i]][5] * 1;
                             }
                             // Modifying the footer row
-                            var nCells = nRow.getElementsByTagName('th');
-                            nCells[1].innerHTML = parseFloat(Math.round(iLitre * 100) / 100).toFixed(2);
-                            nCells[3].innerHTML = parseFloat(Math.round(iNet * 100) / 100).toFixed(2);
+//                            var nCells = nRow.getElementsByTagName('th');
+//                            nCells[1].innerHTML = parseFloat(Math.round(iLitre * 100) / 100).toFixed(2);
+//                            nCells[3].innerHTML = parseFloat(Math.round(iNet * 100) / 100).toFixed(2);
+                            document.getElementById("total_net").innerHTML = "Total Amount: "+parseFloat(Math.round(iNet * 100) / 100).toFixed(2);
+                            document.getElementById("total_litre").innerHTML = "Total Litre: "+parseFloat(Math.round(iLitre * 100) / 100).toFixed(2);
                         }
                     });
                 });
@@ -86,9 +88,10 @@
                             <div class="box">
                                 <div class="box-header">
                                     <h3 class="box-title">Hover Data Table</h3>
-<!--                                    <span class="pull-right"><a href="<?php echo base_url(); ?>index.php/dairy/add" class="btn btn-primary" style="color: #fff;">Add Transaction</a></span>-->
+                                    <span class="pull-right" id="total_net" style="font-weight: bold;"></span><br>
+                                    <span class="pull-right" id="total_litre" style="font-weight: bold;"></span>
                                 </div><!-- /.box-header -->
-                                <form action="<?php echo base_url(); ?>index.php/transactions/daily" method="post" class="form-horizontal">
+                                <form action="<?php echo base_url(); ?>index.php/transactions/daily_txn" method="post" class="form-horizontal">
                                     <div class="box-body">
                                         <div class="form-group">
                                             <label class="control-label col-sm-2" for="date">From Date</label>
@@ -111,27 +114,26 @@
                                     <table id="example2" class="table table-bordered table-hover">
                                         <thead>
                                             <tr>
-                                                <th>Society</th>
-                                                <th>FAT%</th>
-                                                <th>CLR%</th>
-                                                <th>SNF%</th>
-                                                <th>Litre</th>
-                                                <th>Rate/Ltr</th>
-                                                <th>Net Amt</th>
-                                                <th>Date</th>
+                                                <th>Society Name</th>
+                                                <th>AVG FAT%</th>
+                                                <th>AVG CLR%</th>
+                                                <th>AVG SNF%</th>
+                                                <th>Total Litre</th>
+                                                <!--<th>Rate/Ltr</th>-->
+                                                <th>Total Amount</th>
+                                                <!--<th>Date</th>-->
 <!--                                                <th>Action</th>-->
                                             </tr>
                                         </thead>
                                         <tbody></tbody>
-                                        <tfoot>
+<!--                                        <tfoot>
                                             <tr>
-                                                <th colspan="4" style="text-align:right">Total Litre:</th>
+                                                <th colspan="3" style="text-align:right">Total Litre:</th>
                                                 <th></th>
-                                                <th>Total Net:</th>
-                                                <th></th>
+                                                <th>Total Net Amt:</th>
                                                 <th></th>
                                             </tr>
-                                        </tfoot>
+                                        </tfoot>-->
                                     </table>
                                 </div><!-- /.box-body -->
                             </div><!-- /.box -->

@@ -7,7 +7,14 @@
                     var oTable = $('#example2').dataTable( {
                         "processing": true,
                         "serverSide": true,
+                        <?php if($this->input->post()){ 
+                            $from = $this->input->post("date");
+                            $to = $this->input->post("to_date");
+                        ?>
+                        "sAjaxSource": '<?php echo base_url(); ?>index.php/transactions/dairy_admin_txn_datatable/<?php echo $from; ?>/<?php echo $to; ?>',
+                        <?php }else{ ?>
                         "sAjaxSource": '<?php echo base_url(); ?>index.php/transactions/dairy_admin_txn_datatable',
+                        <?php } ?>
                         "bJQueryUI": true,
 //                        "sPaginationType": "full_numbers",
                         "iDisplayStart ":20,
@@ -88,7 +95,7 @@
                                     <h3 class="box-title">Hover Data Table</h3>
 <!--                                    <span class="pull-right"><a href="<?php echo base_url(); ?>index.php/dairy/add" class="btn btn-primary" style="color: #fff;">Add Transaction</a></span>-->
                                 </div><!-- /.box-header -->
-                                <form action="<?php echo base_url(); ?>index.php/transactions/daily" method="post" class="form-horizontal">
+                                <form action="<?php echo base_url(); ?>index.php/transactions/daily_admin" method="post" class="form-horizontal">
                                     <div class="box-body">
                                         <div class="form-group">
                                             <label class="control-label col-sm-2" for="date">From Date</label>

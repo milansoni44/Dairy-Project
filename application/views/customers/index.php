@@ -75,6 +75,31 @@
                                     <span class="pull-right"><a href="<?php echo base_url(); ?>index.php/customers/add" class="btn btn-primary" style="color: #fff;">Add Customers</a></span>
                                     <?php } ?>
                                 </div><!-- /.box-header -->
+                                <?php if($this->session->userdata("group") == "dairy"){ ?>
+                                <form class="form-horizontal" action="<?php echo base_url(); ?>index.php/customers" method="post">
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2" for="society">Society</label>
+                                        <div class="col-md-4">
+                                            <select class="form-control" id="society" name="society">
+                                                <option value="">--Select Society--</option>
+                                                <?php 
+                                                    if(!empty($society)){
+                                                        foreach($society as $row_soc){
+                                                ?>
+                                                <option value="<?php echo $row_soc->id; ?>" <?php if($_POST['society'] == $row_soc->id){ ?>selected <?php } ?>><?php echo $row_soc->name; ?></option>
+                                                <?php 
+                                                        }
+                                                    }
+                                                ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="footer" style="margin-left: 100px;">
+                                        <input type="submit" class="btn btn-primary" name="submit" id="submit" />
+                                    </div>
+                                </form>
+                                <?php } ?>
+                                <?php if($this->input->post()){ ?>
                                 <div class="box-body table-responsive">
                                     <table id="example2" class="table table-bordered table-hover">
                                         <thead>
@@ -114,6 +139,7 @@
                                         </tbody>
                                     </table>
                                 </div><!-- /.box-body -->
+                                <?php } ?>
                             </div><!-- /.box -->
                         </div>
                     </div><!-- /.row -->

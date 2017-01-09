@@ -63,13 +63,18 @@ class Auth extends CI_Controller{
                 // Todo
                 $groups = $this->auth_model->get_user_group($user_data->id);
                 $notification_num = $this->machine_model->count_machines($groups->name, $user_data->id)->num;
-                
+                if($groups->name == "society"){
+                    $dairy = $this->auth_model->get_dairy($user_data->id)->name;
+                }else{
+                    $dairy = "";
+                }
                 $set_user_data = array(
                     "username"=>$user_data->username,
                     "name"=>$user_data->name,
                     "id"=> $user_data->id,
                     "group"=> $groups->name,
-                    "machine_notify"=>$notification_num
+                    "machine_notify"=>$notification_num,
+                    "dairy"=>$dairy
                 );
                 $this->auth_lib->set_session_data($set_user_data);
                 $this->session->set_flashdata("success","Login successfull");
