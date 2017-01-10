@@ -18,6 +18,22 @@ class Customers extends CI_Controller{
     }
     
     function index(){
+        $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
+        $data['customers'] = $this->customer_model->get_customer();
+        if($this->session->userdata("group") == "dairy"){
+            $data['society'] = $this->society_model->get_society();
+        }
+        $this->load->view("common/header",$data);
+        $this->load->view("customers/index", $data);
+        $this->load->view("common/footer");
+    }
+    
+    function society_index(){
+        if($this->session->userdata("group") == "admin" || $this->session->userdata("group") == "society"){
+            $this->session->set_flashdata("message","Access Denied");
+            redirect("/","refresh");
+        }
+        
         if($this->input->post()){
             $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
             $id = $this->input->post("society");
@@ -26,7 +42,7 @@ class Customers extends CI_Controller{
                 $data['society'] = $this->society_model->get_society();
             }
             $this->load->view("common/header",$data);
-            $this->load->view("customers/index", $data);
+            $this->load->view("customers/society_index", $data);
             $this->load->view("common/footer");
         }else{
             $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
@@ -35,34 +51,16 @@ class Customers extends CI_Controller{
                 $data['society'] = $this->society_model->get_society();
             }
             $this->load->view("common/header",$data);
-            $this->load->view("customers/index", $data);
+            $this->load->view("customers/society_index", $data);
             $this->load->view("common/footer");
         }
     }
     
     function getDatatableAjax(){
-//        if($this->session->userdata("group") == "admin"){
             $this->datatables->select("c.mem_code")
             ->from("customers c")
-//            ->unset_column("c.id")
             ->join("users u","u.id = c.society_id","LEFT");
-//            ->add_column('Action', 'Edit Delete');
             echo $this->datatables->generate();
-//        }else if($this->session->userdata("group") == "society"){
-//            $id = $this->session->userdata("id");
-//            $q = $this->db->query("SELECT c.*,u.name FROM customers c LEFT JOIN users u ON u.id = c.society_id WHERE c.society_id = '$id'");
-//        }else if($this->session->userdata("group") == "dairy"){
-//            $id = $this->session->userdata("id");
-//            $q = $this->db->query("SELECT c.*,u.name FROM customers c LEFT JOIN users u ON u.id = c.society_id LEFT JOIN user_groups ug ON ug.user_id = c.society_id LEFT JOIN groups g ON g.id = ug.group_id WHERE g.name = 'society' AND u.id = (SELECT users.id FROM users WHERE users.dairy_id = '$id')");
-//        }
-//        echo $this->db->last_query();exit;
-//        if($q->num_rows() > 0){
-//            foreach($q->result() as $row){
-//                $row1[] = $row;
-//            }
-//            return $row1;
-//        }
-//        return FALSE;
     }
     
     function add(){

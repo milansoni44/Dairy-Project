@@ -6,6 +6,10 @@
                        e.preventDefault();
                        location.href = "<?php echo base_url(); ?>index.php/rate/import_bfat_snf";
                     });
+                    $("#buffalo_fat_snf_csv").on("click", function(e){
+                       e.preventDefault();
+                       location.href = "<?php echo base_url(); ?>index.php/rate/export_bsnf";
+                    });
                 });
             </script>
             <aside class="right-side">
@@ -41,6 +45,7 @@
                                 <div class="box-header">
                                     <h3 class="box-title">Hover Data Table</h3>
                                     <span class="pull-right"><button class="btn btn-primary" id="buffalo_fat_snf">Import Buffalo SNF</button></span>
+                                    <span class="pull-right"><button class="btn btn-primary" id="buffalo_fat_snf_csv">Download SNF</button></span>
                                 </div><!-- /.box-header -->
                                 <div class="box-body table-responsive">
                                     <table id="fixed_hdr1">

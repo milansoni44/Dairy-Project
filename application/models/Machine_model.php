@@ -41,7 +41,17 @@ class Machine_model extends CI_Model{
      * @return boolean
      */
     function get_machines(){
-        $q = $this->db->get("machines");
+//        $q = $this->db->get("machines");
+        $q = $this->db->query("SELECT m.*, d.name as dairy_name, s.name as society_name FROM machines m
+LEFT JOIN dairy_machine_map dmm
+ON dmm.machine_id = m.id
+LEFT JOIN society_machine_map smm
+ON smm.machine_id = m.id
+LEFT JOIN users d
+ON d.id = dmm.dairy_id
+LEFT JOIN users s
+ON s.id = smm.society_id");
+//        echo $this->db->last_query();exit;
         if($q->num_rows() > 0){
             foreach($q->result() as $row){
                 $row1[] = $row;
@@ -69,7 +79,7 @@ class Machine_model extends CI_Model{
         }else{
             $q1 = $this->db->query("SELECT * FROM dairy_machine_map WHERE id NOT IN($id)");
         }
-//        echo $this->db->last_query();
+//        echo $this->db->last_query();exit;
         if($q1->num_rows() > 0){
             foreach($q1->result() as $row){
                 $row1[] = $row->id;
@@ -249,5 +259,9 @@ class Machine_model extends CI_Model{
             return $q->row();
         }
         return FALSE;
+    }
+    
+    function get_available_machines(){
+//        $q = $this->db->query("");
     }
 }

@@ -92,4 +92,30 @@ class Rate_model extends CI_Model{
         }
         return FALSE;
     }
+    
+    function get_bfat(){
+        if($this->session->userdata("group") == "dairy"){
+            $id = $this->session->userdata("id");
+        }else if($this->session->userdata("group") == "society"){
+            $id = $this->session->userdata("id");
+        }
+        $q = $this->db->get_where("buffalo_fat", array("dairy_id"=>$id));
+        if($q->num_rows() > 0){
+            return $q->result_array();
+        }
+        return FALSE;
+    }
+    
+    function get_cfat(){
+        if($this->session->userdata("group") == "dairy"){
+            $id = $this->session->userdata("id");
+        }else if($this->session->userdata("group") == "society"){
+            $id = $this->session->userdata("id");
+        }
+        $q = $this->db->get_where("cow_fat", array("dairy_id"=>$id));
+        if($q->num_rows() > 0){
+            return $q->result_array();
+        }
+        return FALSE;
+    }
 }

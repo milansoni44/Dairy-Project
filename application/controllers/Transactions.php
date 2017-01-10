@@ -4,6 +4,7 @@
  *
  * @author Milan Soni
  */
+ini_set('precision', '15');
 class Transactions extends CI_Controller{
     //put your code here
     function __construct() {
@@ -25,6 +26,59 @@ class Transactions extends CI_Controller{
         $this->load->view("common/header", $data);
         $this->load->view("transactions/index", $data);
         $this->load->view("common/footer");
+    }
+    
+    function import_txn(){
+        if($this->session->userdata("group") == "society"){
+            $this->session->set_flashdata("message", "Access Denied");
+            redirect("/", "refresh");
+        }
+        if($this->input->post()){
+            $csv = $_FILES['transaction']['tmp_name'];
+            if(($getfile = fopen($csv, "r")) !== FALSE){
+                $data = fgetcsv($getfile, 1000, ",");
+                $i = 0;
+                echo "<pre>";
+                while(($data = fgetcsv($getfile, 1000, ",")) !== FALSE){
+//                    print_r($data);
+                    if($i > 0){
+                        $society = $this->transaction_model->get_society_id($data[13])->society_id;
+                        $dairy = $this->transaction_model->get_dairy_id($data[13])->dairy_id;
+                        $trans[] = array(
+                            "dairy_id"=>$dairy,
+                            "society_id"=>$society,
+                            "deviceid"=>$data[13],
+                            "sampleid"=>$data[12],
+                            "ismanual"=>$data[9],
+                            "type"=>$data[8],
+                            "adhar"=>$data[7],
+                            "netamt"=>$data[6],
+                            "rate"=>$data[5],
+                            "weight"=>$data[4],
+                            "snf"=>$data[3],
+                            "clr"=>$data[2],
+                            "fat"=>$data[1],
+                            "memcode"=>$data[0],
+                            "date"=>date("Y-d-m", strtotime($data[14]) ),
+                            "shift"=>$data[15],
+                            "dockno"=>$data[10],
+                            "soccode"=>$data[11]
+                            
+                        );
+                    }else{
+                        $i++;
+                    }
+                }
+                if(!empty($trans) && $this->transaction_model->import_txn($trans)){
+                    $this->session->set_flashdata("success","Success");
+                    redirect("transactions","refresh");
+                }
+            }
+        }else{
+            $this->load->view("common/header");
+            $this->load->view("transactions/import");
+            $this->load->view("common/footer");
+        }
     }
     
     function test_json(){
@@ -270,18 +324,5 @@ class Transactions extends CI_Controller{
             return FALSE;
         }
         return TRUE;
-    }
-    
-    function demo(){
-        $this->load->view("common/header");
-        $this->load->view("transactions/demo");
-        $this->load->view("common/footer");
-    }
-    
-    function datatable(){
-        $this->datatables->select("v_name_lan1,v_url_lan2,v_url_lan3")
-            ->from("video");
-        
-        echo $this->datatables->generate();
     }
 }

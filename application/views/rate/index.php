@@ -6,6 +6,10 @@
                        e.preventDefault();
                        location.href = "<?php echo base_url(); ?>index.php/rate/import_bfat";
                     });
+                    $("#buffalo_fat_csv").on("click", function(e){
+                        e.preventDefault();
+                        location.href = "<?php echo base_url(); ?>index.php/rate/export_bfat";
+                    });
                 });
             </script>
             <aside class="right-side">
@@ -41,6 +45,7 @@
                                 <div class="box-header">
                                     <h3 class="box-title">Hover Data Table</h3>
                                     <span class="pull-right"><button class="btn btn-primary" id="buffalo_fat">Import Buffalo Fat</button></span>
+                                    <span class="pull-right"><button class="btn btn-primary" id="buffalo_fat_csv">Dowload BFAT</button></span>
                                 </div><!-- /.box-header -->
                                 <div class="box-body table-responsive">
                                     <table id="example2" class="table table-bordered table-hover">

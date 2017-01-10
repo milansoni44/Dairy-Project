@@ -44,9 +44,12 @@
                                         <thead>
                                             <tr>
                                                 <th>Machine ID</th>
+                                                <th>Dairy</th>
+                                                <th>Society</th>
                                                 <th>Validity</th>
                                                 <th>From Date</th>
                                                 <th>To Date</th>
+                                                <th>Status</th>
                                                 <th>Actions</th>
                                             </tr>
                                         </thead>
@@ -57,9 +60,12 @@
                                             ?>
                                             <tr>
                                                 <td><?php echo $row->machine_id; ?></td>
+                                                <td><?php echo $row->dairy_name; ?></td>
+                                                <td><?php echo $row->society_name; ?></td>
                                                 <td><?php echo $row->validity; ?></td>
                                                 <td><?php echo $row->from_date; ?></td>
                                                 <td><?php echo $row->to_date; ?></td>
+                                                <td><?php if($row->dairy_name OR $row->society_name){ ?>Active<?php }else{ ?>Deactive<?php } ?></td>
                                                 <td>
                                                     <a href="<?php echo base_url(); ?>index.php/machines/edit/<?php echo $row->id; ?>">Edit</a>
                                                     <a href="<?php echo base_url(); ?>index.php/machines/delete/<?php echo $row->id; ?>">Delete</a>

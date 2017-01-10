@@ -27,10 +27,11 @@ class Machines extends CI_Controller{
      * display all the machines
      */
     function index(){
-        if($this->session->userdata("group") != "admin"){
-            $this->session->set_flashdata("message","Access Denied");
-            redirect("/","refresh");
-        }
+//        if($this->session->userdata("group") != "admin"){
+//            $this->session->set_flashdata("message","Access Denied");
+//            redirect("/","refresh");
+//        }
+        
         $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
         $data['machines'] = $this->machine_model->get_machines();
         $this->load->view("common/header", $data);

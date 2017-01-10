@@ -2,9 +2,13 @@
                     $(document).ready(function(){
     //                    $('.dataTables_filter').css("float","right");
                         $('#example2').DataTable();
-                        $("#buffalo_fat").on("click", function(e){
+                        $("#cow_fat").on("click", function(e){
                            e.preventDefault();
-                           location.href = "<?php echo base_url(); ?>index.php/rate/import_bfat";
+                           location.href = "<?php echo base_url(); ?>index.php/rate/import_cfat";
+                        });
+                        $("#cow_fat_snf").on("click", function(e){
+                           e.preventDefault();
+                           location.href = "<?php echo base_url(); ?>index.php/rate/export_csnf";
                         });
                     });
                 </script>
@@ -41,6 +45,7 @@
                                 <div class="box-header">
                                     <h3 class="box-title">Hover Data Table</h3>
                                     <span class="pull-right"><button class="btn btn-primary" id="cow_fat">Import Cow Fat</button></span>
+                                    <span class="pull-right"><button class="btn btn-primary" id="cow_fat_snf">Download SNF</button></span>
                                 </div><!-- /.box-header -->
                                 <div class="box-body table-responsive">
                                     <table id="fixed_hdr1">

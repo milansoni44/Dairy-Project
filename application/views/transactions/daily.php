@@ -1,5 +1,9 @@
             <script>
                 $(document).ready(function() {
+                    $("#import").on("click", function(e){
+                        e.preventDefault();
+                        location.href = "<?php echo base_url(); ?>index.php/transactions/import_txn";
+                    })
                     $(".datepicker").datepicker({
                         format: 'yyyy-mm-dd',
                         autoclose: true
@@ -115,6 +119,9 @@
                                     <span class="pull-right" id="avg_clr" style="font-weight: bold;"></span><br>
                                     <span class="pull-right" id="avg_snf" style="font-weight: bold;"></span><br>
                                 </div><!-- /.box-header -->
+                                <div>
+                                    <button class="btn btn-primary" id="import">Import Transaction</button>
+                                </div>
                                 <form action="<?php echo base_url(); ?>index.php/transactions/daily" method="post" class="form-horizontal">
                                     <div class="box-body">
                                         <div class="form-group">

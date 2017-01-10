@@ -159,4 +159,11 @@ class Transaction_model extends CI_Model{
         }
         return FALSE;
     }
+    
+    function import_txn($data = array()){
+        if($this->db->insert_batch("transactions", $data)){
+            return TRUE;
+        }
+        return FALSE;
+    }
 }

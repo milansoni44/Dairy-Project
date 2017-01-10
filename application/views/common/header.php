@@ -259,13 +259,17 @@
                                 <i class="fa fa-angle-left pull-right"></i>
                             </a>
                             <ul class="treeview-menu">
-                                <li><a href="<?php echo base_url(); ?>index.php/customers"> <span>Milk Supplier</span></a></li>
+                                <?php if($this->session->userdata("group") == "dairy"){ ?>
+                                <li><a href="<?php echo base_url(); ?>index.php/customers/society_index"> <span>Milk Supplier</span></a></li>
+                                <?php } ?>
                                 <?php if($this->session->userdata("group") == "society"){ ?>
+                                <li><a href="<?php echo base_url(); ?>index.php/customers"> <span>Milk Supplier</span></a></li>
                                 <li><a href="<?php echo base_url(); ?>index.php/customers/import">Import Members</a></li>
                                 <?php } ?>
                             </ul>
                         </li>
                         <?php } ?>
+                        <?php if($this->session->userdata("group") == "dairy" || $this->session->userdata("group") == "society") { ?>
                         <li class="treeview">
                             <a href="#">
                                 <i class="fa fa-bar-chart-o"></i>
@@ -285,6 +289,8 @@
 <!--                                <li><a href="<?php echo base_url(); ?>index.php/transactions">Transactions</a></li>-->
                             </ul>
                         </li>
+                        <?php } ?>
+                        <?php if($this->session->userdata("group") == "dairy" || $this->session->userdata("group") == "society"){ ?>
                         <li class="treeview">
                             <a href="#">
                                 <i class="fa fa-bar-chart-o"></i>
@@ -309,6 +315,7 @@
                                 <li><a href="<?php echo base_url(); ?>index.php/rate/cfat_clr">Cow Fat CLR</a></li>
                             </ul>
                         </li>
+                        <?php } ?>
                     </ul>
                 </section>
                 <!-- /.sidebar -->
