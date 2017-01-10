@@ -29,7 +29,7 @@ class Transactions extends CI_Controller{
     }
     
     function import_txn(){
-        if($this->session->userdata("group") == "society"){
+        if($this->session->userdata("group") == "dairy" || $this->session->userdata("group") == "admin"){
             $this->session->set_flashdata("message", "Access Denied");
             redirect("/", "refresh");
         }

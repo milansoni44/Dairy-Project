@@ -162,7 +162,7 @@ class Machines extends CI_Controller{
         }else{
             $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
             $data['dairy'] = $this->dairy_model->get_dairy();
-            $data['machines'] = $this->machine_model->allocated_dairy_machine();
+            $data['machines'] = $this->machine_model->not_allocated_machines();
             $this->load->view("common/header", $data);
             $this->load->view("machines/allocate",$data);
             $this->load->view("common/footer");

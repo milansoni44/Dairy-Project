@@ -54,7 +54,7 @@
                                                         if(!empty($machines)){
                                                             foreach($machines as $row){
                                                     ?>
-                                                    <option value="<?php echo $row->id; ?>"><?php echo $row->machine_id; ?></option>
+                                                    <option value="<?php echo $row->id; ?>"><?php echo $row->mid; ?></option>
                                                     <?php
                                                             }
                                                         }

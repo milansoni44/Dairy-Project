@@ -61,6 +61,29 @@ ON s.id = smm.society_id");
         return FALSE;
     }
     
+    function not_allocated_machines(){
+        $q = $this->db->select("machine_id")->get("dairy_machine_map");
+        if($q->num_rows() > 0){
+            foreach($q->result() as $rw){
+                $rw1[] = $rw->machine_id;
+            }
+        }
+        if(!empty($rw)){
+            $ex = implode("','", $rw1);
+            $q = $this->db->query("SELECT * FROM machines WHERE id NOT IN('$ex')");
+        }else{
+            $q = $this->db->get("machines");
+        }
+//        echo $this->db->last_query();exit;
+        if($q->num_rows() > 0){
+            foreach($q->result() as $row){
+                $row1[] = $row;
+            }
+            return $row1;
+        }
+        return FALSE;
+    }
+    
     function get_machine_by_id($id = NULL){
         $q = $this->db->get_where("machines", array("id"=>$id));
         if($q->num_rows() > 0){
@@ -112,7 +135,7 @@ ON s.id = smm.society_id");
         }else{
             $q = $this->db->query("SELECT * FROM society_machine_map WHERE id NOT IN($id)");
         }
-//        echo $this->db->last_query();
+//        echo $this->db->last_query();exit;
         if($q->num_rows() > 0){
             foreach($q->result() as $row){
                 $row1[] = $row->machine_id;
@@ -121,11 +144,11 @@ ON s.id = smm.society_id");
         }
         
         if(!empty($machine_ids)){
-            $q1 = $this->db->query("SELECT * FROM machines WHERE id NOT IN ('".$machine_ids."')");
+            $q1 = $this->db->query("SELECT dmm.*, m.machine_id AS mid FROM dairy_machine_map dmm LEFT JOIN machines m ON m.id = dmm.machine_id WHERE dmm.machine_id NOT IN ('".$machine_ids."')");
         }else{
-            $q1 = $this->db->query("SELECT * FROM machines");
+            $q1 = $this->db->query("SELECT dmm.*, m.machine_id AS mid FROM dairy_machine_map dmm LEFT JOIN machines m ON m.id = dmm.machine_id");
         }
-//        echo $this->db->last_query();
+//        echo $this->db->last_query();exit;
         if($q1->num_rows() > 0){
             foreach($q1->result() as $m){
                 $m1[] = $m;
