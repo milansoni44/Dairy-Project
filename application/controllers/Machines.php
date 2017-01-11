@@ -258,3 +258,5 @@ class Machines extends CI_Controller{
         }
     }
 }
+
+/** application/controllers/Machines.php */

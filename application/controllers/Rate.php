@@ -1,11 +1,4 @@
-<?php
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
 /**
  * Description of Rate
  *
@@ -24,15 +17,14 @@ class Rate extends CI_Controller{
     }
     
     function index(){
-        if($this->session->userdata("group") == "dairy"){
+        if($this->session->userdata("group") == "admin"){
+            $this->session->set_flashdata("message", "Access Denied");
+            redirect("/", "refresh");
+        }
+        if($this->session->userdata("group") == "dairy" || $this->session->userdata("group") == "society"){
             if($this->rate_model->read_notification()){
                 $this->session->set_userdata("machine_notify",($this->session->userdata("machine_notify")-1));
             }
-            $data['bf_rate'] = $this->rate_model->get_bufallo_rate();
-            $this->load->view("common/header");
-            $this->load->view("rate/index", $data);
-            $this->load->view("common/footer");
-        }else if($this->session->userdata("group") == "admin"){
             $data['bf_rate'] = $this->rate_model->get_bufallo_rate();
             $this->load->view("common/header");
             $this->load->view("rate/index", $data);
@@ -41,6 +33,10 @@ class Rate extends CI_Controller{
     }
     
     function import_bfat(){
+        if($this->session->userdata("group") == "admin"){
+            $this->session->set_flashdata("message", "Access Denied");
+            redirect("/", "refresh");
+        }
         if(isset($_POST['submit'])){
             $res_low = $this->setting_model->get_config("BUFFALO","FAT_LOW_LIMIT")->config_value;
             $res_high = $this->setting_model->get_config("BUFFALO","FAT_HIGH_LIMIT")->config_value;
@@ -87,6 +83,10 @@ class Rate extends CI_Controller{
     }
     
     function export_bfat(){
+        if($this->session->userdata("group") == "admin"){
+            $this->session->set_flashdata("message", "Access Denied");
+            redirect("/", "refresh");
+        }
         $data = $this->rate_model->get_bfat();
         $fp = fopen('php://output', 'w');
         if ($fp && $data) {
@@ -103,13 +103,24 @@ class Rate extends CI_Controller{
     }
     
     function cfat(){
-        $data['c_rate'] = $this->rate_model->get_cow_fatrate();
-        $this->load->view("common/header");
-        $this->load->view("rate/cfat_index", $data);
-        $this->load->view("common/footer");
+        if($this->session->userdata("group") == "admin"){
+            $this->session->set_flashdata("message", "Access Denied");
+            redirect("/", "refresh");
+        }
+        
+        if($this->session->userdata("group") == "dairy" || $this->session->userdata("group") == "society"){
+            $data['c_rate'] = $this->rate_model->get_cow_fatrate();
+            $this->load->view("common/header");
+            $this->load->view("rate/cfat_index", $data);
+            $this->load->view("common/footer");
+        }
     }
     
     function import_cfat(){
+        if($this->session->userdata("group") == "admin"){
+            $this->session->set_flashdata("message", "Access Denied");
+            redirect("/", "refresh");
+        }
         if(isset($_POST['submit'])){
             $res_low = $this->setting_model->get_config("COW","FAT_LOW_LIMIT")->config_value;
             $res_high = $this->setting_model->get_config("COW","FAT_HIGH_LIMIT")->config_value;
@@ -157,6 +168,10 @@ class Rate extends CI_Controller{
     }
     
     function export_cfat(){
+        if($this->session->userdata("group") == "admin"){
+            $this->session->set_flashdata("message", "Access Denied");
+            redirect("/", "refresh");
+        }
         $data = $this->rate_model->get_cfat();
         $fp = fopen('php://output', 'w');
         if ($fp && $data) {
@@ -173,13 +188,23 @@ class Rate extends CI_Controller{
     }
     
     function import_bfat_snf(){
+        if($this->session->userdata("group") == "admin"){
+            $this->session->set_flashdata("message", "Access Denied");
+            redirect("/", "refresh");
+        }
         $this->load->view("common/header");
         $this->load->view("rate/cfat_snf");
         $this->load->view("common/footer");
     }
     
     function bfat_snf(){
-        $id = $this->session->userdata("id");
+        if($this->session->userdata("group") == "dairy"){
+            $id = $this->session->userdata("id");
+        }else if($this->session->userdata("group") == "society"){
+            $sid = $this->session->userdata("id");
+            $query = $this->db->query("SELECT dairy_id FROM users WHERE id = '$sid'");
+            $id = $query->row()->dairy_id;
+        }
         $q = $this->db->query("SELECT DISTINCT(Fat) FROM `buffalo_fat_snf` WHERE dairy_id = '$id'");
         $fat = $q->result_array();
         $fat_arr = array("SNFTAB");
@@ -301,7 +326,13 @@ class Rate extends CI_Controller{
     }
     
     function cfat_snf(){
-        $id = $this->session->userdata("id");
+        if($this->session->userdata("group") == "dairy"){
+            $id = $this->session->userdata("id");
+        }else if($this->session->userdata("group") == "society"){
+            $sid = $this->session->userdata("id");
+            $query = $this->db->query("SELECT dairy_id FROM users WHERE id = '$sid'");
+            $id = $query->row()->dairy_id;
+        }
         $q = $this->db->query("SELECT DISTINCT(Fat) FROM `cow_fat_snf` WHERE dairy_id = '$id'");
         $fat = $q->result_array();
         $fat_arr = array("SNFTAB");
@@ -421,7 +452,13 @@ class Rate extends CI_Controller{
     }
     
     function cfat_clr(){
-        $id = $this->session->userdata("id");
+        if($this->session->userdata("group") == "dairy"){
+            $id = $this->session->userdata("id");
+        }else if($this->session->userdata("group") == "society"){
+            $sid = $this->session->userdata("id");
+            $query = $this->db->query("SELECT dairy_id FROM users WHERE id = '$sid'");
+            $id = $query->row()->dairy_id;
+        }
         $q = $this->db->query("SELECT DISTINCT(Fat) FROM `cow_fat_clr` WHERE dairy_id = '$id'");
         $fat = $q->result_array();
         $fat_arr = array("CLRTAB");
@@ -543,7 +580,13 @@ class Rate extends CI_Controller{
     }
     
     function bfat_clr(){
-        $id = $this->session->userdata("id");
+        if($this->session->userdata("group") == "dairy"){
+            $id = $this->session->userdata("id");
+        }else if($this->session->userdata("group") == "society"){
+            $sid = $this->session->userdata("id");
+            $query = $this->db->query("SELECT dairy_id FROM users WHERE id = '$sid'");
+            $id = $query->row()->dairy_id;
+        }
         $q = $this->db->query("SELECT DISTINCT(Fat) FROM `buffalo_fat_clr` WHERE dairy_id = '$id'");
         $fat = $q->result_array();
         $fat_arr = array("CLRTAB");
@@ -664,3 +707,5 @@ class Rate extends CI_Controller{
         }
     }
 }
+
+/** application/controllers/Rate.php */

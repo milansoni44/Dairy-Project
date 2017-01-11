@@ -1,15 +1,8 @@
-<?php
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
 /**
  * Description of Society_model
  *
- * @author Intel
+ * @author Milan Soni
  */
 class Society_model extends CI_Model
 {
@@ -44,6 +37,7 @@ class Society_model extends CI_Model
     
     function add_society($data = array()){
         if($this->db->insert("users",$data)){
+//            echo $this->db->last_query();exit;
             $id = $this->db->insert_id();
             $group_array = array(
                 "user_id"=>$id,
@@ -87,3 +81,5 @@ class Society_model extends CI_Model
         return FALSE;
     }
 }
+
+/** application/Models/Society_model.php */

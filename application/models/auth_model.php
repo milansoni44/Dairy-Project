@@ -122,3 +122,5 @@ class Auth_model extends CI_Model{
         return FALSE;
     }
 }
+
+/** application/Models/Auth_model.php */

@@ -1,4 +1,4 @@
-<?php
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
 /**
  * Description of Transactions
  *
@@ -19,6 +19,10 @@ class Transactions extends CI_Controller{
     }
     
     function index(){
+        if($this->session->userdata("group") == "dairy" || $this->session->userdata("group") == "society"){
+            $this->session->set_flashdata("message", "Access Denied");
+            redirect("/", "refresh");
+        }
         $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
         $data['transaction'] = $this->transaction_model->get_transactions();
 //        echo "<pre>";
@@ -37,11 +41,22 @@ class Transactions extends CI_Controller{
             $csv = $_FILES['transaction']['tmp_name'];
             if(($getfile = fopen($csv, "r")) !== FALSE){
                 $data = fgetcsv($getfile, 1000, ",");
+//                echo "<pre>";
                 $i = 0;
-                echo "<pre>";
                 while(($data = fgetcsv($getfile, 1000, ",")) !== FALSE){
 //                    print_r($data);
                     if($i > 0){
+                        // check_exist machine id
+                        $stat = $this->transaction_model->exist_machine($data[13]);
+                        if($stat === FALSE){
+                            $this->session->set_flashdata("message", "Device ID does not exist in the system.");
+                            redirect("/", "refresh");
+                        }
+                        if($this->customer_model->check_exist_adhar($data[7]) === FALSE){
+                            $this->session->set_flashdata("message","Line:$i Adhar no not exist");
+                            $i++;
+                            continue;
+                        }
                         $society = $this->transaction_model->get_society_id($data[13])->society_id;
                         $dairy = $this->transaction_model->get_dairy_id($data[13])->dairy_id;
                         $trans[] = array(
@@ -69,9 +84,10 @@ class Transactions extends CI_Controller{
                         $i++;
                     }
                 }
+//                exit;
                 if(!empty($trans) && $this->transaction_model->import_txn($trans)){
                     $this->session->set_flashdata("success","Success");
-                    redirect("transactions","refresh");
+                    redirect("transactions/daily","refresh");
                 }
             }
         }else{
@@ -167,7 +183,7 @@ class Transactions extends CI_Controller{
     }
     
     function get_daily_transaction(){
-        $this->datatables->select("c.customer_name as customer_name,t.type,t.fat,t.clr,t.snf,t.weight,t.rate,t.netamt,t.date")
+        $this->datatables->select("c.customer_name as customer_name,t.fat,t.clr,t.snf,t.weight,t.rate,t.netamt,t.date")
             ->from("transactions t")
             ->join("machines m","m.machine_id = t.deviceid","LEFT")
             ->join("society_machine_map smm","smm.machine_id = m.id","LEFT")
@@ -175,6 +191,7 @@ class Transactions extends CI_Controller{
             ->join("dairy_machine_map dmm","dmm.machine_id = m.id","LEFT")
             ->join("users d","d.id = dmm.dairy_id","LEFT")
             ->join("customers c","c.adhar_no = t.adhar","LEFT")
+            ->where("t.type","C")
             ->where("t.date", date("Y-m-d"));
         if($this->session->userdata("group") == "admin"){
             echo $this->datatables->generate();
@@ -189,8 +206,32 @@ class Transactions extends CI_Controller{
         }
     }
     
-    function get_daily_transaction_post($from = NULL, $to = NULL, $type = NULL, $customer = NULL){
-        $this->datatables->select("c.customer_name as customer_name,t.type,t.fat,t.clr,t.snf,t.weight,t.rate,t.netamt,t.date")
+    function get_daily_Buff_transaction(){
+        $this->datatables->select("c.customer_name as customer_name,t.fat,t.clr,t.snf,t.weight,t.rate,t.netamt,t.date")
+            ->from("transactions t")
+            ->join("machines m","m.machine_id = t.deviceid","LEFT")
+            ->join("society_machine_map smm","smm.machine_id = m.id","LEFT")
+            ->join("users s","s.id = smm.society_id","LEFT")
+            ->join("dairy_machine_map dmm","dmm.machine_id = m.id","LEFT")
+            ->join("users d","d.id = dmm.dairy_id","LEFT")
+            ->join("customers c","c.adhar_no = t.adhar","LEFT")
+            ->where("t.type","B")
+            ->where("t.date", date("Y-m-d"));
+        if($this->session->userdata("group") == "admin"){
+            echo $this->datatables->generate();
+        }else if($this->session->userdata("group") == "dairy"){
+            $id = $this->session->userdata("id");
+            $this->datatables->where("t.dairy_id",$id);
+            echo $this->datatables->generate();
+        }else{
+            $id = $this->session->userdata("id");
+            $this->db->where("t.society_id",$id);
+            echo $this->datatables->generate();
+        }
+    }
+    
+    function get_daily_transaction_post($from = NULL, $to = NULL, $shift = NULL,$customer = NULL){
+        $this->datatables->select("c.customer_name as customer_name,t.fat,t.clr,t.snf,t.weight,t.rate,t.netamt,t.date")
         ->from("transactions t")
         ->join("machines m","m.machine_id = t.deviceid","LEFT")
         ->join("society_machine_map smm","smm.machine_id = m.id","LEFT")
@@ -198,12 +239,33 @@ class Transactions extends CI_Controller{
         ->join("dairy_machine_map dmm","dmm.machine_id = m.id","LEFT")
         ->join("users d","d.id = dmm.dairy_id","LEFT")
         ->join("customers c","c.adhar_no = t.adhar","LEFT")
+        ->where("t.type","C")
         ->where('date BETWEEN "'. date('Y-m-d', strtotime($from)). '" and "'. date('Y-m-d', strtotime($to)).'"');
-        if($type != ""){
-            $this->datatables->where("t.type", $type);
-        }
         if($customer != ""){
             $this->datatables->where("t.adhar", $customer);
+        }
+        if($shift != "All"){
+            $this->datatables->where("t.shift", $shift);
+        }
+        echo $this->datatables->generate();
+    }
+    
+    function get_daily_buff_transaction_post($from = NULL, $to = NULL, $shift = NULL,$customer = NULL){
+        $this->datatables->select("c.customer_name as customer_name,t.fat,t.clr,t.snf,t.weight,t.rate,t.netamt,t.date")
+        ->from("transactions t")
+        ->join("machines m","m.machine_id = t.deviceid","LEFT")
+        ->join("society_machine_map smm","smm.machine_id = m.id","LEFT")
+        ->join("users s","s.id = smm.society_id","LEFT")
+        ->join("dairy_machine_map dmm","dmm.machine_id = m.id","LEFT")
+        ->join("users d","d.id = dmm.dairy_id","LEFT")
+        ->join("customers c","c.adhar_no = t.adhar","LEFT")
+        ->where("t.type","B")
+        ->where('date BETWEEN "'. date('Y-m-d', strtotime($from)). '" and "'. date('Y-m-d', strtotime($to)).'"');
+        if($customer != ""){
+            $this->datatables->where("t.adhar", $customer);
+        }
+        if($shift != "All"){
+            $this->datatables->where("t.shift", $shift);
         }
         echo $this->datatables->generate();
     }
@@ -326,3 +388,5 @@ class Transactions extends CI_Controller{
         return TRUE;
     }
 }
+
+/** application/controllers/Transactions.php */

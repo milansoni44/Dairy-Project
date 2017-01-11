@@ -1,15 +1,8 @@
-<?php
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
 /**
  * Description of Rate_model
  *
- * @author Intel
+ * @author Milan Soni
  */
 class Rate_model extends CI_Model{
     //put your code here
@@ -21,9 +14,14 @@ class Rate_model extends CI_Model{
         if($this->session->userdata("group") == "dairy"){
             $this->db->where("dairy_id", $this->session->userdata("id"));
             $q = $this->db->get("buffalo_fat");
-        }else if($this->session->userdata("group") == "admin"){
+        }else if($this->session->userdata("group") == "society"){
+            $id = $this->session->userdata("id");
+            $query = $this->db->query("SELECT dairy_id FROM users WHERE id = '$id'");
+            $dairy_id = $query->row()->dairy_id;
+            $this->db->where("dairy_id", $dairy_id);
             $q = $this->db->get("buffalo_fat");
         }
+//        echo $this->db->last_query();exit;
         if($q->num_rows() > 0){
             foreach($q->result() as $row){
                 $row1[] = $row;
@@ -37,7 +35,11 @@ class Rate_model extends CI_Model{
         if($this->session->userdata("group") == "dairy"){
             $this->db->where("dairy_id", $this->session->userdata("id"));
             $q = $this->db->get("cow_fat");
-        }else if($this->session->userdata("group") == "admin"){
+        }else if($this->session->userdata("group") == "society"){
+            $id = $this->session->userdata("id");
+            $query = $this->db->query("SELECT dairy_id FROM users WHERE id = '$id'");
+            $dairy_id = $query->row()->dairy_id;
+            $this->db->where("dairy_id", $dairy_id);
             $q = $this->db->get("cow_fat");
         }
         if($q->num_rows() > 0){
@@ -119,3 +121,5 @@ class Rate_model extends CI_Model{
         return FALSE;
     }
 }
+
+/** application/Models/Rate_model.php */

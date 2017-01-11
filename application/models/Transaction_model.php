@@ -1,11 +1,4 @@
-<?php
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
 /**
  * Description of Transaction_model
  *
@@ -166,4 +159,14 @@ class Transaction_model extends CI_Model{
         }
         return FALSE;
     }
+    
+    function exist_machine($device = NULL){
+        $q = $this->db->get_where("machines", array("machine_id"=>$device));
+        if($q->num_rows() > 0){
+            return TRUE;
+        }
+        return FALSE;
+    }
 }
+
+/** application/Models/Transaction_model.php */

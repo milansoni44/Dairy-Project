@@ -1,5 +1,4 @@
-<?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Welcome extends CI_Controller {
 
@@ -42,3 +41,5 @@ class Welcome extends CI_Controller {
         $this->load->view('common/footer');
     }
 }
+
+/** application/controllers/Welcome.php */

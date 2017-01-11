@@ -585,6 +585,11 @@
         return '{' . join(',', $json) . '}';
       }
     }
+    
+    public function last_query()
+    {
+      return  $this->ci->db->last_query();
+    }
   }
 /* End of file Datatables.php */
 /* Location: ./application/libraries/Datatables.php */

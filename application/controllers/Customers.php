@@ -1,4 +1,4 @@
-<?php
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
 /**
  * Description of Customers
  *
@@ -398,3 +398,5 @@ class Customers extends CI_Controller{
         }
     }
 }
+
+/** application/controllers/Customer.php */

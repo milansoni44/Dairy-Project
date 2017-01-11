@@ -1,15 +1,8 @@
-<?php
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
 /**
  * Description of Society
  *
- * @author Intel
+ * @author Milan Soni
  */
 class Society extends CI_Controller
 {
@@ -40,7 +33,7 @@ class Society extends CI_Controller
     
     function add()
     {
-        if($this->session->userdata("group") != "dairy"){
+        if($this->session->userdata("group") == "admin" || $this->session->userdata("group") == "society"){
             $this->session->set_flashdata("message","Access Denied");
             redirect("/","refresh");
         }
@@ -134,3 +127,5 @@ class Society extends CI_Controller
         }
     }
 }
+
+/** application/controllers/Society.php */

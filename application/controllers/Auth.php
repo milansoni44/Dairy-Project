@@ -1,11 +1,4 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
  * Description of Diary
  *
@@ -236,3 +229,5 @@ class Auth extends CI_Controller{
       return base64_decode(str_pad(strtr($data, '-_', '+/'), strlen($data) % 4, '=', STR_PAD_RIGHT));
     }
 }
+
+/** application/controllers/Auth.php */

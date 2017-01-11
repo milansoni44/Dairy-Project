@@ -1,11 +1,4 @@
-<?php
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
 /**
  * Description of Customer_model
  *
@@ -68,6 +61,14 @@ class Customer_model extends CI_Model{
                 $row1[] = $row;
             }
             return $row1;
+        }
+        return FALSE;
+    }
+    
+    function check_exist_adhar($adhar = NULL){
+        $q = $this->db->get_where("customers", array("adhar_no"=>$adhar));
+        if($q->num_rows() > 0){
+            return TRUE;
         }
         return FALSE;
     }
@@ -155,3 +156,5 @@ class Customer_model extends CI_Model{
         return FALSE;
     }
 }
+
+/** application/Models/Customer_model.php */
