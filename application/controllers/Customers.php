@@ -70,29 +70,31 @@ class Customers extends CI_Controller{
         }
         
         if(isset($_POST['submit'])){
+//            print_r($_POST);exit;
             if(!$this->customer_model->check_exist($_POST['mobile'],"mobile")){
-                $this->session->set_flashdata("message","This mobile already exist");
+                $this->session->set_flashdata("message1","This mobile already exist");
                 redirect("customers","refresh");
             }
             if(!$this->customer_model->check_exist($_POST['adhar_no'],"adhar_no")){
-                $this->session->set_flashdata("message","This adhar number already exist");
+                $this->session->set_flashdata("message1","This adhar number already exist");
                 redirect("customers","refresh");
             }
-            if(!$this->customer_model->check_exist($_POST['member_code'],"mem_code")){
-                $this->customer_model->update_expiry($_POST['member_code']);
-            }
+            // member code is not required
+//            if(!$this->customer_model->check_exist($_POST['member_code'],"mem_code")){
+//                $this->customer_model->update_expiry($_POST['member_code']);
+//            }
             $member_data = array(
                 "customer_name"=>$_POST['member_name'],
                 "mobile"=>$_POST['mobile'],
                 "adhar_no"=>$_POST['adhar_no'],
                 "mem_code"=>$_POST['member_code'],
                 "type"=>$_POST['type'],
-                "society_id"=>$this->session->userdata("id"),
-                "machine_id"=>$_POST['machine'],
-                "ac_no"=>$_POST['ac_no'],
-                "bank_name"=>$_POST['bank_name'],
-                "ifsc"=>$_POST['ifsc'],
-                "ac_type"=>$_POST['ac_type'],
+//                "society_id"=>$this->session->userdata("id"),
+//                "machine_id"=>$_POST['machine'],
+//                "ac_no"=>$_POST['ac_no'],
+//                "bank_name"=>$_POST['bank_name'],
+//                "ifsc"=>$_POST['ifsc'],
+//                "ac_type"=>$_POST['ac_type'],
                 "created_at"=>date("Y-m-d"),
             ); 
 //            print_r($member_data);exit;
@@ -103,7 +105,7 @@ class Customers extends CI_Controller{
             redirect("customers","refresh");
         }else{
             $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
-            $data['machine'] = $this->machine_model->allocated_soc_machine($this->session->userdata("id"));
+//            $data['machine'] = $this->machine_model->allocated_soc_machine($this->session->userdata("id"));
             $this->load->view("common/header", $data);
             $this->load->view("customers/add", $data);
             $this->load->view("common/footer");
@@ -146,7 +148,7 @@ class Customers extends CI_Controller{
         }
         
         if(!empty($member_data) && $this->customer_model->edit_customer($member_data, $id)){
-            $this->session->set_flashdata("success","Member added successfully");
+            $this->session->set_flashdata("success","Member updated successfully");
             redirect("customers","refresh");
         }else{
             $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));

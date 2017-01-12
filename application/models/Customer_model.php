@@ -12,22 +12,18 @@ class Customer_model extends CI_Model{
     
     function get_customer(){
         if($this->session->userdata("group") == "admin"){
-            $q = $this->db->query("SELECT DISTINCT(c.id),c.*, s.name FROM `transactions` t
-LEFT JOIN users s ON s.id = t.society_id
-LEFT JOIN users d ON d.id = t.dairy_id
-LEFT JOIN customers c ON c.id = t.cid");
+            $q = $this->db->query("SELECT * FROM customers c
+LEFT JOIN customer_society cs ON cs.cid = c.id");
         }else if($this->session->userdata("group") == "society"){
             $id = $this->session->userdata("id");
-            $q = $this->db->query("SELECT DISTINCT(c.id), c.*, s.name FROM `transactions` t
-LEFT JOIN users s ON s.id = t.society_id
-LEFT JOIN users d ON d.id = t.dairy_id
-LEFT JOIN customers c ON c.id = t.cid WHERE t.society_id = '$id'");
+            $q = $this->db->query("SELECT c.*, us.name FROM customers c
+LEFT JOIN customer_society cs ON cs.cid = c.id LEFT JOIN users us ON us.id = cs.society_id WHERE cs.society_id = '$id'");
         }else if($this->session->userdata("group") == "dairy"){
             $id = $this->session->userdata("id");
-            $q = $this->db->query("SELECT DISTINCT(c.id), c.*, s.name FROM `transactions` t
-LEFT JOIN users s ON s.id = t.society_id
-LEFT JOIN users d ON d.id = t.dairy_id
-LEFT JOIN customers c ON c.id = t.cid WHERE t.dairy_id = '$id'");
+            $q = $this->db->query("SELECT c.*, us.name FROM customers c
+LEFT JOIN customer_society cs ON cs.cid = c.id
+LEFT JOIN users us ON us.id = cs.society_id
+WHERE cs.society_id IN (SELECT GROUP_CONCAT(s.id) AS sid FROM users d LEFT JOIN users s ON s.dairy_id = d.id WHERE d.id = '$id')");
         }
 //        echo $this->db->last_query();exit;
         if($q->num_rows() > 0){
@@ -41,21 +37,24 @@ LEFT JOIN customers c ON c.id = t.cid WHERE t.dairy_id = '$id'");
     
     function get_customer_txn(){
         if($this->session->userdata("group") == "admin"){
-            $q = $this->db->query("SELECT c.*, s.name FROM `transactions` t
+            $q = $this->db->query("SELECT DISTINCT(c.id),c.*, s.name, m.machine_id FROM `transactions` t
 LEFT JOIN users s ON s.id = t.society_id
 LEFT JOIN users d ON d.id = t.dairy_id
+LEFT JOIN machines m ON m.id = t.deviceid
 LEFT JOIN customers c ON c.id = t.cid");
         }else if($this->session->userdata("group") == "society"){
             $id = $this->session->userdata("id");
-            $q = $this->db->query("SELECT c.*, s.name FROM `transactions` t
+            $q = $this->db->query("SELECT DISTINCT(c.id),c.*, s.name, m.machine_id FROM `transactions` t
 LEFT JOIN users s ON s.id = t.society_id
 LEFT JOIN users d ON d.id = t.dairy_id
+LEFT JOIN machines m ON m.id = t.deviceid
 LEFT JOIN customers c ON c.id = t.cid WHERE t.society_id = '$id'");
         }else if($this->session->userdata("group") == "dairy"){
             $id = $this->session->userdata("id");
-            $q = $this->db->query("SELECT c.*, s.name FROM `transactions` t
+            $q = $this->db->query("SELECT DISTINCT(c.id),c.*, s.name, m.machine_id FROM `transactions` t
 LEFT JOIN users s ON s.id = t.society_id
 LEFT JOIN users d ON d.id = t.dairy_id
+LEFT JOIN machines m ON m.id = t.deviceid
 LEFT JOIN customers c ON c.id = t.cid WHERE t.dairy_id = '$id'");
         }
 //        echo $this->db->last_query();exit;
@@ -68,8 +67,21 @@ LEFT JOIN customers c ON c.id = t.cid WHERE t.dairy_id = '$id'");
         return FALSE;
     }
     
-    function add_customer($data = array()){
+    function add_customer($data = array(), $society = NULL){
         if($this->db->insert("customers",$data)){
+            $id = $this->db->insert_id();
+            if(!$society){
+                $customer_soc = array(
+                    "cid"=>$id,
+                    "society_id"=>$this->session->userdata("id")
+                );
+            }else{
+                $customer_soc = array(
+                    "cid"=>$id,
+                    "society_id"=>$society
+                );
+            }
+            $this->db->insert("customer_society", $customer_soc);
             return TRUE;
         }
         return FALSE;

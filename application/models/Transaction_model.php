@@ -130,24 +130,24 @@ class Transaction_model extends CI_Model{
     }
     
     function get_customer_transaction($adhar = NULL){
-        $this->db->select("t.*,s.name AS society_name,d.name AS dairy_name, c.customer_name as customer_name")
+        $this->db->select("t.*,s.name AS society_name,d.name AS dairy_name, c.customer_name as customer_name, m.machine_id as machine_id")
                 ->from("transactions t")
-                ->join("machines m","m.machine_id = t.deviceid","LEFT")
+                ->join("machines m","m.id = t.deviceid","LEFT")
                 ->join("society_machine_map smm","smm.machine_id = m.id","LEFT")
                 ->join("users s","s.id = smm.society_id","LEFT")
                 ->join("dairy_machine_map dmm","dmm.machine_id = m.id","LEFT")
                 ->join("users d","d.id = dmm.dairy_id","LEFT")
-                ->join("customers c","c.adhar_no = t.adhar");
+                ->join("customers c","c.id = t.cid");
         if($this->session->userdata("group") == "admin"){
             $this->db->where("t.adhar",$adhar);
             $q = $this->db->get();
         }else if($this->session->userdata("group") == "dairy"){
-            $this->db->where("t.adhar",$adhar);
+            $this->db->where("c.adhar_no",$adhar);
             $id = $this->session->userdata("id");
             $this->db->where("t.dairy_id",$id);
             $q = $this->db->get();
         }else{
-            $this->db->where("t.adhar",$adhar);
+            $this->db->where("c.adhar_no",$adhar);
             $id = $this->session->userdata("id");
             $this->db->where("t.society_id",$id);
             $q = $this->db->get();

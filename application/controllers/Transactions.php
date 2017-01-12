@@ -73,7 +73,7 @@ class Transactions extends CI_Controller{
                             );
 //                            echo "<pre>";
 //                            print_r($customer_data);exit;
-                            $this->customer_model->add_customer($customer_data);
+                            $this->customer_model->add_customer($customer_data, $society);
                             $cid = $this->db->insert_id();
 //                            $adhar = $this->transaction_model->get_adhar($cid);
                             $transaction_single = array(
@@ -83,7 +83,7 @@ class Transactions extends CI_Controller{
                                 "sampleid"=>$data[12],
                                 "ismanual"=>$data[9],
                                 "type"=>$data[8],
-                                "adhar"=>$cid,
+                                "cid"=>$cid,
                                 "netamt"=>$data[6],
                                 "rate"=>$data[5],
                                 "weight"=>$data[4],
@@ -109,7 +109,7 @@ class Transactions extends CI_Controller{
                             "sampleid"=>$data[12],
                             "ismanual"=>$data[9],
                             "type"=>$data[8],
-                            "adhar"=>$cid,
+                            "cid"=>$cid,
                             "netamt"=>$data[6],
                             "rate"=>$data[5],
                             "weight"=>$data[4],
@@ -281,11 +281,11 @@ class Transactions extends CI_Controller{
         ->join("users s","s.id = smm.society_id","LEFT")
         ->join("dairy_machine_map dmm","dmm.machine_id = m.id","LEFT")
         ->join("users d","d.id = dmm.dairy_id","LEFT")
-        ->join("customers c","c.adhar_no = t.cid","LEFT")
+        ->join("customers c","c.id = t.cid","LEFT")
         ->where("t.type","C")
         ->where('date BETWEEN "'. date('Y-m-d', strtotime($from)). '" and "'. date('Y-m-d', strtotime($to)).'"');
         if($customer != ""){
-            $this->datatables->where("t.adhar", $customer);
+            $this->datatables->where("t.cid", $customer);
         }
         if($shift != "All"){
             $this->datatables->where("t.shift", $shift);
@@ -301,11 +301,11 @@ class Transactions extends CI_Controller{
         ->join("users s","s.id = smm.society_id","LEFT")
         ->join("dairy_machine_map dmm","dmm.machine_id = m.id","LEFT")
         ->join("users d","d.id = dmm.dairy_id","LEFT")
-        ->join("customers c","c.adhar_no = t.cid","LEFT")
+        ->join("customers c","c.id = t.cid","LEFT")
         ->where("t.type","B")
         ->where('date BETWEEN "'. date('Y-m-d', strtotime($from)). '" and "'. date('Y-m-d', strtotime($to)).'"');
         if($customer != ""){
-            $this->datatables->where("t.adhar", $customer);
+            $this->datatables->where("t.cid", $customer);
         }
         if($shift != "All"){
             $this->datatables->where("t.shift", $shift);
@@ -396,6 +396,7 @@ class Transactions extends CI_Controller{
     
     function customer(){
         if($this->input->post("submit")){
+//            echo "Hello";exit;
             $data['transactions'] = $this->transaction_model->get_customer_transaction($this->input->post("customer"));
             $data['customers'] = $this->customer_model->get_customer_txn();
             $this->load->view("common/header");

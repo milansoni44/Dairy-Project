@@ -2,7 +2,7 @@
     $(document).ready(function(){
         $("#add_dairy_form").validate({
             rules: {
-                machine: "required",
+//                machine: "required",
                 member_name: "required",
                 mobile: "required",
                 adhar_no: "required",
@@ -10,7 +10,7 @@
                 type: "required",
             },
             messages: {
-                machine: "Please select machine",
+//                machine: "Please select machine",
                 member_name: "Please enter name",
                 mobile: "Please Enter mobile number",
                 mobile: "Please enter Adhar Number",
@@ -45,7 +45,7 @@
                                 </div><!-- /.box-header -->
                                 <form role="form" class="form-horizontal" id="add_dairy_form" action="<?php echo base_url(); ?>index.php/customers/add" method="post">
                                     <div class="box-body">
-                                        <div class="form-group">
+<!--                                        <div class="form-group">
                                             <label class="control-label col-sm-2" for="machine">Machine</label>
                                             <div class="col-md-4">
                                                 <select class="form-control" id="machine" name="machine">
@@ -61,7 +61,7 @@
                                                     ?>
                                                 </select>
                                             </div>
-                                        </div>
+                                        </div>-->
                                         <div class="form-group">
                                             <label class="control-label col-sm-2" for="member_name"> Member Name</label>
                                             <div class="col-md-4">

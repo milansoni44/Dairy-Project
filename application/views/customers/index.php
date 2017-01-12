@@ -45,6 +45,17 @@
                         <?php
                             }
                         ?>
+                        <?php
+                        if($this->session->flashdata('message1')){
+                        ?>
+                        <div class="alert alert-danger alert-dismissable">
+                            <i class="fa fa-check"></i>
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            <?php echo $this->session->flashdata('message1'); ?>
+                        </div>
+                        <?php
+                            }
+                        ?>
                         <div class="col-xs-12">
                             <div class="box">
                                 <div class="box-header">

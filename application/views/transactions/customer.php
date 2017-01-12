@@ -99,7 +99,7 @@
                                                     foreach($transactions as $row){
                                             ?>
                                             <tr>
-                                                <td><?php echo $row->deviceid; ?></td>
+                                                <td><?php echo $row->machine_id; ?></td>
                                                 <td><?php echo $row->customer_name; ?></td>
                                                 <td><?php echo $row->society_name; ?></td>
                                                 <td><?php echo $row->dairy_name; ?></td>
