@@ -77,6 +77,38 @@ ON s.id = smm.society_id");
         return FALSE;
     }
     
+    function not_allocated_soc_machines(){
+//        $q = $this->db->select("machine_id")->get("society_machine_map");
+        $id = $this->session->userdata("id");
+        $q = $this->db->query("SELECT machine_id FROM dairy_machine_map WHERE dairy_id = '$id'");
+//        echo $this->db->last_query();exit;
+        if($q->num_rows() > 0){
+            foreach($q->result() as $rw){
+                $rw1[] = $rw->machine_id;
+            }
+        }
+        if(!empty($rw)){
+            $ex = implode("','", $rw1);
+            $q = $this->db->query("SELECT machine_id FROM society_machine_map WHERE machine_id IN('$ex')");
+        }else{
+            $q = $this->db->get("machines");
+        }
+        foreach($q->result() as $rw1){
+            $rw2[] = $rw1->machine_id;
+        }
+        $ex1 = implode("','", $rw2);
+//        echo $this->db->last_query();exit;
+        $q1 = $this->db->query("SELECT m.machine_id, m.id as mo_id FROM dairy_machine_map dmm LEFT JOIN machines m ON m.id = dmm.machine_id WHERE dmm.dairy_id = '$id' AND dmm.machine_id NOT IN('$ex1')");
+//        echo $this->db->last_query();exit;
+        if($q1->num_rows() > 0){
+            foreach($q1->result() as $row12){
+                $row111[] = $row12;
+            }
+            return $row111;
+        }
+        return FALSE;
+    }
+    
     function get_machine_by_id($id = NULL){
         $q = $this->db->get_where("machines", array("id"=>$id));
         if($q->num_rows() > 0){
@@ -216,6 +248,9 @@ ON s.id = smm.society_id");
             ->where("groups.name","society");
         if($this->session->userdata("group") == "society"){
             $this->db->where("users.id",$this->session->userdata("id"));
+            $q = $this->db->get();
+        }else if($this->session->userdata("group") == "dairy"){
+            $this->db->where("users.dairy_id", $this->session->userdata("id"));
             $q = $this->db->get();
         }else{
             $q = $this->db->get();

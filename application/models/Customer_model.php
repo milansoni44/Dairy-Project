@@ -12,13 +12,51 @@ class Customer_model extends CI_Model{
     
     function get_customer(){
         if($this->session->userdata("group") == "admin"){
-            $q = $this->db->query("SELECT c.*,u.name FROM customers c LEFT JOIN users u ON u.id = c.society_id");
+            $q = $this->db->query("SELECT DISTINCT(c.id),c.*, s.name FROM `transactions` t
+LEFT JOIN users s ON s.id = t.society_id
+LEFT JOIN users d ON d.id = t.dairy_id
+LEFT JOIN customers c ON c.id = t.cid");
         }else if($this->session->userdata("group") == "society"){
             $id = $this->session->userdata("id");
-            $q = $this->db->query("SELECT c.*,u.name FROM customers c LEFT JOIN users u ON u.id = c.society_id WHERE c.society_id = '$id'");
+            $q = $this->db->query("SELECT DISTINCT(c.id), c.*, s.name FROM `transactions` t
+LEFT JOIN users s ON s.id = t.society_id
+LEFT JOIN users d ON d.id = t.dairy_id
+LEFT JOIN customers c ON c.id = t.cid WHERE t.society_id = '$id'");
         }else if($this->session->userdata("group") == "dairy"){
             $id = $this->session->userdata("id");
-            $q = $this->db->query("SELECT c.*,u.name FROM customers c LEFT JOIN users u ON u.id = c.society_id LEFT JOIN user_groups ug ON ug.user_id = c.society_id LEFT JOIN groups g ON g.id = ug.group_id WHERE g.name = 'society' AND u.id = (SELECT users.id FROM users WHERE users.dairy_id = '$id')");
+            $q = $this->db->query("SELECT DISTINCT(c.id), c.*, s.name FROM `transactions` t
+LEFT JOIN users s ON s.id = t.society_id
+LEFT JOIN users d ON d.id = t.dairy_id
+LEFT JOIN customers c ON c.id = t.cid WHERE t.dairy_id = '$id'");
+        }
+//        echo $this->db->last_query();exit;
+        if($q->num_rows() > 0){
+            foreach($q->result() as $row){
+                $row1[] = $row;
+            }
+            return $row1;
+        }
+        return FALSE;
+    }
+    
+    function get_customer_txn(){
+        if($this->session->userdata("group") == "admin"){
+            $q = $this->db->query("SELECT c.*, s.name FROM `transactions` t
+LEFT JOIN users s ON s.id = t.society_id
+LEFT JOIN users d ON d.id = t.dairy_id
+LEFT JOIN customers c ON c.id = t.cid");
+        }else if($this->session->userdata("group") == "society"){
+            $id = $this->session->userdata("id");
+            $q = $this->db->query("SELECT c.*, s.name FROM `transactions` t
+LEFT JOIN users s ON s.id = t.society_id
+LEFT JOIN users d ON d.id = t.dairy_id
+LEFT JOIN customers c ON c.id = t.cid WHERE t.society_id = '$id'");
+        }else if($this->session->userdata("group") == "dairy"){
+            $id = $this->session->userdata("id");
+            $q = $this->db->query("SELECT c.*, s.name FROM `transactions` t
+LEFT JOIN users s ON s.id = t.society_id
+LEFT JOIN users d ON d.id = t.dairy_id
+LEFT JOIN customers c ON c.id = t.cid WHERE t.dairy_id = '$id'");
         }
 //        echo $this->db->last_query();exit;
         if($q->num_rows() > 0){
@@ -85,10 +123,10 @@ class Customer_model extends CI_Model{
 //        echo "<br>";
         if(!$id){
             $soc_id = $this->session->userdata("id");
-            $q = $this->db->query("SELECT * FROM customers WHERE $col_name = '$col' AND expiry = '0000-00-00' AND society_id = $soc_id");
+            $q = $this->db->query("SELECT * FROM customers WHERE $col_name = '$col' AND expiry = '0000-00-00'");
         }else{
             $soc_id = $this->session->userdata("id");
-            $q = $this->db->query("SELECT * FROM customers WHERE $col_name = '$col' AND expiry = '0000-00-00' AND id NOT IN('$id') AND society_id = $soc_id");
+            $q = $this->db->query("SELECT * FROM customers WHERE $col_name = '$col' AND expiry = '0000-00-00' AND id NOT IN('$id')");
         }
 //        echo $this->db->last_query();
         if($q->num_rows() > 0){

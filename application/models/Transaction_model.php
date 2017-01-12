@@ -29,6 +29,15 @@ class Transaction_model extends CI_Model{
         return FALSE;
     }
     
+    function get_machine_id($machine_id = NULL){
+        $machine_id = trim($machine_id,'"');
+        $q = $this->db->query("SELECT m.id as mid, m.machine_id, u.name, u.id AS dairy_id FROM `machines` m LEFT JOIN dairy_machine_map smm ON smm.machine_id = m.id LEFT JOIN users u ON u.id = smm.dairy_id WHERE m.machine_id = '$machine_id'");
+        if($q->num_rows() > 0){
+            return $q->row();
+        }
+        return FALSE;
+    }
+    
     function insert_transaction($data = array()){
         if($this->db->insert("transactions", $data)){
             return TRUE;
@@ -162,10 +171,24 @@ class Transaction_model extends CI_Model{
     
     function exist_machine($device = NULL){
         $q = $this->db->get_where("machines", array("machine_id"=>$device));
+//        echo $this->db->last_query();exit;
         if($q->num_rows() > 0){
-            return TRUE;
+            return $q->row()->id;
         }
         return FALSE;
+    }
+    
+    function get_cid($adhar = NULL){
+        $q = $this->db->get_where("customers", array("adhar_no"=>$adhar));
+        if($q->num_rows() > 0){
+            return $q->row()->id;
+        }
+        return FALSE;
+    }
+    
+    function insert_single($data = array()){
+        $this->db->insert("transactions", $data);
+        return TRUE;
     }
 }
 

@@ -266,6 +266,7 @@
                                     </div>
                                 </form>
                                 <div class="box-body table-responsive">
+                                    <span style="font-weight: bold; font-size: x-large;">Cow</span>
                                     <table id="example2" class="table table-bordered table-hover">
                                         <thead>
                                             <tr>
@@ -294,7 +295,7 @@
                                             </tr>
                                         </tfoot>
                                     </table>
-                                    
+                                    <span style="font-weight: bold; font-size: x-large;">Buffalo</span>
                                     <table id="example_buff" class="table table-bordered table-hover">
                                         <thead>
                                             <tr>

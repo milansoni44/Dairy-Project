@@ -134,8 +134,8 @@ class Customers extends CI_Controller{
                 "adhar_no"=>$_POST['adhar_no'],
                 "mem_code"=>$_POST['member_code'],
                 "type"=>$_POST['type'],
-                "society_id"=>$this->session->userdata("id"),
-                "machine_id"=>$_POST['machine'],
+//                "society_id"=>$this->session->userdata("id"),
+//                "machine_id"=>$_POST['machine'],
                 "ac_no"=>$_POST['ac_no'],
                 "bank_name"=>$_POST['bank_name'],
                 "ifsc"=>$_POST['ifsc'],
@@ -150,7 +150,7 @@ class Customers extends CI_Controller{
             redirect("customers","refresh");
         }else{
             $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
-            $data['machine'] = $this->machine_model->allocated_soc_machine($this->session->userdata("id"));
+//            $data['machine'] = $this->machine_model->allocated_soc_machine($this->session->userdata("id"));
             $data['member'] = $this->customer_model->get_customer_by_id($id);
             $data['id'] = $id;
             $this->load->view("common/header", $data);

@@ -46,27 +46,70 @@ class Transactions extends CI_Controller{
                 while(($data = fgetcsv($getfile, 1000, ",")) !== FALSE){
 //                    print_r($data);
                     if($i > 0){
-                        // check_exist machine id
+//                        // check_exist machine id
                         $stat = $this->transaction_model->exist_machine($data[13]);
                         if($stat === FALSE){
                             $this->session->set_flashdata("message", "Device ID does not exist in the system.");
                             redirect("/", "refresh");
                         }
-                        if($this->customer_model->check_exist_adhar($data[7]) === FALSE){
-                            $this->session->set_flashdata("message","Line:$i Adhar no not exist");
+                        $society = $this->transaction_model->get_society_id($data[13])->society_id;
+                        $dairy = $this->transaction_model->get_dairy_id($data[13])->dairy_id;
+                        $machine_id = $this->transaction_model->get_machine_id($data[13])->mid;
+                        if($data[7] == ""){
+                            $this->session->set_flashdata("message","Line:$i Adhar no required");
                             $i++;
                             continue;
                         }
-                        $society = $this->transaction_model->get_society_id($data[13])->society_id;
-                        $dairy = $this->transaction_model->get_dairy_id($data[13])->dairy_id;
-                        $trans[] = array(
+                        if($this->customer_model->check_exist_adhar($data[7]) === FALSE){
+//                            echo "Hello";exit;
+//                            $this->session->set_flashdata("message","Line:$i Adhar no not exist");
+//                            $i++;
+//                            continue;
+                            $customer_data = array(
+                                "adhar_no"=>$data[7],
+//                                "society_id"=>$society,
+//                                "dairy_id"=>$dairy,
+//                                "machine_id"=>$machine_id,
+                            );
+//                            echo "<pre>";
+//                            print_r($customer_data);exit;
+                            $this->customer_model->add_customer($customer_data);
+                            $cid = $this->db->insert_id();
+//                            $adhar = $this->transaction_model->get_adhar($cid);
+                            $transaction_single = array(
+                                "dairy_id"=>$dairy,
+                                "society_id"=>$society,
+                                "deviceid"=>$stat,
+                                "sampleid"=>$data[12],
+                                "ismanual"=>$data[9],
+                                "type"=>$data[8],
+                                "adhar"=>$cid,
+                                "netamt"=>$data[6],
+                                "rate"=>$data[5],
+                                "weight"=>$data[4],
+                                "snf"=>$data[3],
+                                "clr"=>$data[2],
+                                "fat"=>$data[1],
+                                "memcode"=>$data[0],
+                                "date"=>date("Y-d-m", strtotime($data[14]) ),
+                                "shift"=>$data[15],
+                                "dockno"=>$data[10],
+                                "soccode"=>$data[11]
+                            );
+//                            print_r($transaction_single);exit;
+                            $this->transaction_model->insert_single($transaction_single);
+                            $i++;
+                            continue;
+                        }
+                        $cid = $this->transaction_model->get_cid($data[7]);
+                        $trans = array(
                             "dairy_id"=>$dairy,
                             "society_id"=>$society,
-                            "deviceid"=>$data[13],
+                            "deviceid"=>$stat,
                             "sampleid"=>$data[12],
                             "ismanual"=>$data[9],
                             "type"=>$data[8],
-                            "adhar"=>$data[7],
+                            "adhar"=>$cid,
                             "netamt"=>$data[6],
                             "rate"=>$data[5],
                             "weight"=>$data[4],
@@ -78,17 +121,17 @@ class Transactions extends CI_Controller{
                             "shift"=>$data[15],
                             "dockno"=>$data[10],
                             "soccode"=>$data[11]
-                            
                         );
+                        $this->transaction_model->insert_single($trans);
                     }else{
                         $i++;
+                        continue;
                     }
                 }
 //                exit;
-                if(!empty($trans) && $this->transaction_model->import_txn($trans)){
+//                if(!empty($trans) && $this->transaction_model->import_txn($trans)){
                     $this->session->set_flashdata("success","Success");
                     redirect("transactions/daily","refresh");
-                }
             }
         }else{
             $this->load->view("common/header");
@@ -167,14 +210,14 @@ class Transactions extends CI_Controller{
         $this->form_validation->set_rules("date","Date","trim|required|callback_check_future");
         $this->form_validation->set_rules("to_date","Date","trim|required|callback_check_dates");
         if($this->form_validation->run() == TRUE){
-            $data['transactions'] = $this->transaction_model->get_transactions($this->input->post("date"), $this->input->post("to_date"));
+//            $data['transactions'] = $this->transaction_model->get_transactions($this->input->post("date"), $this->input->post("to_date"));
             $data['customers'] = $this->customer_model->get_customer();
             $this->load->view("common/header");
             $this->load->view("transactions/daily", $data);
             $this->load->view("common/footer");
         }else{
             $data['errors'] = $this->form_validation->error_array();
-            $data['transactions'] = $this->transaction_model->get_transactions(date("Y-m-d"), date("Y-m-d"));
+//            $data['transactions'] = $this->transaction_model->get_transactions(date("Y-m-d"), date("Y-m-d"));
             $data['customers'] = $this->customer_model->get_customer();
             $this->load->view("common/header");
             $this->load->view("transactions/daily", $data);
@@ -190,7 +233,7 @@ class Transactions extends CI_Controller{
             ->join("users s","s.id = smm.society_id","LEFT")
             ->join("dairy_machine_map dmm","dmm.machine_id = m.id","LEFT")
             ->join("users d","d.id = dmm.dairy_id","LEFT")
-            ->join("customers c","c.adhar_no = t.adhar","LEFT")
+            ->join("customers c","c.id = t.cid","LEFT")
             ->where("t.type","C")
             ->where("t.date", date("Y-m-d"));
         if($this->session->userdata("group") == "admin"){
@@ -214,7 +257,7 @@ class Transactions extends CI_Controller{
             ->join("users s","s.id = smm.society_id","LEFT")
             ->join("dairy_machine_map dmm","dmm.machine_id = m.id","LEFT")
             ->join("users d","d.id = dmm.dairy_id","LEFT")
-            ->join("customers c","c.adhar_no = t.adhar","LEFT")
+            ->join("customers c","c.adhar_no = t.cid","LEFT")
             ->where("t.type","B")
             ->where("t.date", date("Y-m-d"));
         if($this->session->userdata("group") == "admin"){
@@ -238,7 +281,7 @@ class Transactions extends CI_Controller{
         ->join("users s","s.id = smm.society_id","LEFT")
         ->join("dairy_machine_map dmm","dmm.machine_id = m.id","LEFT")
         ->join("users d","d.id = dmm.dairy_id","LEFT")
-        ->join("customers c","c.adhar_no = t.adhar","LEFT")
+        ->join("customers c","c.adhar_no = t.cid","LEFT")
         ->where("t.type","C")
         ->where('date BETWEEN "'. date('Y-m-d', strtotime($from)). '" and "'. date('Y-m-d', strtotime($to)).'"');
         if($customer != ""){
@@ -258,7 +301,7 @@ class Transactions extends CI_Controller{
         ->join("users s","s.id = smm.society_id","LEFT")
         ->join("dairy_machine_map dmm","dmm.machine_id = m.id","LEFT")
         ->join("users d","d.id = dmm.dairy_id","LEFT")
-        ->join("customers c","c.adhar_no = t.adhar","LEFT")
+        ->join("customers c","c.adhar_no = t.cid","LEFT")
         ->where("t.type","B")
         ->where('date BETWEEN "'. date('Y-m-d', strtotime($from)). '" and "'. date('Y-m-d', strtotime($to)).'"');
         if($customer != ""){
@@ -354,12 +397,12 @@ class Transactions extends CI_Controller{
     function customer(){
         if($this->input->post("submit")){
             $data['transactions'] = $this->transaction_model->get_customer_transaction($this->input->post("customer"));
-            $data['customers'] = $this->customer_model->get_customer();
+            $data['customers'] = $this->customer_model->get_customer_txn();
             $this->load->view("common/header");
             $this->load->view("transactions/customer", $data);
             $this->load->view("common/footer");
         }else{
-            $data['customers'] = $this->customer_model->get_customer();
+            $data['customers'] = $this->customer_model->get_customer_txn();
             $this->load->view("common/header");
             $this->load->view("transactions/customer", $data);
             $this->load->view("common/footer");

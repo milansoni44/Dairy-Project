@@ -221,7 +221,7 @@ class Machines extends CI_Controller{
         }else{
             $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
             $data['society'] = $this->society_model->get_society();
-            $data['machines'] = $this->machine_model->allocated_soc_machine();
+            $data['machines'] = $this->machine_model->not_allocated_soc_machines();
             $this->load->view("common/header", $data);
             $this->load->view("machines/allocate_to_soc",$data);
             $this->load->view("common/footer");
