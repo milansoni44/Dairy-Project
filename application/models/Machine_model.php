@@ -182,7 +182,26 @@ ON s.id = smm.society_id");
     }
     
     function map_society_machine($data = array()){
-        if($this->db->insert("society_machine_map",$data)){
+        $this->db->where("id", $data['machine_id']);
+        if($this->db->update("machines", array("society_id"=>$data['society_id']))){
+            $q = $this->db->get_where("machines", array("id"=>$data['machine_id']));
+            $machine = $q->row()->machine_id;
+            $notification = array(
+                "society_id"=>$data['society_id'],
+                "message"=>$machine." successfully added.",
+            );
+            $this->db->insert("notification",$notification);
+            $nid = $this->db->insert_id();
+            $notification_read = array(
+                "notification_id"=>$nid,
+                "society_id"=>$data['society_id'],
+                "is_read"=>0
+            );
+            $this->db->insert("notification_read", $notification_read);
+            return TRUE;
+        }
+        return FALSE;
+        /*if($this->db->insert("society_machine_map",$data)){
             $notification = array(
                 "type"=>"machine",
                 "machine_id"=>$data['machine_id'],
@@ -194,7 +213,7 @@ ON s.id = smm.society_id");
             $this->db->insert("notification", $notification);
             return TRUE;
         }
-        return FALSE;
+        return FALSE;*/
     }
     
     function map_dairy_machine($data = array()){
@@ -272,7 +291,23 @@ ON s.id = smm.society_id");
     }
     
     function mapped_society_machine(){
-        $this->db->select("society_machine_map.id,users.name,machines.machine_id")
+        if($this->session->userdata("group") == "society"){
+            $id = $this->session->userdata("id");
+            $q = $this->db->query("SELECT m.id, m.machine_id, s.name FROM machines m
+                                LEFT JOIN users s ON s.id = m.society_id
+                                WHERE society_id = '$id'");
+        }else if($this->session->userdata("group") == "dairy"){
+            $id = $this->session->userdata("id");
+            $q = $this->db->query("SELECT m.id, m.machine_id, s.name FROM machines m
+                                LEFT JOIN users d ON d.id = m.dairy_id
+                                LEFT JOIN users s ON s.dairy_id = m.dairy_id
+                                WHERE d.id = '$id' AND m.society_id IS NOT NULL");
+        }else{
+            $q = $this->db->query("SELECT m.id, m.machine_id, s.name FROM machines m
+                                LEFT JOIN users d ON d.id = m.dairy_id
+                                LEFT JOIN users s ON s.dairy_id = m.dairy_id WHERE m.society_id IS NOT NULL");
+        }
+        /*$this->db->select("society_machine_map.id,users.name,machines.machine_id")
             ->from("users")
             ->join("user_groups","user_groups.user_id = users.id","LEFT")
             ->join("groups","groups.id = user_groups.group_id","LEFT")
@@ -295,7 +330,13 @@ ON s.id = smm.society_id");
             }
             return $row1;
         }
-        return FALSE;
+        return FALSE;*/
+        if($q->num_rows() > 0){
+            foreach($q->result() as $row){
+                $row1[] = $row;
+            }
+            return $row1;
+        }
     }
     
     function get_dairyMachine_by_id($id = NULL){

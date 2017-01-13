@@ -46,7 +46,7 @@ WHERE u.id = '$id'");
                                 LEFT JOIN notification_read nr ON nr.notification_id = n.id
                                 WHERE n.dairy_id = '$id' AND nr.is_read = '0'");
         }else if($type == "society"){
-            $q = $this->CI->db->query("SELECT n.message AS num FROM notification n
+            $q = $this->CI->db->query("SELECT n.message FROM notification n
                                 LEFT JOIN notification_read nr ON nr.notification_id = n.id
                                 WHERE n.society_id = '$id' AND nr.is_read = '0'");
         }else{
