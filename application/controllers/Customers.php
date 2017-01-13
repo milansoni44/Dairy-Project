@@ -105,7 +105,7 @@ class Customers extends CI_Controller{
             redirect("customers","refresh");
         }else{
             $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
-//            $data['machine'] = $this->machine_model->allocated_soc_machine($this->session->userdata("id"));
+            $data['machine'] = $this->machine_model->allocated_soc_machine($this->session->userdata("id"));
             $this->load->view("common/header", $data);
             $this->load->view("customers/add", $data);
             $this->load->view("common/footer");
@@ -152,7 +152,7 @@ class Customers extends CI_Controller{
             redirect("customers","refresh");
         }else{
             $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
-//            $data['machine'] = $this->machine_model->allocated_soc_machine($this->session->userdata("id"));
+            $data['machine'] = $this->machine_model->allocated_soc_machine($this->session->userdata("id"));
             $data['member'] = $this->customer_model->get_customer_by_id($id);
             $data['id'] = $id;
             $this->load->view("common/header", $data);
@@ -161,7 +161,7 @@ class Customers extends CI_Controller{
         }
     }
     
-    function import(){
+    /*function import(){
         if($this->session->userdata("group") != "society"){
             $this->session->set_flashdata("message", "Access Denied");
             redirect("/", "refresh");
@@ -256,7 +256,7 @@ class Customers extends CI_Controller{
             $this->load->view("customers/import", $data);
             $this->load->view("common/footer");
         }
-    }
+    }*/
     
     function correct(){
         $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
