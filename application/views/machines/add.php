@@ -7,7 +7,7 @@
                 alert("You have already created elements.");
                 return false;
             }
-            var e= $("div.box-body div.form-group:not(:first)").remove ();
+            var e= $("div.box-body div.form-group:not(:first)").remove();
             var ele = "";
 //            $("#num").attr("disabled", "disabled");
             var num = $("#num").val();

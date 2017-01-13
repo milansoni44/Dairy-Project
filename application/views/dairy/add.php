@@ -61,6 +61,9 @@
                 }
             });
         });
+        $('body').on("focus",".validity", function(){
+            $(this).daterangepicker();
+        });
     });
 </script>
             <aside class="right-side">
@@ -202,6 +205,12 @@
                                                 
                                             </div>
                                         </div>-->
+                                        <div class="form-group">
+                                            <label class="control-label col-md-2" for="validity">Validity</label>
+                                            <div class="col-md-4">
+                                                <input type="text" name="validity" id="validity" class="form-control validity" />
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="box-footer">
                                         <button type="submit" class="btn btn-primary">Submit</button>

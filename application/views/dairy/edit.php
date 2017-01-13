@@ -55,6 +55,9 @@
                 }
             });
         });
+        $('body').on("focus",".validity", function(){
+            $(this).daterangepicker();
+        });
     });
 </script>
             <aside class="right-side">
@@ -208,10 +211,29 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <?php 
+                                            $val = date("m/d/Y", strtotime($dairy->validity_start_date))." - ".date("m/d/Y", strtotime($dairy->validity_end_date));
+                                        ?>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-2" for="validity">Validity</label>
+                                            <div class="col-md-4">
+                                                <input type="text" name="validity" id="validity" class="form-control validity" value="<?php echo $val; ?>"/>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="box-footer">
                                         <button type="submit" class="btn btn-primary">Submit</button>
                                     </div>
+                                    <br>
+                                        <br>
+                                        <br>
+                                        <br>
+                                        <br>
+                                        <br>
+                                        <br>
+                                        <br>
+                                        <br>
+                                        <br>
                                 </form>
                             </div><!-- /.box -->
                         </div>

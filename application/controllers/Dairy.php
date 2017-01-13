@@ -47,6 +47,10 @@ class Dairy extends CI_Controller{
         $this->form_validation->set_rules("city","City","trim|xss_clean");
         
         if($this->form_validation->run() == TRUE){
+            $validity = $this->input->post("validity");
+            $dd = explode("-", $validity);
+            $start_date = date("Y-m-d", strtotime($dd[0]));
+            $end_date = date("Y-m-d", strtotime($dd[1]));
             $data = array(
                 "name"=>  $this->input->post("name"),
                 "username"=>  $this->input->post("username"),
@@ -60,9 +64,11 @@ class Dairy extends CI_Controller{
                 "pincode"=>  $this->input->post("pincode"),
                 "state"=>  $this->input->post("state"),
                 "city"=>  $this->input->post("city"),
+                "validity_start_date"=>$start_date,
+                "validity_end_date"=>$end_date,
             );
-            echo "<pre>";
-            print_r($data);exit;
+//            echo "<pre>";
+//            print_r($data);exit;
         }
         if(($this->form_validation->run() == TRUE) && $this->dairy_model->add_dairy($data)){
             $this->session->set_flashdata("success","Dairy data inserted successfully.");
@@ -96,36 +102,30 @@ class Dairy extends CI_Controller{
         $this->form_validation->set_rules("city","City","trim|xss_clean");
         
         if($this->form_validation->run() == TRUE){
-            if($this->input->post("password") == ""){
-                $data = array(
-                    "name"=>  $this->input->post("name"),
-                    "username"=>  $this->input->post("username"),
-                    "email"=>  $this->input->post("email"),
-                    "address"=>  $this->input->post("address"),
-                    "area"=>  $this->input->post("area"),
-                    "contact_person"=>  $this->input->post("contact_person"),
-                    "mobile"=>  $this->input->post("mobile"),
-                    "street"=>  $this->input->post("street"),
-                    "pincode"=>  $this->input->post("pincode"),
-                    "state"=>  $this->input->post("state"),
-                    "city"=>  $this->input->post("city"),
-                );
-            }else{
-                $data = array(
-                    "name"=>  $this->input->post("name"),
-                    "username"=>  $this->input->post("username"),
-                    "email"=>  $this->input->post("email"),
-                    "password"=>  md5($this->input->post("password")),
-                    "address"=>  $this->input->post("address"),
-                    "area"=>  $this->input->post("area"),
-                    "contact_person"=>  $this->input->post("contact_person"),
-                    "mobile"=>  $this->input->post("mobile"),
-                    "street"=>  $this->input->post("street"),
-                    "pincode"=>  $this->input->post("pincode"),
-                    "state"=>  $this->input->post("state"),
-                    "city"=>  $this->input->post("city"),
-                );
+            $validity = $this->input->post("validity");
+            $dd = explode("-", $validity);
+            $start_date = date("Y-m-d", strtotime($dd[0]));
+            $end_date = date("Y-m-d", strtotime($dd[1]));
+            $data = array(
+                "name"=>  $this->input->post("name"),
+                "username"=>  $this->input->post("username"),
+                "email"=>  $this->input->post("email"),
+                "address"=>  $this->input->post("address"),
+                "area"=>  $this->input->post("area"),
+                "contact_person"=>  $this->input->post("contact_person"),
+                "mobile"=>  $this->input->post("mobile"),
+                "street"=>  $this->input->post("street"),
+                "pincode"=>  $this->input->post("pincode"),
+                "state"=>  $this->input->post("state"),
+                "city"=>  $this->input->post("city"),
+                "validity_start_date"=>$start_date,
+                "validity_end_date"=>$end_date,
+            );
+            if($this->input->post("password") != ""){
+                $data["password"] = md5($this->input->post("password"));
             }
+//            echo "<pre>";
+//            print_r($data);exit;
         }
         if(($this->form_validation->run() == TRUE) && $this->dairy_model->update_dairy($data,$id)){
             $this->session->set_flashdata("success","Dairy data updated successfully.");

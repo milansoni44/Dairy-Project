@@ -55,7 +55,11 @@ class Auth extends CI_Controller{
             if(!empty($user_data)){
                 // Todo
                 $groups = $this->auth_model->get_user_group($user_data->id);
-                $notification_num = $this->machine_model->count_machines($groups->name, $user_data->id)->num;
+                if($groups->name !="admin"){
+                    $notification_num = $this->machine_model->count_machines($groups->name, $user_data->id)->num;
+                }else{
+                    $notification_num = 0;
+                }
                 if($groups->name == "society"){
                     $dairy = $this->auth_model->get_dairy($user_data->id)->name;
                 }else{
@@ -69,6 +73,8 @@ class Auth extends CI_Controller{
                     "machine_notify"=>$notification_num,
                     "dairy"=>$dairy
                 );
+//                echo "<pre>";
+//                print_r($set_user_data);exit;
                 $this->auth_lib->set_session_data($set_user_data);
                 $this->session->set_flashdata("success","Login successfull");
                 redirect("/","refresh");

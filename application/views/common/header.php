@@ -33,7 +33,7 @@
         <link href="<?php echo base_url(); ?>assets/js/plugins/jquery-validation/demo/css/screen.css" rel="stylesheet" type="text/css" />
         <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
         <!-- daterangepicker -->
-<!--        <script src="<?php echo base_url(); ?>assets/js/plugins/daterangepicker/daterangepicker.js" type="text/javascript"></script>-->
+        <script src="<?php echo base_url(); ?>assets/js/plugins/daterangepicker/daterangepicker.js" type="text/javascript"></script>
         <script src="<?php echo base_url(); ?>assets/js/plugins/datepicker/bootstrap-datepicker.js" type="text/javascript"></script>
 
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -88,10 +88,6 @@
                                                 foreach($notifications as $noty){
                                         ?>
                                         <li><!-- start message -->
-                                            <?php
-                                                if($noty->type == "rate"){
-                                                    if($noty->tbl_name == "buffalo_fat"){
-                                            ?>
                                             <a href="<?php echo base_url(); ?>index.php/rate">
 <!--                                                <div class="pull-left">
                                                     <img src="img/avatar3.png" class="img-circle" alt="User Image"/>
@@ -102,10 +98,6 @@
                                                 </h4>
 <!--                                                <p><?php echo "Validity From ". $noty->from_date." to ". $noty->to_date; ?></p>-->
                                             </a>
-                                            <?php
-                                                    }
-                                                }
-                                            ?>
 <!--                                            <a href="#">
                                                 <div class="pull-left">
                                                     <img src="img/avatar3.png" class="img-circle" alt="User Image"/>

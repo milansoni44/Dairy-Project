@@ -41,10 +41,17 @@ WHERE u.id = '$id'");
         }
 //        echo $this->CI->db->last_query();exit;
          */
-        if($type == "dairy" || $type == "society"){
-            $q = $this->CI->db->query("SELECT * FROM notification WHERE dairy_id = '$id' AND is_read = '0'");
+        if($type == "dairy"){
+            $q = $this->CI->db->query("SELECT n.message FROM notification n
+                                LEFT JOIN notification_read nr ON nr.notification_id = n.id
+                                WHERE n.dairy_id = '$id' AND nr.is_read = '0'");
+        }else if($type == "society"){
+            $q = $this->CI->db->query("SELECT n.message AS num FROM notification n
+                                LEFT JOIN notification_read nr ON nr.notification_id = n.id
+                                WHERE n.society_id = '$id' AND nr.is_read = '0'");
         }else{
-            $q = $this->CI->db->query("SELECT * FROM notification");
+            $q = $this->CI->db->query("SELECT n.message AS num FROM notification n
+                                LEFT JOIN notification_read nr ON nr.notification_id = n.id");
         }
 //        echo $this->CI->db->last_query();exit;
         if($q->num_rows() > 0){

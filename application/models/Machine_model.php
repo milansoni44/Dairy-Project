@@ -55,18 +55,7 @@ ON s.id = smm.society_id");
     }
     
     function not_allocated_machines(){
-        $q = $this->db->select("machine_id")->get("dairy_machine_map");
-        if($q->num_rows() > 0){
-            foreach($q->result() as $rw){
-                $rw1[] = $rw->machine_id;
-            }
-        }
-        if(!empty($rw)){
-            $ex = implode("','", $rw1);
-            $q = $this->db->query("SELECT * FROM machines WHERE id NOT IN('$ex')");
-        }else{
-            $q = $this->db->get("machines");
-        }
+        $q = $this->db->query("SELECT * FROM machines WHERE society_id IS NULL AND dairy_id IS NULL");
 //        echo $this->db->last_query();exit;
         if($q->num_rows() > 0){
             foreach($q->result() as $row){
@@ -79,7 +68,7 @@ ON s.id = smm.society_id");
     
     function not_allocated_soc_machines(){
 //        $q = $this->db->select("machine_id")->get("society_machine_map");
-        $id = $this->session->userdata("id");
+        /*$id = $this->session->userdata("id");
         $q = $this->db->query("SELECT machine_id FROM dairy_machine_map WHERE dairy_id = '$id'");
 //        echo $this->db->last_query();exit;
         if($q->num_rows() > 0){
@@ -99,12 +88,21 @@ ON s.id = smm.society_id");
         $ex1 = implode("','", $rw2);
 //        echo $this->db->last_query();exit;
         $q1 = $this->db->query("SELECT m.machine_id, m.id as mo_id FROM dairy_machine_map dmm LEFT JOIN machines m ON m.id = dmm.machine_id WHERE dmm.dairy_id = '$id' AND dmm.machine_id NOT IN('$ex1')");
-//        echo $this->db->last_query();exit;
+        echo $this->db->last_query();exit;
         if($q1->num_rows() > 0){
             foreach($q1->result() as $row12){
                 $row111[] = $row12;
             }
             return $row111;
+        }
+        return FALSE;*/
+        $id = $this->session->userdata("id");
+        $q = $this->db->query("SELECT id as mo_id, machine_id FROM machines WHERE society_id IS NULL AND dairy_id = '$id'");
+        if($q->num_rows() > 0){
+            foreach($q->result() as $rw){
+                $rw1[] = $rw;
+            }
+            return $rw1;
         }
         return FALSE;
     }
@@ -200,7 +198,26 @@ ON s.id = smm.society_id");
     }
     
     function map_dairy_machine($data = array()){
-        if($this->db->insert("dairy_machine_map",$data)){
+        $this->db->where("id", $data['machine_id']);
+        if($this->db->update("machines", array("dairy_id"=>$data['dairy_id']))){
+            $q = $this->db->get_where("machines", array("id"=>$data['machine_id']));
+            $machine = $q->row()->machine_id;
+            $notification = array(
+                "dairy_id"=>$data['dairy_id'],
+                "message"=>$machine." successfully added."
+            );
+            $this->db->insert("notification",$notification);
+            $nid = $this->db->insert_id();
+            $notification_read = array(
+                "notification_id"=>$nid,
+                "dairy_id"=>$data['dairy_id'],
+                "is_read"=>0
+            );
+            $this->db->insert("notification_read", $notification_read);
+            return TRUE;
+        }
+        return FALSE;
+        /*if($this->db->insert("dairy_machine_map",$data)){
             $notification = array(
                 "type"=>"machine",
                 "machine_id"=>$data['machine_id'],
@@ -211,11 +228,27 @@ ON s.id = smm.society_id");
             $this->db->insert("notification", $notification);
             return TRUE;
         }
-        return FALSE;
+        return FALSE;*/
     }
     
     function mapped_machine(){
-                $this->db->select("dairy_machine_map.id,users.name,machines.machine_id")
+        if($this->session->userdata("group") == "admin"){
+            $q = $this->db->query("SELECT m.id, m.machine_id, d.name FROM machines m
+                                LEFT JOIN users d ON d.id = m.dairy_id");
+        }else if($this->session->userdata("group") == "dairy"){
+            $id = $this->session->userdata("id");
+            $q = $this->db->query("SELECT m.id, m.machine_id, d.name FROM machines m
+                                LEFT JOIN users d ON d.id = m.dairy_id
+                                WHERE m.dairy_id = '$id'");
+        }
+//        echo $this->db->last_query();exit;
+        if($q->num_rows() > 0){
+            foreach($q->result() as $row){
+                $row1[] = $row;
+            }
+            return $row1;
+        }
+                /*$this->db->select("dairy_machine_map.id,users.name,machines.machine_id")
                 ->from("dairy_machine_map")
                 ->join("machines","machines.id = dairy_machine_map.machine_id")
                 ->join("users","users.id = dairy_machine_map.dairy_id","LEFT")
@@ -235,7 +268,7 @@ ON s.id = smm.society_id");
             }
             return $row1;
         }
-        return FALSE;
+        return FALSE;*/
     }
     
     function mapped_society_machine(){
@@ -298,22 +331,21 @@ ON s.id = smm.society_id");
     }
     
     function count_machines($type, $id = NULL){
+//        echo $type;exit;
         if($type == "dairy"){
-            $q = $this->db->query("SELECT COUNT(*) as num FROM notification WHERE dairy_id = '$id' AND is_read = '0'");
+            $q = $this->db->query("SELECT COUNT(*) AS num FROM notification n
+                                LEFT JOIN notification_read nr ON nr.notification_id = n.id
+                                WHERE n.dairy_id = '$id' AND nr.is_read = '0'");
         }else if($type == "society"){
-            $q = $this->db->query("SELECT COUNT(*) as num FROM notification WHERE society_id = '$id' AND is_read = '0'");
-        }else if($type == "admin"){
-            $q = $this->db->query("SELECT COUNT(*) as num FROM notification WHERE is_read = '0'");
+            $q = $this->db->query("SELECT COUNT(*) AS num FROM notification n
+                                LEFT JOIN notification_read nr ON nr.notification_id = n.id
+                                WHERE n.society_id = '$id' AND nr.is_read = '0'");
         }
 //        echo $this->db->last_query();exit;
         if($q->num_rows() > 0){
             return $q->row();
         }
         return FALSE;
-    }
-    
-    function get_available_machines(){
-//        $q = $this->db->query("");
     }
 }
 
