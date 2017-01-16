@@ -12,7 +12,7 @@ class Transaction_model extends CI_Model{
     
     function get_society_id($machine_id = NULL){
         $machine_id = trim($machine_id,'"');
-        $q = $this->db->query("SELECT m.machine_id, u.name, u.id AS society_id FROM `machines` m LEFT JOIN society_machine_map smm ON smm.machine_id = m.id LEFT JOIN users u ON u.id = smm.society_id WHERE m.machine_id = '$machine_id'");
+        $q = $this->db->query("SELECT society_id FROM machines WHERE machine_id = '$machine_id'");
 //        echo $this->db->last_query();exit;
         if($q->num_rows() > 0){
             return $q->row();
@@ -22,7 +22,7 @@ class Transaction_model extends CI_Model{
     
     function get_dairy_id($machine_id = NULL){
         $machine_id = trim($machine_id,'"');
-        $q = $this->db->query("SELECT m.machine_id, u.name, u.id AS dairy_id FROM `machines` m LEFT JOIN dairy_machine_map smm ON smm.machine_id = m.id LEFT JOIN users u ON u.id = smm.dairy_id WHERE m.machine_id = '$machine_id'");
+        $q = $this->db->query("SELECT dairy_id FROM machines WHERE machine_id = '$machine_id'");
         if($q->num_rows() > 0){
             return $q->row();
         }
@@ -31,7 +31,7 @@ class Transaction_model extends CI_Model{
     
     function get_machine_id($machine_id = NULL){
         $machine_id = trim($machine_id,'"');
-        $q = $this->db->query("SELECT m.id as mid, m.machine_id, u.name, u.id AS dairy_id FROM `machines` m LEFT JOIN dairy_machine_map smm ON smm.machine_id = m.id LEFT JOIN users u ON u.id = smm.dairy_id WHERE m.machine_id = '$machine_id'");
+        $q = $this->db->query("SELECT id as mid FROM machines WHERE machine_id = '$machine_id'");
         if($q->num_rows() > 0){
             return $q->row();
         }

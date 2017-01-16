@@ -14,15 +14,16 @@ class Society_model extends CI_Model
     
     public function get_society()
     {
-        $this->db->select("users.*")
-        ->from("users")
-        ->join("user_groups","user_groups.user_id = users.id","LEFT")
-        ->join("groups","groups.id = user_groups.group_id","LEFT")
-        ->where("groups.name","society");
+        $this->db->select("s.*, d.name AS dairy_name")
+        ->from("users s")
+        ->join("user_groups ug","ug.user_id = s.id","LEFT")
+        ->join("groups g","g.id = ug.group_id","LEFT")
+        ->join("users d","d.id = s.dairy_id","LEFT")
+        ->where("g.name","society");
         if($this->session->userdata("group") == "admin"){
             $q = $this->db->get();
         }else if($this->session->userdata("group") == "dairy"){
-            $q = $this->db->where("users.dairy_id",$this->session->userdata("id"))
+            $q = $this->db->where("s.dairy_id",$this->session->userdata("id"))
             ->get();
         }
 //        echo $this->db->last_query();exit;

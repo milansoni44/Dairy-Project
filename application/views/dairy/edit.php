@@ -88,7 +88,7 @@
                                         <div class="form-group">
                                             <label class="control-label col-md-2" for="name">Name</label>
                                             <div class="col-md-4">
-                                                <input type="text" name="name" class="form-control" id="name" value="<?php echo $dairy->name; ?>"/>
+                                                <input type="text" name="name" class="form-control" id="name" value="<?php echo set_value("name", $dairy->name); ?>"/>
                                                 <?php if(isset($errors['name'])){
                                                     echo "<label class='error' for='name'>".$errors['name']."</label>";
                                                 } ?>
@@ -97,7 +97,7 @@
                                         <div class="form-group">
                                             <label class="control-label col-md-2" for="username">Username</label>
                                             <div class="col-md-4">
-                                                <input type="text" name="username" class="form-control" id="username" value="<?php echo $dairy->username; ?>"/>
+                                                <input type="text" name="username" class="form-control" id="username" value="<?php echo set_value("username", $dairy->username); ?>"/>
                                                 <?php if(isset($errors['username'])){
                                                     echo "<label class='error'>".$errors['username']."</label>";
                                                 } ?>
@@ -106,7 +106,7 @@
                                         <div class="form-group">
                                             <label class="control-label col-md-2" for="email">Email</label>
                                             <div class="col-md-4">
-                                                <input type="text" name="email" class="form-control" id="email" value="<?php echo $dairy->email; ?>"/>
+                                                <input type="text" name="email" class="form-control" id="email" value="<?php echo set_value("email" ,$dairy->email); ?>"/>
                                                 <?php if(isset($errors['email'])){
                                                     echo "<label class='error'>".$errors['email']."</label>";
                                                 } ?>
@@ -124,7 +124,7 @@
                                         <div class="form-group">
                                             <label class="control-label col-md-2" for="mobile">Mobile</label>
                                             <div class="col-md-4">
-                                                <input type="text" name="mobile" class="form-control" id="mobile" value="<?php echo $dairy->mobile; ?>"/>
+                                                <input type="text" name="mobile" class="form-control" id="mobile" value="<?php echo set_value("mobile", $dairy->mobile); ?>"/>
                                                 <?php if(isset($errors['mobile'])){
                                                     echo "<label class='error'>".$errors['mobile']."</label>";
                                                 } ?>
@@ -133,7 +133,7 @@
                                         <div class="form-group">
                                             <label class="control-label col-md-2" for="address">Address</label>
                                             <div class="col-md-4">
-                                                <textarea class="form-control" cols="50" rows="3" id="address" name="address"><?php echo $dairy->address; ?></textarea>
+                                                <textarea class="form-control" cols="50" rows="3" id="address" name="address"><?php echo set_value("address", $dairy->address); ?></textarea>
                                                 <?php if(isset($errors['address'])){
                                                     echo "<label class='error'>".$errors['address']."</label>";
                                                 } ?>
@@ -142,7 +142,7 @@
                                         <div class="form-group">
                                             <label class="control-label col-md-2" for="area">Area</label>
                                             <div class="col-md-4">
-                                                <input type="text" class="form-control" name="area" id="area" value="<?php echo $dairy->area; ?>" />
+                                                <input type="text" class="form-control" name="area" id="area" value="<?php echo set_value("area", $dairy->area); ?>" />
                                                 <?php if(isset($errors['area'])){
                                                     echo "<label class='error'>".$errors['area']."</label>";
                                                 } ?>
@@ -151,7 +151,7 @@
                                         <div class="form-group">
                                             <label class="control-label col-md-2" for="street">Street</label>
                                             <div class="col-md-4">
-                                                <input type="text" class="form-control" name="street" id="street" value="<?php echo $dairy->street; ?>"/>
+                                                <input type="text" class="form-control" name="street" id="street" value="<?php echo set_value("street", $dairy->street); ?>"/>
                                                 <?php if(isset($errors['street'])){
                                                     echo "<label class='error'>".$errors['street']."</label>";
                                                 } ?>
@@ -160,7 +160,7 @@
                                         <div class="form-group">
                                             <label class="control-label col-md-2" for="contact_person">Contact Person</label>
                                             <div class="col-md-4">
-                                                <input type="text" class="form-control" name="contact_person" id="contact_person" value="<?php echo $dairy->contact_person; ?>"/>
+                                                <input type="text" class="form-control" name="contact_person" id="contact_person" value="<?php echo set_value("contact_person", $dairy->contact_person); ?>"/>
                                                 <?php if(isset($errors['contact_person'])){
                                                     echo "<label class='error'>".$errors['contact_person']."</label>";
                                                 } ?>
@@ -169,7 +169,7 @@
                                         <div class="form-group">
                                             <label class="control-label col-md-2" for="pincode">Pincode</label>
                                             <div class="col-md-4">
-                                                <input type="text" class="form-control" name="pincode" id="pincode" value="<?php echo $dairy->pincode; ?>"/>
+                                                <input type="text" class="form-control" name="pincode" id="pincode" value="<?php echo set_value("pincode", $dairy->pincode); ?>"/>
                                                 <?php if(isset($errors['pincode'])){
                                                     echo "<label class='error'>".$errors['pincode']."</label>";
                                                 } ?>
@@ -221,6 +221,8 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <input type="hidden" name="username_edit" id="username_edit" value="<?php echo $dairy->username; ?>" />
+                                    <input type="hidden" name="email_edit" id="email_edit" value="<?php echo $dairy->email; ?>" />
                                     <div class="box-footer">
                                         <button type="submit" class="btn btn-primary">Submit</button>
                                     </div>

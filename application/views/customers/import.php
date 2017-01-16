@@ -40,12 +40,12 @@
                                 <div class="box-header">
                                     <h3 class="box-title">Import Milk Supplier</h3>
                                 </div><!-- /.box-header -->
-                                <form role="form" class="form-horizontal" id="add_dairy_form" action="<?php echo base_url(); ?>index.php/customers/import_test" method="post" enctype="multipart/form-data">
+                                <form role="form" class="form-horizontal" id="add_dairy_form" action="<?php echo base_url(); ?>index.php/customers/import" method="post" enctype="multipart/form-data">
                                     <div class="box-body">
                                         <div class="form-group">
                                             <label class="control-label col-sm-2" for="machine">Machine</label>
                                             <div class="col-md-4">
-                                                <select class="form-control" id="machine" name="machine" <?php if($tmp > 0){ ?>disabled <?php } ?>>
+                                                <select class="form-control" id="machine" name="machine" >
                                                     <option value="">Select Machine</option>
                                                     <?php 
                                                         if(!empty($machine)){
@@ -62,15 +62,12 @@
                                         <div class="form-group">
                                             <label class="control-label col-sm-2">Upload Csv</label>
                                             <div class="col-md-4">
-                                                <input type="file" <?php if($tmp > 0){ ?>disabled <?php } ?> name="import_member" id="import_member" class="form-control"/>
+                                                <input type="file" name="import_member" id="import_member" class="form-control"/>
                                             </div>
-                                            <?php if($tmp > 0){ ?>
-                                            <span style="color:red;"><a href="<?php echo base_url(); ?>index.php/customers/correct">Please correct previous data</a></span>
-                                            <?php } ?>
                                         </div>
                                     </div>
                                     <div class="box-footer">
-                                        <input type="submit" <?php if($tmp > 0){ ?>disabled <?php } ?> name="submit" id="submit" value="Submit" class="btn btn-primary" />
+                                        <input type="submit" name="submit" id="submit" value="Submit" class="btn btn-primary" />
                                     </div>
                                 </form>
                             </div><!-- /.box -->

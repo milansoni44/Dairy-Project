@@ -107,6 +107,16 @@ class Dairy_model extends CI_Model{
     
     function check_username($username = NULL){
         $q = $this->db->get_where("users", array("username"=>$username));
+//        echo $this->db->last_query();exit;
+        if($q->num_rows() > 0){
+            return TRUE;
+        }
+        return FALSE;
+    }
+    
+    function check_email($email = NULL){
+        $q = $this->db->get_where("users", array("email"=>$email));
+//        echo $this->db->last_query();exit;
         if($q->num_rows() > 0){
             return TRUE;
         }

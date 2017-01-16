@@ -73,7 +73,7 @@ class Transactions extends CI_Controller{
                             );
 //                            echo "<pre>";
 //                            print_r($customer_data);exit;
-                            $this->customer_model->add_customer($customer_data, $society);
+                            $this->customer_model->add_customer($customer_data, $data[13], $society);
                             $cid = $this->db->insert_id();
 //                            $adhar = $this->transaction_model->get_adhar($cid);
                             $transaction_single = array(
@@ -102,6 +102,7 @@ class Transactions extends CI_Controller{
                             continue;
                         }
                         $cid = $this->transaction_model->get_cid($data[7]);
+                        $t_date = str_replace('/', '-', $data[14]);
                         $trans = array(
                             "dairy_id"=>$dairy,
                             "society_id"=>$society,
@@ -117,11 +118,13 @@ class Transactions extends CI_Controller{
                             "clr"=>$data[2],
                             "fat"=>$data[1],
                             "memcode"=>$data[0],
-                            "date"=>date("Y-d-m", strtotime($data[14]) ),
+                            "date"=>date("Y-m-d", strtotime($t_date)),
                             "shift"=>$data[15],
                             "dockno"=>$data[10],
                             "soccode"=>$data[11]
                         );
+//                        echo "<pre>";
+//                        print_r($trans);exit;
                         $this->transaction_model->insert_single($trans);
                     }else{
                         $i++;
@@ -229,10 +232,8 @@ class Transactions extends CI_Controller{
         $this->datatables->select("c.customer_name as customer_name,t.fat,t.clr,t.snf,t.weight,t.rate,t.netamt,t.date")
             ->from("transactions t")
             ->join("machines m","m.machine_id = t.deviceid","LEFT")
-            ->join("society_machine_map smm","smm.machine_id = m.id","LEFT")
-            ->join("users s","s.id = smm.society_id","LEFT")
-            ->join("dairy_machine_map dmm","dmm.machine_id = m.id","LEFT")
-            ->join("users d","d.id = dmm.dairy_id","LEFT")
+            ->join("users s","s.id = m.society_id","LEFT")
+            ->join("users d","d.id = m.dairy_id","LEFT")
             ->join("customers c","c.id = t.cid","LEFT")
             ->where("t.type","C")
             ->where("t.date", date("Y-m-d"));
@@ -253,11 +254,9 @@ class Transactions extends CI_Controller{
         $this->datatables->select("c.customer_name as customer_name,t.fat,t.clr,t.snf,t.weight,t.rate,t.netamt,t.date")
             ->from("transactions t")
             ->join("machines m","m.machine_id = t.deviceid","LEFT")
-            ->join("society_machine_map smm","smm.machine_id = m.id","LEFT")
-            ->join("users s","s.id = smm.society_id","LEFT")
-            ->join("dairy_machine_map dmm","dmm.machine_id = m.id","LEFT")
-            ->join("users d","d.id = dmm.dairy_id","LEFT")
-            ->join("customers c","c.adhar_no = t.cid","LEFT")
+            ->join("users s","s.id = m.society_id","LEFT")
+            ->join("users d","d.id = m.dairy_id","LEFT")
+            ->join("customers c","c.id = t.cid","LEFT")
             ->where("t.type","B")
             ->where("t.date", date("Y-m-d"));
         if($this->session->userdata("group") == "admin"){

@@ -121,6 +121,14 @@ class Auth_model extends CI_Model{
         }
         return FALSE;
     }
+    
+    function check_userType($id = NULL){
+        $q = $this->db->query("SELECT g.name as usertype FROM groups g LEFT JOIN user_groups ug ON ug.group_id = g.id LEFT join users u ON u.id = ug.user_id WHERE u.id = '$id'");
+        if($q->num_rows() > 0){
+            return $q->row()->usertype;
+        }
+        return FALSE;
+    }
 }
 
 /** application/Models/Auth_model.php */

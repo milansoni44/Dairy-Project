@@ -13,15 +13,15 @@ class Customer_model extends CI_Model{
     function get_customer(){
         if($this->session->userdata("group") == "admin"){
             $q = $this->db->query("SELECT * FROM customers c
-LEFT JOIN customer_society cs ON cs.cid = c.id");
+LEFT JOIN customer_machine cs ON cs.cid = c.id");
         }else if($this->session->userdata("group") == "society"){
             $id = $this->session->userdata("id");
             $q = $this->db->query("SELECT c.*, us.name FROM customers c
-LEFT JOIN customer_society cs ON cs.cid = c.id LEFT JOIN users us ON us.id = cs.society_id WHERE cs.society_id = '$id'");
+LEFT JOIN customer_machine cs ON cs.cid = c.id LEFT JOIN users us ON us.id = cs.society_id WHERE cs.society_id = '$id'");
         }else if($this->session->userdata("group") == "dairy"){
             $id = $this->session->userdata("id");
             $q = $this->db->query("SELECT c.*, us.name FROM customers c
-LEFT JOIN customer_society cs ON cs.cid = c.id
+LEFT JOIN customer_machine cs ON cs.cid = c.id
 LEFT JOIN users us ON us.id = cs.society_id
 WHERE cs.society_id IN (SELECT GROUP_CONCAT(s.id) AS sid FROM users d LEFT JOIN users s ON s.dairy_id = d.id WHERE d.id = '$id')");
         }
@@ -67,21 +67,23 @@ LEFT JOIN customers c ON c.id = t.cid WHERE t.dairy_id = '$id'");
         return FALSE;
     }
     
-    function add_customer($data = array(), $society = NULL){
+    function add_customer($data = array(), $machine = NULL, $society = NULL){
         if($this->db->insert("customers",$data)){
             $id = $this->db->insert_id();
             if(!$society){
                 $customer_soc = array(
                     "cid"=>$id,
+                    "machine_id"=>$machine,
                     "society_id"=>$this->session->userdata("id")
                 );
             }else{
                 $customer_soc = array(
                     "cid"=>$id,
+                    "machine_id"=>$machine,
                     "society_id"=>$society
                 );
             }
-            $this->db->insert("customer_society", $customer_soc);
+            $this->db->insert("customer_machine", $customer_soc);
             return TRUE;
         }
         return FALSE;
@@ -135,24 +137,24 @@ LEFT JOIN customers c ON c.id = t.cid WHERE t.dairy_id = '$id'");
 //        echo "<br>";
         if(!$id){
             $soc_id = $this->session->userdata("id");
-            $q = $this->db->query("SELECT * FROM customers WHERE $col_name = '$col' AND expiry = '0000-00-00'");
+            $q = $this->db->query("SELECT * FROM customers WHERE $col_name = '$col'");
         }else{
             $soc_id = $this->session->userdata("id");
-            $q = $this->db->query("SELECT * FROM customers WHERE $col_name = '$col' AND expiry = '0000-00-00' AND id NOT IN('$id')");
+            $q = $this->db->query("SELECT * FROM customers WHERE $col_name = '$col' AND id NOT IN('$id')");
         }
-//        echo $this->db->last_query();
+//        echo $this->db->last_query();exit;
         if($q->num_rows() > 0){
             return FALSE;
         }
         return TRUE;
     }
     
-    function batch_insert_customer($data = array()){
+    /*function batch_insert_customer($data = array()){
         if(!empty($data)){
            $this->db->insert("customers", $data);
         }
         return TRUE;
-    }
+    }*/
     
     function batch_insert_tmp_customer($data = array()){
         

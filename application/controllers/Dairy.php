@@ -11,7 +11,9 @@ class Dairy extends CI_Controller{
         $this->load->library("auth_lib");
         $this->load->model("dairy_model");
         $this->load->helper('url');
+        $this->load->helper('security');
         $this->load->library("form_validation");
+        $this->load->helper("security");
         $this->load->library("session");
         $this->load->database();
     }
@@ -35,8 +37,8 @@ class Dairy extends CI_Controller{
         }
         // validation for dairy
         $this->form_validation->set_rules("name","Name","trim|required|xss_clean");
-        $this->form_validation->set_rules("username","Username","trim|required|callbak_check_username");
-        $this->form_validation->set_rules("email","Email","trim|xss_clean|valid_email");
+        $this->form_validation->set_rules("username","Username","trim|required|is_unique[`users`.`username`]");
+        $this->form_validation->set_rules("email","Email","trim|xss_clean|valid_email|is_unique[`users`.`email`]");
         $this->form_validation->set_rules("password","Password","trim|required|xss_clean");
         $this->form_validation->set_rules("mobile","Mobile","trim|required|xss_clean");
         $this->form_validation->set_rules("address","Address","trim|xss_clean");
@@ -49,8 +51,8 @@ class Dairy extends CI_Controller{
         if($this->form_validation->run() == TRUE){
             $validity = $this->input->post("validity");
             $dd = explode("-", $validity);
-            $start_date = date("Y-m-d", strtotime($dd[0]));
-            $end_date = date("Y-m-d", strtotime($dd[1]));
+//            $start_date = date("Y-m-d", strtotime($dd[0]));
+//            $end_date = date("Y-m-d", strtotime($dd[1]));
             $data = array(
                 "name"=>  $this->input->post("name"),
                 "username"=>  $this->input->post("username"),
@@ -64,8 +66,8 @@ class Dairy extends CI_Controller{
                 "pincode"=>  $this->input->post("pincode"),
                 "state"=>  $this->input->post("state"),
                 "city"=>  $this->input->post("city"),
-                "validity_start_date"=>$start_date,
-                "validity_end_date"=>$end_date,
+//                "validity_start_date"=>$start_date,
+//                "validity_end_date"=>$end_date,
             );
 //            echo "<pre>";
 //            print_r($data);exit;
@@ -90,9 +92,9 @@ class Dairy extends CI_Controller{
         }
         // validation for dairy
         $this->form_validation->set_rules("name","Name","trim|required|xss_clean");
-        $this->form_validation->set_rules("username","Username","trim|required|xss_clean");
+        $this->form_validation->set_rules("username","Username","trim|required|xss_clean|callback_check_username");
         $this->form_validation->set_rules("password","Password","trim|xss_clean");
-        $this->form_validation->set_rules("email","Email","trim|xss_clean|valid_email");
+        $this->form_validation->set_rules("email","Email","trim|xss_clean|valid_email|callback_check_email");
         $this->form_validation->set_rules("mobile","Mobile","trim|required|xss_clean");
         $this->form_validation->set_rules("address","Address","trim|xss_clean");
         $this->form_validation->set_rules("area","Area","trim|xss_clean");
@@ -124,8 +126,8 @@ class Dairy extends CI_Controller{
             if($this->input->post("password") != ""){
                 $data["password"] = md5($this->input->post("password"));
             }
-//            echo "<pre>";
-//            print_r($data);exit;
+            echo "<pre>";
+            print_r($data);exit;
         }
         if(($this->form_validation->run() == TRUE) && $this->dairy_model->update_dairy($data,$id)){
             $this->session->set_flashdata("success","Dairy data updated successfully.");
@@ -161,9 +163,28 @@ class Dairy extends CI_Controller{
         exit;
     }
     
-    function check_username(){
-        if($this->dairy_model->check_username($this->input->post("username"))){
-            $this->form_validation->set_message("check_username","The username %s is already exist.");
+    function check_username($str){
+        if($str == $this->input->post("username_edit")){
+            return TRUE;
+        }else{
+            if($this->dairy_model->check_username($str)){
+                $this->form_validation->set_message("check_username","The username is already exist.");
+                return FALSE;
+            }
+            return TRUE;
+        }
+        return TRUE;
+    }
+    
+    function check_email($str){
+        if($str == $this->input->post("email_edit")){
+            return TRUE;
+        }else{
+            if($this->dairy_model->check_email($str)){
+                $this->form_validation->set_message("check_email","The email is already exist.");
+                return FALSE;
+            }
+            return TRUE;
         }
         return TRUE;
     }

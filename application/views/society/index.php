@@ -43,6 +43,7 @@
                                     <table id="example2" class="table table-bordered table-hover">
                                         <thead>
                                             <tr>
+                                                <th>Dairy</th>
                                                 <th>Name</th>
                                                 <th>Username</th>
                                                 <th>Address</th>
@@ -58,6 +59,7 @@
                                                     foreach($society as $row){
                                             ?>
                                             <tr>
+                                                <td><?php echo $row->dairy_name; ?></td>
                                                 <td><?php echo $row->name; ?></td>
                                                 <td><?php echo $row->username; ?></td>
                                                 <td><?php echo $row->address; ?></td>

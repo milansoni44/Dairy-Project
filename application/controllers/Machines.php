@@ -180,10 +180,11 @@ class Machines extends CI_Controller{
         if(isset($_POST['submit'])){
             $map_data = array(
                 "dairy_id"=>$this->input->post("dairy"),
-                "machine_id"=>$this->input->post("machine"),
+//                "machine_id"=>$this->input->post("machine"),
             );
+//            print_r($map_data);exit;
         }
-//        print_r($map_data);exit;
+        
         if(!empty($map_data) && $this->machine_model->edit_dairy_machine($map_data, $id)){
             $this->session->set_flashdata("success","Machine updated to dairy successfully.");
             redirect("machines/allocate",'refresh');
@@ -232,14 +233,14 @@ class Machines extends CI_Controller{
      * @param type $id
      */
     function edit_society_machine($id = NULL){
-        if($this->session->userdata("group") != "admin" || $this->session->userdata("group") != "dairy"){
+        if($this->session->userdata("group") == "admin" || $this->session->userdata("group") == "society"){
             $this->session->set_flashdata("message","Access Denied");
             redirect("/","refresh");
         }
         if(isset($_POST['submit'])){
             $map_data = array(
                 "society_id"=>$this->input->post("society"),
-                "machine_id"=>$this->input->post("machine"),
+//                "machine_id"=>$this->input->post("machine"),
             );
         }
 //        print_r($map_data);exit;

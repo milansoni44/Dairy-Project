@@ -35,15 +35,18 @@ class Machine_model extends CI_Model{
      */
     function get_machines(){
 //        $q = $this->db->get("machines");
-        $q = $this->db->query("SELECT m.*, d.name as dairy_name, s.name as society_name FROM machines m
-LEFT JOIN dairy_machine_map dmm
-ON dmm.machine_id = m.id
-LEFT JOIN society_machine_map smm
-ON smm.machine_id = m.id
-LEFT JOIN users d
-ON d.id = dmm.dairy_id
-LEFT JOIN users s
-ON s.id = smm.society_id");
+//        $q = $this->db->query("SELECT m.*, d.name as dairy_name, s.name as society_name FROM machines m
+//LEFT JOIN dairy_machine_map dmm
+//ON dmm.machine_id = m.id
+//LEFT JOIN society_machine_map smm
+//ON smm.machine_id = m.id
+//LEFT JOIN users d
+//ON d.id = dmm.dairy_id
+//LEFT JOIN users s
+//ON s.id = smm.society_id");
+        $q = $this->db->query("SELECT machines.*, d.name AS dairy_name, s.name AS society_name FROM machines
+                            LEFT JOIN users d ON d.id = machines.dairy_id
+                            LEFT JOIN users s ON s.id = machines.society_id");
 //        echo $this->db->last_query();exit;
         if($q->num_rows() > 0){
             foreach($q->result() as $row){
@@ -121,12 +124,14 @@ ON s.id = smm.society_id");
      */
     function allocated_dairy_machine($id = NULL){
         if(!$id){
-            $q1 = $this->db->get("dairy_machine_map");
+//            $q1 = $this->db->get("dairy_machine_map");
+            $q1 = $this->db->query("SELECT * FROM machines");
         }else{
-            $q1 = $this->db->query("SELECT * FROM dairy_machine_map WHERE id NOT IN($id)");
+//            $q1 = $this->db->query("SELECT * FROM dairy_machine_map WHERE id NOT IN($id)");
+            $q1 = $this->db->query("SELECT * FROM machines WHERE id = '$id' OR dairy_id IS NULL");
         }
 //        echo $this->db->last_query();exit;
-        if($q1->num_rows() > 0){
+        /*if($q1->num_rows() > 0){
             foreach($q1->result() as $row){
                 $row1[] = $row->id;
             }
@@ -137,10 +142,10 @@ ON s.id = smm.society_id");
             $q = $this->db->query("SELECT * FROM machines WHERE id NOT IN ('".$machine_ids."')");
         }else{
             $q = $this->db->query("SELECT * FROM machines");
-        }
+        }*/
 //        echo $this->db->last_query();exit;
-        if($q->num_rows() > 0){
-            foreach($q->result() as $m){
+        if($q1->num_rows() > 0){
+            foreach($q1->result() as $m){
                 $m1[] = $m;
             }
             return $m1;
@@ -152,13 +157,13 @@ ON s.id = smm.society_id");
      * @param type $id
      * @return boolean
      */
-    function allocated_soc_machine($id = NULL){
+    /*function allocated_soc_machine($id = NULL){
         if(!$id){
             $q = $this->db->get("society_machine_map");
         }else{
             $q = $this->db->query("SELECT * FROM society_machine_map WHERE id NOT IN($id)");
         }
-//        echo $this->db->last_query();exit;
+        echo $this->db->last_query();exit;
         if($q->num_rows() > 0){
             foreach($q->result() as $row){
                 $row1[] = $row->machine_id;
@@ -170,6 +175,22 @@ ON s.id = smm.society_id");
             $q1 = $this->db->query("SELECT dmm.*, m.machine_id AS mid FROM dairy_machine_map dmm LEFT JOIN machines m ON m.id = dmm.machine_id WHERE dmm.machine_id NOT IN ('".$machine_ids."')");
         }else{
             $q1 = $this->db->query("SELECT dmm.*, m.machine_id AS mid FROM dairy_machine_map dmm LEFT JOIN machines m ON m.id = dmm.machine_id");
+        }
+//        echo $this->db->last_query();exit;
+        if($q1->num_rows() > 0){
+            foreach($q1->result() as $m){
+                $m1[] = $m;
+            }
+            return $m1;
+        }
+        return FALSE;
+    }*/
+    
+    function allocated_soc_machine($id = NULL){
+        if(!$id){
+            
+        }else{
+            $q1 = $this->db->query("SELECT machine_id,id FROM machines WHERE id = '$id'");
         }
 //        echo $this->db->last_query();exit;
         if($q1->num_rows() > 0){
@@ -340,7 +361,8 @@ ON s.id = smm.society_id");
     }
     
     function get_dairyMachine_by_id($id = NULL){
-        $q = $this->db->get_where("dairy_machine_map", array("id"=>$id));
+//        $q = $this->db->get_where("dairy_machine_map", array("id"=>$id));
+        $q = $this->db->query("SELECT * FROM machines WHERE id = '$id'");
         if($q->num_rows() > 0){
             return $q->row();
         }
@@ -349,14 +371,15 @@ ON s.id = smm.society_id");
     
     function edit_dairy_machine($data = array(), $id = NULL){
         $this->db->where('id',$id);
-        if($this->db->update("dairy_machine_map",$data)){
+        if($this->db->update("machines",$data)){
             return TRUE;
         }
         return FALSE;
     }
     
     function get_societyMachine_by_id($id = NULL){
-        $q = $this->db->get_where("society_machine_map", array("id"=>$id));
+//        $q = $this->db->get_where("society_machine_map", array("id"=>$id));
+        $q = $this->db->query("SELECT * FROM machines WHERE id = '$id'");
         if($q->num_rows() > 0){
             return $q->row();
         }
