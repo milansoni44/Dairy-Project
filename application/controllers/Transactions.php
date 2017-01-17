@@ -516,7 +516,7 @@ class Transactions extends CI_Controller{
             }
             http_response_code(200);
             $response['error'] = FALSE;
-            $response['message'] = "Successfully";
+            $response['message'] = "Transaction data successfully uploaded";
             $response['validate_error'] = $validation_error;
             echo json_encode($response);
         }else{
@@ -532,13 +532,17 @@ class Transactions extends CI_Controller{
         if($this->input->post()){
             $sid = $this->input->post("sid");
             $txn_list = $this->transaction_model->get_txn_list($sid);
+            $response['error'] = FALSE;
+            $response['message'] = "Data loaded successfully";
+            $response['data'] = $txn_list;
+            http_response_code(200);
+            echo json_encode($response);
         }else{
             $response['error'] = TRUE;
             $response['message'] = "Please try again letter";
             http_response_code(400);
             echo json_encode($response);
         }
-//        $txn_list = $this->transaction_model->
     }
 }
 
