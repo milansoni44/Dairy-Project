@@ -190,6 +190,18 @@ class Transaction_model extends CI_Model{
         $this->db->insert("transactions", $data);
         return TRUE;
     }
+    
+    function get_txn_list($id = NULL){
+        $q = $this->db->query("SELECT t.*, m.machine_id, CONCAT_WS('-', c.customer_name,c.adhar_no) AS customer, d.name AS dairy_name, s.name AS soc_name FROM transactions t
+                            LEFT JOIN machines m ON m.id = t.deviceid
+                            LEFT JOIN customers c ON c.id = t.cid
+                            LEFT JOIN users d ON d.id = t.dairy_id
+                            LEFT JOIN users s ON s.id = t.society_id
+                            WHERE s.id = '$id'");
+        if($q->num_rows() > 0){
+//            return
+        }
+    }
 }
 
 /** application/Models/Transaction_model.php */

@@ -437,9 +437,6 @@ class Transactions extends CI_Controller{
 //            print_r($data);exit;
             $i = 0;
             foreach($data as $row){
-//                print_r($row);
-//                echo $row->deviceid;
-//                $stat = $this->transaction_model->exist_machine($row->deviceid);
                 // for temporary purpose
                 $stat = $this->transaction_model->exist_machine("IDF000001");
                 if($stat === FALSE){
@@ -528,6 +525,20 @@ class Transactions extends CI_Controller{
             http_response_code(400);
             echo json_encode($response);
         }
+    }
+    
+    function list_transaction(){
+        $response = array();
+        if($this->input->post()){
+            $sid = $this->input->post("sid");
+            $txn_list = $this->transaction_model->get_txn_list($sid);
+        }else{
+            $response['error'] = TRUE;
+            $response['message'] = "Please try again letter";
+            http_response_code(400);
+            echo json_encode($response);
+        }
+//        $txn_list = $this->transaction_model->
     }
 }
 
