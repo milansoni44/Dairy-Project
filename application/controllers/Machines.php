@@ -27,10 +27,10 @@ class Machines extends CI_Controller{
      * display all the machines
      */
     function index(){
-//        if($this->session->userdata("group") != "admin"){
-//            $this->session->set_flashdata("message","Access Denied");
-//            redirect("/","refresh");
-//        }
+        if($this->session->userdata("group") == "dairy" || $this->session->userdata("group") == "society"){
+            $this->session->set_flashdata("message","Access Denied");
+            redirect("/","refresh");
+        }
         
         $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
         $data['machines'] = $this->machine_model->get_machines();
@@ -256,6 +256,22 @@ class Machines extends CI_Controller{
             $this->load->view("common/header", $data);
             $this->load->view("machines/edit_society_machine",$data);
             $this->load->view("common/footer");
+        }
+    }
+    
+    // calculate machine validity
+    function get_validity(){
+        $string = $this->input->post("validity");
+        $index = substr($string, -1); // returns "m or y"
+        $num = substr($string, 0,-1); // returns "numbers"
+        $date = date('Y-m-d');
+        if($index == "m"){
+            $m = '+'.$num.' months';
+            echo json_encode(array("date_range"=>date('m/d/Y')." - ".date('m/d/Y', strtotime($m, strtotime(date('Y-m-d'))))));
+        }else if($index == "y"){
+            // format 01/17/2017 - 01/17/2017
+            $y = '+'.$num.' years';
+            echo json_encode(array("date_range"=>date('m/d/Y')." - ".date('m/d-Y', strtotime($y))));
         }
     }
 }

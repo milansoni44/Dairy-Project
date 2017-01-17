@@ -30,6 +30,24 @@
         $("div.box-body").on("click", "button.remove", function(){
             $(this).parent().remove();
         });
+        
+        $("div.box-body").on("change", "select.validity", function(e){
+            var $this = $(this);
+//            $this.parent().next().val($this.find(":selected").text());
+            e.preventDefault();
+            var validity = this.value;
+            $.ajax({
+                url: "<?php echo base_url(); ?>index.php/machines/get_validity",
+                type: "POST",
+                dataType: 'json',
+                data: { validity: validity },
+                cache: false,
+                success: function(data){
+//                    console.log(data.date_range);
+                    $this.parent().next().val(data.date_range);
+                }
+            })
+        })
     });
 </script>
             <aside class="right-side">
