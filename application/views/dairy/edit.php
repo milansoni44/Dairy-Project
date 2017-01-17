@@ -212,30 +212,20 @@
                                             </div>
                                         </div>
                                         <?php 
-                                            $val = date("m/d/Y", strtotime($dairy->validity_start_date))." - ".date("m/d/Y", strtotime($dairy->validity_end_date));
+//                                            $val = date("m/d/Y", strtotime($dairy->validity_start_date))." - ".date("m/d/Y", strtotime($dairy->validity_end_date));
                                         ?>
-                                        <div class="form-group">
+<!--                                        <div class="form-group">
                                             <label class="control-label col-md-2" for="validity">Validity</label>
                                             <div class="col-md-4">
                                                 <input type="text" name="validity" id="validity" class="form-control validity" value="<?php echo $val; ?>"/>
                                             </div>
-                                        </div>
+                                        </div>-->
                                     </div>
                                     <input type="hidden" name="username_edit" id="username_edit" value="<?php echo $dairy->username; ?>" />
                                     <input type="hidden" name="email_edit" id="email_edit" value="<?php echo $dairy->email; ?>" />
                                     <div class="box-footer">
                                         <button type="submit" class="btn btn-primary">Submit</button>
                                     </div>
-                                    <br>
-                                        <br>
-                                        <br>
-                                        <br>
-                                        <br>
-                                        <br>
-                                        <br>
-                                        <br>
-                                        <br>
-                                        <br>
                                 </form>
                             </div><!-- /.box -->
                         </div>

@@ -109,7 +109,7 @@ class Dairy extends CI_Controller{
             $start_date = date("Y-m-d", strtotime($dd[0]));
             $end_date = date("Y-m-d", strtotime($dd[1]));
             $data = array(
-                "name"=> ucfirst($this->input->post("name"))." Dairy",
+                "name"=> ucfirst($this->input->post("name")),
                 "username"=>  $this->input->post("username"),
                 "email"=>  $this->input->post("email"),
                 "address"=>  $this->input->post("address"),
