@@ -331,11 +331,11 @@ class Transactions extends CI_Controller{
         $id = $this->session->userdata("id");
         $this->datatables->select("s.name, ROUND(AVG(t.fat), 2) as fat, ROUND(AVG(t.clr), 2) as clr, ROUND(AVG(t.snf), 2) as snf, ROUND(AVG(t.weight), 2) as weight, ROUND(SUM(t.netamt), 2) as netamt")
             ->from("transactions t")
-            ->join("machines m","m.machine_id = t.deviceid","LEFT")
-            ->join("society_machine_map smm","smm.machine_id = m.id","LEFT")
-            ->join("users s","s.id = smm.society_id","LEFT")
-            ->join("dairy_machine_map dmm","dmm.machine_id = m.id","LEFT")
-            ->join("users d","d.id = dmm.dairy_id","LEFT")
+//            ->join("machines m","m.machine_id = t.deviceid","LEFT")
+//            ->join("society_machine_map smm","smm.machine_id = m.id","LEFT")
+            ->join("users s","s.id = t.society_id","LEFT")
+//            ->join("dairy_machine_map dmm","dmm.machine_id = m.id","LEFT")
+            ->join("users d","d.id = t.dairy_id","LEFT")
             ->where("t.dairy_id", $id);
             $this->datatables->group_by("t.society_id");
             echo $this->datatables->generate();

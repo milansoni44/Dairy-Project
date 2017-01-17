@@ -54,7 +54,7 @@ class Dairy extends CI_Controller{
 //            $start_date = date("Y-m-d", strtotime($dd[0]));
 //            $end_date = date("Y-m-d", strtotime($dd[1]));
             $data = array(
-                "name"=>  $this->input->post("name"),
+                "name"=>  ucfirst($this->input->post("name"))." Dairy",
                 "username"=>  $this->input->post("username"),
                 "password"=>  md5($this->input->post("password")),
                 "email"=>  $this->input->post("email"),
@@ -109,7 +109,7 @@ class Dairy extends CI_Controller{
             $start_date = date("Y-m-d", strtotime($dd[0]));
             $end_date = date("Y-m-d", strtotime($dd[1]));
             $data = array(
-                "name"=>  $this->input->post("name"),
+                "name"=> ucfirst($this->input->post("name"))." Dairy",
                 "username"=>  $this->input->post("username"),
                 "email"=>  $this->input->post("email"),
                 "address"=>  $this->input->post("address"),
@@ -126,8 +126,8 @@ class Dairy extends CI_Controller{
             if($this->input->post("password") != ""){
                 $data["password"] = md5($this->input->post("password"));
             }
-            echo "<pre>";
-            print_r($data);exit;
+//            echo "<pre>";
+//            print_r($data);exit;
         }
         if(($this->form_validation->run() == TRUE) && $this->dairy_model->update_dairy($data,$id)){
             $this->session->set_flashdata("success","Dairy data updated successfully.");

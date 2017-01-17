@@ -48,7 +48,7 @@ class Society extends CI_Controller
         if($this->form_validation->run() == TRUE){
             $soc_data = array(
                 "dairy_id"=> $this->session->userdata("id"),
-                "name"=> $this->input->post("name"),
+                "name"=> ucfirst($this->input->post("name"))." Society",
                 "username"=> $this->input->post("username"),
                 "email"=> $this->input->post("email"),
                 "password"=> md5($this->input->post("password")),
@@ -95,10 +95,10 @@ class Society extends CI_Controller
         if($this->form_validation->run() == TRUE){
             $soc_data = array(
                 "dairy_id"=> $this->session->userdata("id"),
-                "name"=> $this->input->post("name"),
+                "name"=> ucfirst($this->input->post("name"))." Society",
                 "username"=> $this->input->post("username"),
                 "email"=> $this->input->post("email"),
-                "password"=> md5($this->input->post("password")),
+//                "password"=> md5($this->input->post("password")),
                 "mobile"=> $this->input->post("mobile"),
                 "address"=> $this->input->post("address"),
                 "area"=> $this->input->post("area"),
@@ -112,6 +112,9 @@ class Society extends CI_Controller
                 "acc_type"=> $this->input->post("acc_type"),
                 "ifsc"=> $this->input->post("ifsc"),
             );
+            if($this->input->post("password") != ""){
+                $data["password"] = md5($this->input->post("password"));
+            }
         }
         if(($this->form_validation->run() == TRUE) && $this->society_model->edit_society($soc_data, $id)){
             $this->session->set_flashdata("success","Society data updated successfully.");
