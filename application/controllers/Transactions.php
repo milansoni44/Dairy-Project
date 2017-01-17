@@ -580,7 +580,6 @@ class Transactions extends CI_Controller {
             echo json_encode($response);
         }
     }
-
 }
 
 /** application/controllers/Transactions.php */
