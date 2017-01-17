@@ -22,9 +22,9 @@ class Rate extends CI_Controller{
             redirect("/", "refresh");
         }
         if($this->session->userdata("group") == "dairy" || $this->session->userdata("group") == "society"){
-            if($this->rate_model->read_notification()){
-                $this->session->set_userdata("machine_notify",($this->session->userdata("machine_notify")-1));
-            }
+//            if($this->rate_model->read_notification()){
+//                $this->session->set_userdata("machine_notify",($this->session->userdata("machine_notify")-1));
+//            }
             $data['bf_rate'] = $this->rate_model->get_bufallo_rate();
             $this->load->view("common/header");
             $this->load->view("rate/index", $data);

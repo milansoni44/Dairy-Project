@@ -55,10 +55,9 @@ class Rate_model extends CI_Model{
         if($this->db->insert_batch("buffalo_fat", $data)){
             $notify_data = array(
                 "dairy_id"=>$this->session->userdata("id"),
-                "type"=>"rate",
+//                "type"=>"rate",
                 "message"=>"Buffalo FAT updated successfully",
-                "tbl_name"=>"buffalo_fat",
-                "is_read"=>0
+//                "is_read"=>0
             );
             $this->db->insert("notification", $notify_data);
             return TRUE;
@@ -70,10 +69,10 @@ class Rate_model extends CI_Model{
         if($this->db->insert_batch("cow_fat", $data)){
             $notify_data = array(
                 "dairy_id"=>$this->session->userdata("id"),
-                "type"=>"rate",
+//                "type"=>"rate",
                 "message"=>"Cow FAT updated successfully",
-                "tbl_name"=>"cow_fat",
-                "is_read"=>0
+//                "tbl_name"=>"cow_fat",
+//                "is_read"=>0
             );
             $this->db->insert("notification", $notify_data);
             return TRUE;

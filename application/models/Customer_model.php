@@ -84,7 +84,7 @@ LEFT JOIN customers c ON c.id = t.cid WHERE t.dairy_id = '$id'");
                 );
             }
             $this->db->insert("customer_machine", $customer_soc);
-            return TRUE;
+            return $id;
         }
         return FALSE;
     }

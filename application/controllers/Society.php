@@ -48,7 +48,7 @@ class Society extends CI_Controller
         if($this->form_validation->run() == TRUE){
             $soc_data = array(
                 "dairy_id"=> $this->session->userdata("id"),
-                "name"=> ucfirst($this->input->post("name"))." Society",
+                "name"=> ucfirst($this->input->post("name")),
                 "username"=> $this->input->post("username"),
                 "email"=> $this->input->post("email"),
                 "password"=> md5($this->input->post("password")),

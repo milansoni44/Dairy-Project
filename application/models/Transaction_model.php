@@ -133,10 +133,10 @@ class Transaction_model extends CI_Model{
         $this->db->select("t.*,s.name AS society_name,d.name AS dairy_name, c.customer_name as customer_name, m.machine_id as machine_id")
                 ->from("transactions t")
                 ->join("machines m","m.id = t.deviceid","LEFT")
-                ->join("society_machine_map smm","smm.machine_id = m.id","LEFT")
-                ->join("users s","s.id = smm.society_id","LEFT")
-                ->join("dairy_machine_map dmm","dmm.machine_id = m.id","LEFT")
-                ->join("users d","d.id = dmm.dairy_id","LEFT")
+//                ->join("society_machine_map smm","smm.machine_id = m.id","LEFT")
+                ->join("users s","s.id = t.society_id","LEFT")
+//                ->join("dairy_machine_map dmm","dmm.machine_id = m.id","LEFT")
+                ->join("users d","d.id = t.dairy_id","LEFT")
                 ->join("customers c","c.id = t.cid");
         if($this->session->userdata("group") == "admin"){
             $this->db->where("t.adhar",$adhar);

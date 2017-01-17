@@ -276,10 +276,8 @@ class Transactions extends CI_Controller{
         $this->datatables->select("c.customer_name as customer_name,t.fat,t.clr,t.snf,t.weight,t.rate,t.netamt,t.date")
         ->from("transactions t")
         ->join("machines m","m.machine_id = t.deviceid","LEFT")
-        ->join("society_machine_map smm","smm.machine_id = m.id","LEFT")
-        ->join("users s","s.id = smm.society_id","LEFT")
-        ->join("dairy_machine_map dmm","dmm.machine_id = m.id","LEFT")
-        ->join("users d","d.id = dmm.dairy_id","LEFT")
+        ->join("users s","s.id = t.society_id","LEFT")
+        ->join("users d","d.id = t.dairy_id","LEFT")
         ->join("customers c","c.id = t.cid","LEFT")
         ->where("t.type","C")
         ->where('date BETWEEN "'. date('Y-m-d', strtotime($from)). '" and "'. date('Y-m-d', strtotime($to)).'"');
@@ -296,10 +294,10 @@ class Transactions extends CI_Controller{
         $this->datatables->select("c.customer_name as customer_name,t.fat,t.clr,t.snf,t.weight,t.rate,t.netamt,t.date")
         ->from("transactions t")
         ->join("machines m","m.machine_id = t.deviceid","LEFT")
-        ->join("society_machine_map smm","smm.machine_id = m.id","LEFT")
-        ->join("users s","s.id = smm.society_id","LEFT")
-        ->join("dairy_machine_map dmm","dmm.machine_id = m.id","LEFT")
-        ->join("users d","d.id = dmm.dairy_id","LEFT")
+//        ->join("society_machine_map smm","smm.machine_id = m.id","LEFT")
+        ->join("users s","s.id = t.society_id","LEFT")
+//        ->join("dairy_machine_map dmm","dmm.machine_id = m.id","LEFT")
+        ->join("users d","d.id = t.dairy_id","LEFT")
         ->join("customers c","c.id = t.cid","LEFT")
         ->where("t.type","B")
         ->where('date BETWEEN "'. date('Y-m-d', strtotime($from)). '" and "'. date('Y-m-d', strtotime($to)).'"');
@@ -429,6 +427,107 @@ class Transactions extends CI_Controller{
             return FALSE;
         }
         return TRUE;
+    }
+    
+    function import_json(){
+        $response = array();
+        $validation_error = array();
+        if($this->input->post()){
+            $data = json_decode($this->input->post("society_json"))->transaction;
+//            print_r($data);exit;
+            $i = 0;
+            foreach($data as $row){
+//                print_r($row);
+//                echo $row->deviceid;
+//                $stat = $this->transaction_model->exist_machine($row->deviceid);
+                // for temporary purpose
+                $stat = $this->transaction_model->exist_machine("IDF000001");
+                if($stat === FALSE){
+                    http_response_code(400);
+                    $response['error'] = TRUE;
+                    $response['message'] = "Machine not exist in the system.";
+                    echo json_encode($response);exit;
+                }
+                
+                $society = $this->transaction_model->get_society_id("IDF000001")->society_id;
+                $dairy = $this->transaction_model->get_dairy_id("IDF000001")->dairy_id;
+                $machine_id = $this->transaction_model->get_machine_id("IDF000001")->mid;
+                
+                if($row->aadhar == ""){
+//                    $this->session->set_flashdata("message","Line:$i Adhar no required");
+                    $validation_error[] = array("message"=>"Line:$i Adhar no required");
+                    $i++;
+                    continue;
+                }
+                
+                if($this->customer_model->check_exist_adhar($row->aadhar) === FALSE){
+                    $customer_data = array(
+                        "adhar_no"=>$row->aadhar,
+                    );
+                    $cid = $this->customer_model->add_customer($customer_data, /*$row->deviceid*/$machine_id, $society);
+//                    echo  = $this->db->insert_id();exit;
+                    $date = str_replace('/', '-', $row->date);
+                    $transaction_single = array(
+                        "dairy_id"=>$dairy,
+                        "society_id"=>$society,
+                        "deviceid"=>$machine_id,//$row->deviceid,
+                        "sampleid"=>$row->sampleid,
+                        "ismanual"=>$row->manual,
+                        "type"=>$row->type,
+                        "cid"=>$cid,
+                        "netamt"=>$row->rupee,
+                        "rate"=>$row->rate,
+                        "weight"=>$row->ltr,
+                        "snf"=>$row->snf,
+                        "clr"=>$row->clr,
+                        "fat"=>$row->fat,
+                        "memcode"=>$row->member_code,
+                        "date"=>date('Y-m-d', strtotime($date)),
+                        "shift"=>$row->shift,
+                        "dockno"=>trim($row->dockno),
+                        "soccode"=>trim($row->soccode)
+                    );
+                    $this->transaction_model->insert_single($transaction_single);
+                    $i++;
+                    continue;
+                }
+                $cid = $this->transaction_model->get_cid($row->aadhar);
+                $t_date = str_replace('/', '-', $row->date);
+                $trans = array(
+                    "dairy_id"=>$dairy,
+                    "society_id"=>$society,
+                    "deviceid"=>$machine_id,//$row->deviceid,
+                    "sampleid"=>$row->sampleid,
+                    "ismanual"=>$row->manual,
+                    "type"=>$row->type,
+                    "cid"=>$cid,
+                    "netamt"=>$row->rupee,
+                    "rate"=>$row->rate,
+                    "weight"=>$row->ltr,
+                    "snf"=>$row->snf,
+                    "clr"=>$row->clr,
+                    "fat"=>$row->fat,
+                    "memcode"=>$row->member_code,
+                    "date"=>date('Y-m-d', strtotime($t_date)),
+                    "shift"=>$row->shift,
+                    "dockno"=>trim($row->dockno),
+                    "soccode"=>trim($row->soccode)
+                );
+                $this->transaction_model->insert_single($trans);
+                $i++;
+                continue;
+            }
+            http_response_code(200);
+            $response['error'] = FALSE;
+            $response['message'] = "Successfully";
+            $response['validate_error'] = $validation_error;
+            echo json_encode($response);
+        }else{
+            $response['error'] = TRUE;
+            $response['message'] = "Please try again letter";
+            http_response_code(400);
+            echo json_encode($response);
+        }
     }
 }
 
