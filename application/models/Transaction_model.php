@@ -13,6 +13,26 @@ class Transaction_model extends CI_Model {
     function __construct() {
         parent::__construct();
     }
+    
+    function get_societies(){
+        $id = $this->session->userdata("id");
+        $q = $this->db->query("SELECT id, name FROM users WHERE dairy_id = '$id'");
+        if($q->num_rows() > 0){
+            foreach($q->result() as $row){
+                $row1[] = $row;
+            }
+            return $row1;
+        }
+        return FALSE;
+    }
+    
+    function get_society_txn($id = NULL){
+        $q = $this->db->query("SELECT AVG(fat), AVG(clr), AVG(snf), SUM(weight), SUM(netamt) FROM transaction WHERE society_id = '$id'");
+        if($q->num_rows() > 0){
+            return $q->row();
+        }
+        return FALSE;
+    }
 
     function get_society_id($machine_id = NULL) {
         $machine_id = trim($machine_id, '"');

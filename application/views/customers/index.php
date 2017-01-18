@@ -7,12 +7,12 @@
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
                     <h1>
-                        Milk Suppliers
-                        <small>List Milk Supplier</small>
+                        Milk Producers
+                        <small>List Milk Producer</small>
                     </h1>
                     <ol class="breadcrumb">
                         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-                        <li class="active">Milk Suppliers</li>
+                        <li class="active">Milk Producer</li>
                     </ol>
                 </section>
 
@@ -61,20 +61,21 @@
                                 <div class="box-header">
                                     <h3 class="box-title">Hover Data Table</h3>
                                     <?php if($this->session->userdata("group") == "society") {?>
-                                    <span class="pull-right"><a href="<?php echo base_url(); ?>index.php/customers/add" class="btn btn-primary" style="color: #fff;">Add Customers</a></span>
+                                    <span class="pull-right"><a href="<?php echo base_url(); ?>index.php/customers/add" class="btn btn-primary" style="color: #fff;">Add Milk Producer</a></span>
+                                    <span class="pull-right"><a href="<?php echo base_url(); ?>index.php/customers/import" class="btn btn-primary" style="color: #fff;">Import Milk Producer</a></span>
                                     <?php } ?>
                                 </div><!-- /.box-header -->
                                 <div class="box-body table-responsive">
                                     <table id="example2" class="table table-bordered table-hover">
                                         <thead>
                                             <tr>
-                                                <th>Member Code</th>
-                                                <th>Name</th>
-                                                <th>Mobile</th>
-                                                <th>Adhar No</th>
-                                                <th>Society</th>
-                                                <th>Created</th>
-                                                <th>Expiry</th>
+                                                <th style="width: 5%;">Member Code</th>
+                                                <th style="width: 10%;">Name</th>
+                                                <th style="width: 10%;">Mobile</th>
+                                                <th style="width: 10%;">Adhar No</th>
+                                                <th style="width: 10%;">Type</th>
+                                                <th style="width: 30%;">Bank Name - IFSC</th>
+                                                <th style="width: 25%;">A/c</th>
                                                 <th>Actions</th>
                                             </tr>
                                         </thead>
@@ -88,9 +89,9 @@
                                                 <td><?php echo $row->customer_name; ?></td>
                                                 <td><?php echo $row->mobile; ?></td>
                                                 <td><?php echo $row->adhar_no; ?></td>
-                                                <td><?php echo $row->name; ?></td>
-                                                <td><?php echo $row->created_at; ?></td>
-                                                <td><?php echo $row->expiry; ?></td>
+                                                <td><?php echo $row->type; ?></td>
+                                                <td><?php echo $row->bank_name." - ". $row->ifsc; ?></td>
+                                                <td><?php echo $row->ac_no; ?></td>
                                                 <td>
                                                     <a href="<?php echo base_url(); ?>index.php/customers/edit/<?php echo $row->id; ?>">Edit</a>
                                                     <a href="<?php echo base_url(); ?>index.php/customers/delete/<?php echo $row->id; ?>">Delete</a>

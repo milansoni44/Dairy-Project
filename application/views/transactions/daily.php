@@ -216,6 +216,16 @@
                                     <span class="pull-right" id="avg_clr" style="font-weight: bold;"></span><br>
                                     <span class="pull-right" id="avg_snf" style="font-weight: bold;"></span><br>-->
                                 </div><!-- /.box-header -->
+                                <div style="text-align: center; font-weight: bold;">
+                                    <?php 
+                                        $s = date("d-M-Y H:i"); 
+                                        if(date("H") < '13'){
+                                            echo $s." Morning";
+                                        }else{
+                                            echo $s." Evening";
+                                        }
+                                    ?>
+                                </div>
                                 <div>
                                     <button class="btn btn-primary" id="import">Import Transaction</button>
                                 </div>

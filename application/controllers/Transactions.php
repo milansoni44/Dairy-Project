@@ -1,6 +1,7 @@
 <?php
 
 defined('BASEPATH') OR exit('No direct script access allowed');
+ini_set('date.timezone', 'Asia/Kolkata');
 /**
  * Description of Transactions
  *
@@ -315,31 +316,43 @@ class Transactions extends CI_Controller {
     }
 
     function daily_txn() {
-        $this->form_validation->set_rules("date", "Date", "trim|required|callback_check_future");
-        $this->form_validation->set_rules("to_date", "Date", "trim|required|callback_check_dates");
+//        $this->form_validation->set_rules("date", "Date", "trim|required|callback_check_future");
+//        $this->form_validation->set_rules("to_date", "Date", "trim|required|callback_check_dates");
 
         if ($this->form_validation->run() == TRUE) {
+            $data['txn_society'] = $this->transaction_model->get_society_txn($this->input->post("society"));
+            $data['society'] = $this->transaction_model->get_societies();
             $this->load->view("common/header");
-            $this->load->view("transactions/dairy_txn");
+            $this->load->view("transactions/dairy_txn", $data);
             $this->load->view("common/footer");
         } else {
+            $data['society'] = $this->transaction_model->get_societies();
             $this->load->view("common/header");
-            $this->load->view("transactions/dairy_txn");
+            $this->load->view("transactions/dairy_txn", $data);
             $this->load->view("common/footer");
         }
     }
 
-    function dairy_txn_datatable() {
-        $id = $this->session->userdata("id");
+    function dairy_txn_datatable($id = NULL) {
+        if($this->session->userdata("group") == "society"){
+            $id = $this->session->userdata("id");
+        }
+//        $id = $this->session->userdata("id");
         $this->datatables->select("s.name, ROUND(AVG(t.fat), 2) as fat, ROUND(AVG(t.clr), 2) as clr, ROUND(AVG(t.snf), 2) as snf, ROUND(AVG(t.weight), 2) as weight, ROUND(SUM(t.netamt), 2) as netamt")
                 ->from("transactions t")
 //            ->join("machines m","m.machine_id = t.deviceid","LEFT")
 //            ->join("society_machine_map smm","smm.machine_id = m.id","LEFT")
                 ->join("users s", "s.id = t.society_id", "LEFT")
 //            ->join("dairy_machine_map dmm","dmm.machine_id = m.id","LEFT")
-                ->join("users d", "d.id = t.dairy_id", "LEFT")
-                ->where("t.dairy_id", $id);
-        $this->datatables->group_by("t.society_id");
+                ->join("users d", "d.id = t.dairy_id", "LEFT");
+        if(!$id){
+            $this->datatables->group_by("t.society_id");
+            $this->datatables->where("t.society_id", $id);
+        }else{
+            $this->datatables->where("t.society_id", $id);
+        }
+//                ->where("t.dairy_id", $id);
+//        $this->datatables->group_by("t.society_id");
         echo $this->datatables->generate();
     }
 
@@ -543,9 +556,9 @@ class Transactions extends CI_Controller {
                 http_response_code(200);
                 echo json_encode($response);
             } else {
-                $response['error'] = FALSE;
+                $response['error'] = TRUE;
                 $response['message'] = "No data found";
-                http_response_code(200);
+                http_response_code(404);
                 echo json_encode($response);
             }
         } else {
@@ -568,9 +581,9 @@ class Transactions extends CI_Controller {
                 http_response_code(200);
                 echo json_encode($response);
             }else{
-                $response['error'] = FALSE;
+                $response['error'] = TRUE;
                 $response['message'] = "No data found";
-                http_response_code(200);
+                http_response_code(404);
                 echo json_encode($response);
             }
         }else{

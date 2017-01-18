@@ -1,8 +1,20 @@
 <script type="text/javascript">
     $(document).ready(function(){
-        
+        $("#add_dairy_form").validate({
+            rules: {
+                society: "required",
+                machine: "required",
+            },
+            messages: {
+                society: "Please select society",
+                machine: "Please select machine",
+            }
+        });
     });
 </script>
+<?php 
+    
+?>
             <aside class="right-side">
                 <!-- Content Header (Page header) -->
                 <section class="content-header">

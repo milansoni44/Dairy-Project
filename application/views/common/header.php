@@ -247,16 +247,16 @@
                         <li class="treeview">
                             <a href="#">
                                 <i class="fa fa-bar-chart-o"></i>
-                                <span>Members </span>
+                                <span>Milk Producers </span>
                                 <i class="fa fa-angle-left pull-right"></i>
                             </a>
                             <ul class="treeview-menu">
                                 <?php if($this->session->userdata("group") == "dairy"){ ?>
-                                <li><a href="<?php echo base_url(); ?>index.php/customers/society_index"> <span>Milk Supplier</span></a></li>
+                                <li><a href="<?php echo base_url(); ?>index.php/customers/society_index"> <span>Milk Producer</span></a></li>
                                 <?php } ?>
                                 <?php if($this->session->userdata("group") == "society"){ ?>
-                                <li><a href="<?php echo base_url(); ?>index.php/customers"> <span>Milk Supplier</span></a></li>
-                                <li><a href="<?php echo base_url(); ?>index.php/customers/import">Import Members</a></li>
+                                <li><a href="<?php echo base_url(); ?>index.php/customers"> <span>Milk Producer</span></a></li>
+                                <li><a href="<?php echo base_url(); ?>index.php/customers/import">Import Milk Producer</a></li>
                                 <?php } ?>
                             </ul>
                         </li>
@@ -265,19 +265,21 @@
                         <li class="treeview">
                             <a href="#">
                                 <i class="fa fa-bar-chart-o"></i>
-                                <span>Transactions</span>
+                                <span>Milk Collections</span>
                                 <i class="fa fa-angle-left pull-right"></i>
                             </a>
                             <ul class="treeview-menu">
                                 <?php if($this->session->userdata("group") == "society"){ ?>
-                                <li><a href="<?php echo base_url(); ?>index.php/transactions/daily">Transactions</a></li>
+                                <li><a href="<?php echo base_url(); ?>index.php/transactions/daily">Milk Collection</a></li>
+                                <li><a href="<?php echo base_url(); ?>index.php/transactions/import_txn">Import Milk Collection</a></li>
+                                <li><a href="<?php echo base_url(); ?>index.php/transactions/daily_txn">Milk Collection Summary</a></li>
                                 <?php }else if($this->session->userdata("group") == "dairy"){ ?>
-                                <li><a href="<?php echo base_url(); ?>index.php/transactions/daily_txn">Transactions</a></li>
+                                <li><a href="<?php echo base_url(); ?>index.php/transactions/daily_txn">Milk Collection</a></li>
                                 <?php }else{ ?>
 <!--                                <li><a href="<?php echo base_url(); ?>index.php/transactions/daily_admin">Transactions</a></li>-->
                                 <?php } ?>
 <!--                                <li><a href="<?php echo base_url(); ?>index.php/transactions/monthly">Monthly</a></li>-->
-                                <li><a href="<?php echo base_url(); ?>index.php/transactions/customer">Customer Transaction</a></li>
+<!--                                <li><a href="<?php echo base_url(); ?>index.php/transactions/customer">Customer Collection</a></li>-->
 <!--                                <li><a href="<?php echo base_url(); ?>index.php/transactions">Transactions</a></li>-->
                             </ul>
                         </li>
