@@ -90,8 +90,8 @@
                                             <label class="control-label col-sm-2" for="type"> Type</label>
                                             <div class="col-md-4">
                                                 <select name="type" id="type" class="form-control">
-                                                    <option value="cow" <?php if($member->type == "cow"){?>selected <?php } ?>>Cow</option>
-                                                    <option value="bufallo" <?php if($member->type == "bufallo"){?>selected <?php } ?>>Bufalo</option>
+                                                    <option value="C" <?php if($member->type == "C"){?>selected <?php } ?>>Cow</option>
+                                                    <option value="B" <?php if($member->type == "B"){?>selected <?php } ?>>Bufalo</option>
                                                 </select>
                                             </div>
                                         </div>

@@ -26,9 +26,20 @@
 
                 <!-- Main content -->
                 <section class="content">
-
+                    
                     <!-- Small boxes (Stat box) -->
                     <div class="row">
+                        <?php
+                        if($this->session->flashdata('message')){
+                        ?>
+                        <div class="alert alert-danger alert-dismissable">
+                            <i class="fa fa-check"></i>
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            <?php echo $this->session->flashdata('message'); ?>
+                        </div>
+                        <?php
+                            }
+                        ?>
                         <?php
                         if($this->session->flashdata('success')){
                         ?>
@@ -47,6 +58,7 @@
                                     <span class="pull-right"><button class="btn btn-primary" id="buffalo_fat_snf">Import Buffalo SNF</button></span>
                                     <span class="pull-right"><button class="btn btn-primary" id="buffalo_fat_snf_csv">Download SNF</button></span>
                                 </div><!-- /.box-header -->
+                                <?php if(!empty($fat)){ ?>
                                 <div class="box-body table-responsive">
                                     <table id="fixed_hdr1">
                                         <thead>
@@ -83,6 +95,14 @@
                                         </tbody>
                                     </table>
                                 </div><!-- /.box-body -->
+                                <?php }else{ ?>
+                                <table id="example2" class="table table-bordered table-hover">
+                                    <thead>
+                                        <th>SNFTAB</th>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                                <?php } ?>
                             </div><!-- /.box -->
                         </div>
                     </div><!-- /.row -->

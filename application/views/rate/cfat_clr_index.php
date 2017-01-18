@@ -1,5 +1,6 @@
             <script>
                 $(document).ready(function(){
+                    $("#example2").DataTable();
                     $("#cow_fat_clr").on("click", function(e){
                         e.preventDefault();
                         location.href = "<?php echo base_url(); ?>index.php/rate/export_cfatclr";
@@ -24,6 +25,17 @@
                     <!-- Small boxes (Stat box) -->
                     <div class="row">
                         <?php
+                        if($this->session->flashdata('message')){
+                        ?>
+                        <div class="alert alert-danger alert-dismissable">
+                            <i class="fa fa-check"></i>
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            <?php echo $this->session->flashdata('message'); ?>
+                        </div>
+                        <?php
+                            }
+                        ?>
+                        <?php
                         if($this->session->flashdata('success')){
                         ?>
                         <div class="alert alert-success alert-dismissable">
@@ -42,6 +54,7 @@
                                     <span class="pull-right"><button class="btn btn-primary" id="cow_fat_clr">Download CLR</button></span>
                                 </div><!-- /.box-header -->
                                 <div class="box-body table-responsive">
+                                    <?php if(!empty($fat)){ ?>
                                     <table id="fixed_hdr1">
                                         <thead>
                                             <tr>
@@ -76,6 +89,16 @@
                                             ?>
                                         </tbody>
                                     </table>
+                                    <?php }else{ ?>
+                                    <table id="example2" class="table table-bordered table-hover">
+                                        <thead>
+                                        <th>
+                                            CLRTAB
+                                        </th>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                    <?php } ?>
                                 </div><!-- /.box-body -->
                             </div><!-- /.box -->
                         </div>

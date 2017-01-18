@@ -198,6 +198,8 @@ class Rate extends CI_Controller{
     }
     
     function bfat_snf(){
+        $fat_arr = array();
+        $array = array();
         if($this->session->userdata("group") == "dairy"){
             $id = $this->session->userdata("id");
         }else if($this->session->userdata("group") == "society"){
@@ -207,52 +209,57 @@ class Rate extends CI_Controller{
         }
         $q = $this->db->query("SELECT DISTINCT(Fat) FROM `buffalo_fat_snf` WHERE dairy_id = '$id'");
         $fat = $q->result_array();
-        $fat_arr = array("SNFTAB");
+        if(!empty($fat)){
+            $fat_arr = array("SNFTAB");
 
-        foreach($fat as $row_f){
-            array_push($fat_arr, $row_f['Fat']);
-            $q_s = $this->db->query("SELECT Snf FROM `buffalo_fat_snf` WHERE dairy_id = '$id' AND Fat = ".$row_f['Fat']);
-            $snf = $q_s->result_array();
-            $i = 0;
-            foreach($snf as $row_s){
-                $q_r = $this->db->query("SELECT Rate FROM `buffalo_fat_snf` WHERE dairy_id = '$id' AND Snf = ".$row_s['Snf']);
-                $rate = $q_r->result_array();
-                foreach($rate as $row_r){
-                    $rr = array(
-                        "Snf"=>$row_s['Snf'],
-                        "Rate"=>$row_r['Rate']
-                    );
-                    $a[$i] = $rr;
-                    $i++;
+            foreach($fat as $row_f){
+                array_push($fat_arr, $row_f['Fat']);
+                $q_s = $this->db->query("SELECT Snf FROM `buffalo_fat_snf` WHERE dairy_id = '$id' AND Fat = ".$row_f['Fat']);
+                $snf = $q_s->result_array();
+                $i = 0;
+                foreach($snf as $row_s){
+                    $q_r = $this->db->query("SELECT Rate FROM `buffalo_fat_snf` WHERE dairy_id = '$id' AND Snf = ".$row_s['Snf']);
+                    $rate = $q_r->result_array();
+                    foreach($rate as $row_r){
+                        $rr = array(
+                            "Snf"=>$row_s['Snf'],
+                            "Rate"=>$row_r['Rate']
+                        );
+                        $a[$i] = $rr;
+                        $i++;
+                    }
                 }
             }
-        }
-        $Snf = "";
-        $output = array();
-        $key = 0;
-        foreach($a as $item=>$rate){
-            if($rate['Snf'] != $Snf){
-                if($item != 0){
-                    $key++;
+            $Snf = "";
+            $output = array();
+            $key = 0;
+            foreach($a as $item=>$rate){
+                if($rate['Snf'] != $Snf){
+                    if($item != 0){
+                        $key++;
+                    }
+                    $output[$key]['Snf'] =  $rate['Snf'];
+                    $keyRate = 0;
                 }
-                $output[$key]['Snf'] =  $rate['Snf'];
-                $keyRate = 0;
+    //            $output[$key]['Rate'][$keyRate] = $rate['Rate'];
+                $output[$key][$keyRate] = $rate['Rate'];
+                $Snf = $rate['Snf'];
+                $keyRate++;
             }
-//            $output[$key]['Rate'][$keyRate] = $rate['Rate'];
-            $output[$key][$keyRate] = $rate['Rate'];
-            $Snf = $rate['Snf'];
-            $keyRate++;
+            // print the output
+    //        echo "<pre>";
+    //        print_r($output);
+    //        echo "</pre>";exit;
+            foreach($output as $result){
+                $array[] = array_values($result);
+            }
+
+            $data['fat'] = $fat_arr;
+            $data['vals'] = $array;
+        }else{
+            $data['fat'] = $fat_arr;
+            $data['vals'] = $array;
         }
-        // print the output
-//        echo "<pre>";
-//        print_r($output);
-//        echo "</pre>";exit;
-        foreach($output as $result){
-            $array[] = array_values($result);
-        }
-        
-        $data['fat'] = $fat_arr;
-        $data['vals'] = $array;
         $this->load->view("common/header");
         $this->load->view("rate/bfat_snf_index",$data);
         $this->load->view("common/footer");
@@ -266,66 +273,73 @@ class Rate extends CI_Controller{
         }
         $q = $this->db->query("SELECT DISTINCT(Fat) FROM `buffalo_fat_snf` WHERE dairy_id = '$id'");
         $fat = $q->result_array();
-        $fat_arr = array("SNFTAB");
-//        echo "<pre>";
-        foreach($fat as $row_f){
-            array_push($fat_arr, $row_f['Fat']);
-            $q_s = $this->db->query("SELECT Snf FROM `buffalo_fat_snf` WHERE dairy_id = '$id' AND Fat = ".$row_f['Fat']);
-            $snf = $q_s->result_array();
-            $i = 0;
-            foreach($snf as $row_s){
-                $q_r = $this->db->query("SELECT Rate FROM `buffalo_fat_snf` WHERE dairy_id = '$id' AND Snf = ".$row_s['Snf']);
-                $rate = $q_r->result_array();
-                foreach($rate as $row_r){
-                    $rr = array(
-                        "Snf"=>$row_s['Snf'],
-                        "Rate"=>$row_r['Rate']
-                    );
-                    $a[$i] = $rr;
-                    $i++;
+        if(!empty($fat)){
+            $fat_arr = array("SNFTAB");
+    //        echo "<pre>";
+            foreach($fat as $row_f){
+                array_push($fat_arr, $row_f['Fat']);
+                $q_s = $this->db->query("SELECT Snf FROM `buffalo_fat_snf` WHERE dairy_id = '$id' AND Fat = ".$row_f['Fat']);
+                $snf = $q_s->result_array();
+                $i = 0;
+                foreach($snf as $row_s){
+                    $q_r = $this->db->query("SELECT Rate FROM `buffalo_fat_snf` WHERE dairy_id = '$id' AND Snf = ".$row_s['Snf']);
+                    $rate = $q_r->result_array();
+                    foreach($rate as $row_r){
+                        $rr = array(
+                            "Snf"=>$row_s['Snf'],
+                            "Rate"=>$row_r['Rate']
+                        );
+                        $a[$i] = $rr;
+                        $i++;
+                    }
                 }
             }
-        }
-        $Snf = "";
-        $output = array();
-        $key = 0;
-        foreach($a as $item=>$rate){
-            if($rate['Snf'] != $Snf){
-                if($item != 0){
-                    $key++;
+            $Snf = "";
+            $output = array();
+            $key = 0;
+            foreach($a as $item=>$rate){
+                if($rate['Snf'] != $Snf){
+                    if($item != 0){
+                        $key++;
+                    }
+                    $output[$key]['Snf'] =  $rate['Snf'];
+                    $keyRate = 0;
                 }
-                $output[$key]['Snf'] =  $rate['Snf'];
-                $keyRate = 0;
+    //            $output[$key]['Rate'][$keyRate] = $rate['Rate'];
+                $output[$key][$keyRate] = $rate['Rate'];
+                $Snf = $rate['Snf'];
+                $keyRate++;
             }
-//            $output[$key]['Rate'][$keyRate] = $rate['Rate'];
-            $output[$key][$keyRate] = $rate['Rate'];
-            $Snf = $rate['Snf'];
-            $keyRate++;
-        }
-        // print the output
-//        echo "<pre>";
-//        print_r($output);
-//        echo "</pre>";exit;
-        foreach($output as $result){
-            $array[] = array_values($result);
-        }
-//        echo "<pre>";
-//        print_r($array);exit;
-        $fp = fopen('php://output', 'w');
-        if ($fp && $array) {
-            header('Content-Type: text/csv');
-            header('Content-Disposition: attachment; filename="SNF.csv"');
-            header('Pragma: no-cache');
-            header('Expires: 0');
-            fputcsv($fp, $fat_arr);
-            foreach($array as $rr){
-                fputcsv($fp, $rr);
+            // print the output
+    //        echo "<pre>";
+    //        print_r($output);
+    //        echo "</pre>";exit;
+            foreach($output as $result){
+                $array[] = array_values($result);
             }
-            die;
+    //        echo "<pre>";
+    //        print_r($array);exit;
+            $fp = fopen('php://output', 'w');
+            if ($fp && $array) {
+                header('Content-Type: text/csv');
+                header('Content-Disposition: attachment; filename="SNF.csv"');
+                header('Pragma: no-cache');
+                header('Expires: 0');
+                fputcsv($fp, $fat_arr);
+                foreach($array as $rr){
+                    fputcsv($fp, $rr);
+                }
+                die;
+            }
+        }else{
+            $this->session->set_flashdata("message", "There is no data in snf");
+            redirect("rate/bfat_snf", "refresh");
         }
     }
     
     function cfat_snf(){
+        $fat_arr = array();
+        $array = array();
         if($this->session->userdata("group") == "dairy"){
             $id = $this->session->userdata("id");
         }else if($this->session->userdata("group") == "society"){
@@ -335,52 +349,57 @@ class Rate extends CI_Controller{
         }
         $q = $this->db->query("SELECT DISTINCT(Fat) FROM `cow_fat_snf` WHERE dairy_id = '$id'");
         $fat = $q->result_array();
-        $fat_arr = array("SNFTAB");
+        if(!empty($fat)){
+            $fat_arr = array("SNFTAB");
 
-        foreach($fat as $row_f){
-            array_push($fat_arr, $row_f['Fat']);
-            $q_s = $this->db->query("SELECT Snf FROM `cow_fat_snf` WHERE dairy_id = '$id' AND Fat = ".$row_f['Fat']);
-            $snf = $q_s->result_array();
-            $i = 0;
-            foreach($snf as $row_s){
-                $q_r = $this->db->query("SELECT Rate FROM `cow_fat_snf` WHERE dairy_id = '$id' AND Snf = ".$row_s['Snf']);
-                $rate = $q_r->result_array();
-                foreach($rate as $row_r){
-                    $rr = array(
-                        "Snf"=>$row_s['Snf'],
-                        "Rate"=>$row_r['Rate']
-                    );
-                    $a[$i] = $rr;
-                    $i++;
+            foreach($fat as $row_f){
+                array_push($fat_arr, $row_f['Fat']);
+                $q_s = $this->db->query("SELECT Snf FROM `cow_fat_snf` WHERE dairy_id = '$id' AND Fat = ".$row_f['Fat']);
+                $snf = $q_s->result_array();
+                $i = 0;
+                foreach($snf as $row_s){
+                    $q_r = $this->db->query("SELECT Rate FROM `cow_fat_snf` WHERE dairy_id = '$id' AND Snf = ".$row_s['Snf']);
+                    $rate = $q_r->result_array();
+                    foreach($rate as $row_r){
+                        $rr = array(
+                            "Snf"=>$row_s['Snf'],
+                            "Rate"=>$row_r['Rate']
+                        );
+                        $a[$i] = $rr;
+                        $i++;
+                    }
                 }
             }
-        }
-        $Snf = "";
-        $output = array();
-        $key = 0;
-        foreach($a as $item=>$rate){
-            if($rate['Snf'] != $Snf){
-                if($item != 0){
-                    $key++;
+            $Snf = "";
+            $output = array();
+            $key = 0;
+            foreach($a as $item=>$rate){
+                if($rate['Snf'] != $Snf){
+                    if($item != 0){
+                        $key++;
+                    }
+                    $output[$key]['Snf'] =  $rate['Snf'];
+                    $keyRate = 0;
                 }
-                $output[$key]['Snf'] =  $rate['Snf'];
-                $keyRate = 0;
+    //            $output[$key]['Rate'][$keyRate] = $rate['Rate'];
+                $output[$key][$keyRate] = $rate['Rate'];
+                $Snf = $rate['Snf'];
+                $keyRate++;
             }
-//            $output[$key]['Rate'][$keyRate] = $rate['Rate'];
-            $output[$key][$keyRate] = $rate['Rate'];
-            $Snf = $rate['Snf'];
-            $keyRate++;
+            // print the output
+    //        echo "<pre>";
+    //        print_r($output);
+    //        echo "</pre>";exit;
+            foreach($output as $result){
+                $array[] = array_values($result);
+            }
+
+            $data['fat'] = $fat_arr;
+            $data['vals'] = $array;
+        }else{
+            $data['fat'] = $fat_arr;
+            $data['vals'] = $array;
         }
-        // print the output
-//        echo "<pre>";
-//        print_r($output);
-//        echo "</pre>";exit;
-        foreach($output as $result){
-            $array[] = array_values($result);
-        }
-        
-        $data['fat'] = $fat_arr;
-        $data['vals'] = $array;
         $this->load->view("common/header");
         $this->load->view("rate/cfat_snf_index", $data);
         $this->load->view("common/footer");
@@ -394,64 +413,71 @@ class Rate extends CI_Controller{
         }
         $q = $this->db->query("SELECT DISTINCT(Fat) FROM `cow_fat_snf` WHERE dairy_id = '$id'");
         $fat = $q->result_array();
-        $fat_arr = array("SNFTAB");
-//        echo "<pre>";
-        foreach($fat as $row_f){
-            array_push($fat_arr, $row_f['Fat']);
-            $q_s = $this->db->query("SELECT Snf FROM `cow_fat_snf` WHERE dairy_id = '$id' AND Fat = ".$row_f['Fat']);
-            $snf = $q_s->result_array();
-            $i = 0;
-            foreach($snf as $row_s){
-                $q_r = $this->db->query("SELECT Rate FROM `cow_fat_snf` WHERE dairy_id = '$id' AND Snf = ".$row_s['Snf']);
-                $rate = $q_r->result_array();
-                foreach($rate as $row_r){
-                    $rr = array(
-                        "Snf"=>$row_s['Snf'],
-                        "Rate"=>$row_r['Rate']
-                    );
-                    $a[$i] = $rr;
-                    $i++;
+        if(!empty($fat)){
+            $fat_arr = array("SNFTAB");
+    //        echo "<pre>";
+            foreach($fat as $row_f){
+                array_push($fat_arr, $row_f['Fat']);
+                $q_s = $this->db->query("SELECT Snf FROM `cow_fat_snf` WHERE dairy_id = '$id' AND Fat = ".$row_f['Fat']);
+                $snf = $q_s->result_array();
+                $i = 0;
+                foreach($snf as $row_s){
+                    $q_r = $this->db->query("SELECT Rate FROM `cow_fat_snf` WHERE dairy_id = '$id' AND Snf = ".$row_s['Snf']);
+                    $rate = $q_r->result_array();
+                    foreach($rate as $row_r){
+                        $rr = array(
+                            "Snf"=>$row_s['Snf'],
+                            "Rate"=>$row_r['Rate']
+                        );
+                        $a[$i] = $rr;
+                        $i++;
+                    }
                 }
             }
-        }
-        $Snf = "";
-        $output = array();
-        $key = 0;
-        foreach($a as $item=>$rate){
-            if($rate['Snf'] != $Snf){
-                if($item != 0){
-                    $key++;
+            $Snf = "";
+            $output = array();
+            $key = 0;
+            foreach($a as $item=>$rate){
+                if($rate['Snf'] != $Snf){
+                    if($item != 0){
+                        $key++;
+                    }
+                    $output[$key]['Snf'] =  $rate['Snf'];
+                    $keyRate = 0;
                 }
-                $output[$key]['Snf'] =  $rate['Snf'];
-                $keyRate = 0;
+    //            $output[$key]['Rate'][$keyRate] = $rate['Rate'];
+                $output[$key][$keyRate] = $rate['Rate'];
+                $Snf = $rate['Snf'];
+                $keyRate++;
             }
-//            $output[$key]['Rate'][$keyRate] = $rate['Rate'];
-            $output[$key][$keyRate] = $rate['Rate'];
-            $Snf = $rate['Snf'];
-            $keyRate++;
-        }
-        // print the output
-//        echo "<pre>";
-//        print_r($output);
-//        echo "</pre>";exit;
-        foreach($output as $result){
-            $array[] = array_values($result);
-        }
-        $fp = fopen('php://output', 'w');
-        if ($fp && $array) {
-            header('Content-Type: text/csv');
-            header('Content-Disposition: attachment; filename="SNF.csv"');
-            header('Pragma: no-cache');
-            header('Expires: 0');
-            fputcsv($fp, $fat_arr);
-            foreach($array as $rr){
-                fputcsv($fp, $rr);
+            // print the output
+    //        echo "<pre>";
+    //        print_r($output);
+    //        echo "</pre>";exit;
+            foreach($output as $result){
+                $array[] = array_values($result);
             }
-            die;
+            $fp = fopen('php://output', 'w');
+            if ($fp && $array) {
+                header('Content-Type: text/csv');
+                header('Content-Disposition: attachment; filename="SNF.csv"');
+                header('Pragma: no-cache');
+                header('Expires: 0');
+                fputcsv($fp, $fat_arr);
+                foreach($array as $rr){
+                    fputcsv($fp, $rr);
+                }
+                die;
+            }
+        }else{
+            $this->session->set_flashdata("message", "There is no data in snf");
+            redirect("rate/cfat_snf", "refresh");
         }
     }
     
     function cfat_clr(){
+        $fat_arr = array();
+        $array = array();
         if($this->session->userdata("group") == "dairy"){
             $id = $this->session->userdata("id");
         }else if($this->session->userdata("group") == "society"){
@@ -461,52 +487,57 @@ class Rate extends CI_Controller{
         }
         $q = $this->db->query("SELECT DISTINCT(Fat) FROM `cow_fat_clr` WHERE dairy_id = '$id'");
         $fat = $q->result_array();
-        $fat_arr = array("CLRTAB");
+        if(!empty($fat)){
+            $fat_arr = array("CLRTAB");
 
-        foreach($fat as $row_f){
-            array_push($fat_arr, $row_f['Fat']);
-            $q_s = $this->db->query("SELECT Clr FROM `cow_fat_clr` WHERE dairy_id = '$id' AND Fat = ".$row_f['Fat']);
-            $snf = $q_s->result_array();
-            $i = 0;
-            foreach($snf as $row_s){
-                $q_r = $this->db->query("SELECT Rate FROM `cow_fat_clr` WHERE dairy_id = '$id' AND Clr = ".$row_s['Clr']);
-                $rate = $q_r->result_array();
-                foreach($rate as $row_r){
-                    $rr = array(
-                        "Clr"=>$row_s['Clr'],
-                        "Rate"=>$row_r['Rate']
-                    );
-                    $a[$i] = $rr;
-                    $i++;
+            foreach($fat as $row_f){
+                array_push($fat_arr, $row_f['Fat']);
+                $q_s = $this->db->query("SELECT Clr FROM `cow_fat_clr` WHERE dairy_id = '$id' AND Fat = ".$row_f['Fat']);
+                $snf = $q_s->result_array();
+                $i = 0;
+                foreach($snf as $row_s){
+                    $q_r = $this->db->query("SELECT Rate FROM `cow_fat_clr` WHERE dairy_id = '$id' AND Clr = ".$row_s['Clr']);
+                    $rate = $q_r->result_array();
+                    foreach($rate as $row_r){
+                        $rr = array(
+                            "Clr"=>$row_s['Clr'],
+                            "Rate"=>$row_r['Rate']
+                        );
+                        $a[$i] = $rr;
+                        $i++;
+                    }
                 }
             }
-        }
-        $Snf = "";
-        $output = array();
-        $key = 0;
-        foreach($a as $item=>$rate){
-            if($rate['Clr'] != $Snf){
-                if($item != 0){
-                    $key++;
+            $Snf = "";
+            $output = array();
+            $key = 0;
+            foreach($a as $item=>$rate){
+                if($rate['Clr'] != $Snf){
+                    if($item != 0){
+                        $key++;
+                    }
+                    $output[$key]['Clr'] =  $rate['Clr'];
+                    $keyRate = 0;
                 }
-                $output[$key]['Clr'] =  $rate['Clr'];
-                $keyRate = 0;
+    //            $output[$key]['Rate'][$keyRate] = $rate['Rate'];
+                $output[$key][$keyRate] = $rate['Rate'];
+                $Snf = $rate['Clr'];
+                $keyRate++;
             }
-//            $output[$key]['Rate'][$keyRate] = $rate['Rate'];
-            $output[$key][$keyRate] = $rate['Rate'];
-            $Snf = $rate['Clr'];
-            $keyRate++;
+            // print the output
+    //        echo "<pre>";
+    //        print_r($output);
+    //        echo "</pre>";exit;
+            foreach($output as $result){
+                $array[] = array_values($result);
+            }
+
+            $data['fat'] = $fat_arr;
+            $data['vals'] = $array;
+        }else{
+            $data['fat'] = $fat_arr;
+            $data['vals'] = $array;
         }
-        // print the output
-//        echo "<pre>";
-//        print_r($output);
-//        echo "</pre>";exit;
-        foreach($output as $result){
-            $array[] = array_values($result);
-        }
-        
-        $data['fat'] = $fat_arr;
-        $data['vals'] = $array;
         $this->load->view("common/header");
         $this->load->view("rate/cfat_clr_index", $data);
         $this->load->view("common/footer");
@@ -520,66 +551,73 @@ class Rate extends CI_Controller{
         }
         $q = $this->db->query("SELECT DISTINCT(Fat) FROM `cow_fat_clr` WHERE dairy_id = '$id'");
         $fat = $q->result_array();
-        $fat_arr = array("CLRTAB");
-//        echo "<pre>";
-        foreach($fat as $row_f){
-            array_push($fat_arr, $row_f['Fat']);
-            $q_s = $this->db->query("SELECT Clr FROM `cow_fat_clr` WHERE dairy_id = '$id' AND Fat = ".$row_f['Fat']);
-            $snf = $q_s->result_array();
-            $i = 0;
-            foreach($snf as $row_s){
-                $q_r = $this->db->query("SELECT Rate FROM `cow_fat_clr` WHERE dairy_id = '$id' AND Clr = ".$row_s['Clr']);
-                $rate = $q_r->result_array();
-                foreach($rate as $row_r){
-                    $rr = array(
-                        "Clr"=>$row_s['Clr'],
-                        "Rate"=>$row_r['Rate']
-                    );
-                    $a[$i] = $rr;
-                    $i++;
+        if(!empty($fat)){
+            $fat_arr = array("CLRTAB");
+    //        echo "<pre>";
+            foreach($fat as $row_f){
+                array_push($fat_arr, $row_f['Fat']);
+                $q_s = $this->db->query("SELECT Clr FROM `cow_fat_clr` WHERE dairy_id = '$id' AND Fat = ".$row_f['Fat']);
+                $snf = $q_s->result_array();
+                $i = 0;
+                foreach($snf as $row_s){
+                    $q_r = $this->db->query("SELECT Rate FROM `cow_fat_clr` WHERE dairy_id = '$id' AND Clr = ".$row_s['Clr']);
+                    $rate = $q_r->result_array();
+                    foreach($rate as $row_r){
+                        $rr = array(
+                            "Clr"=>$row_s['Clr'],
+                            "Rate"=>$row_r['Rate']
+                        );
+                        $a[$i] = $rr;
+                        $i++;
+                    }
                 }
             }
-        }
-        
-        $Clr = "";
-        $output = array();
-        $key = 0;
-        foreach($a as $item=>$rate){
-            if($rate['Clr'] != $Clr){
-                if($item != 0){
-                    $key++;
+
+            $Clr = "";
+            $output = array();
+            $key = 0;
+            foreach($a as $item=>$rate){
+                if($rate['Clr'] != $Clr){
+                    if($item != 0){
+                        $key++;
+                    }
+                    $output[$key]['Clr'] =  $rate['Clr'];
+                    $keyRate = 0;
                 }
-                $output[$key]['Clr'] =  $rate['Clr'];
-                $keyRate = 0;
+                $output[$key][$keyRate] = $rate['Rate'];
+                $Clr = $rate['Clr'];
+                $keyRate++;
             }
-            $output[$key][$keyRate] = $rate['Rate'];
-            $Clr = $rate['Clr'];
-            $keyRate++;
-        }
-        // print the output
-//        echo "<pre>";
-//        print_r($output);
-//        echo "</pre>";exit;
-        foreach($output as $result){
-            $array[] = array_values($result);
-        }
-//        echo "<pre>";
-//        print_r($array);exit;
-        $fp = fopen('php://output', 'w');
-        if ($fp && $array) {
-            header('Content-Type: text/csv');
-            header('Content-Disposition: attachment; filename="CLR.csv"');
-            header('Pragma: no-cache');
-            header('Expires: 0');
-            fputcsv($fp, $fat_arr);
-            foreach($array as $rr){
-                fputcsv($fp, $rr);
+            // print the output
+    //        echo "<pre>";
+    //        print_r($output);
+    //        echo "</pre>";exit;
+            foreach($output as $result){
+                $array[] = array_values($result);
             }
-            die;
+    //        echo "<pre>";
+    //        print_r($array);exit;
+            $fp = fopen('php://output', 'w');
+            if ($fp && $array) {
+                header('Content-Type: text/csv');
+                header('Content-Disposition: attachment; filename="CLR.csv"');
+                header('Pragma: no-cache');
+                header('Expires: 0');
+                fputcsv($fp, $fat_arr);
+                foreach($array as $rr){
+                    fputcsv($fp, $rr);
+                }
+                die;
+            }
+        }else{
+            $this->session->set_flashdata("message", "There is no data in clr");
+            redirect("rate/cfat_clr", "refresh");
         }
     }
     
     function bfat_clr(){
+        $fat_arr = array();
+        $array = array();
         if($this->session->userdata("group") == "dairy"){
             $id = $this->session->userdata("id");
         }else if($this->session->userdata("group") == "society"){
@@ -589,52 +627,57 @@ class Rate extends CI_Controller{
         }
         $q = $this->db->query("SELECT DISTINCT(Fat) FROM `buffalo_fat_clr` WHERE dairy_id = '$id'");
         $fat = $q->result_array();
-        $fat_arr = array("CLRTAB");
+        if(!empty($fat)){
+            $fat_arr = array("CLRTAB");
 
-        foreach($fat as $row_f){
-            array_push($fat_arr, $row_f['Fat']);
-            $q_s = $this->db->query("SELECT Clr FROM `buffalo_fat_clr` WHERE dairy_id = '$id' AND Fat = ".$row_f['Fat']);
-            $snf = $q_s->result_array();
-            $i = 0;
-            foreach($snf as $row_s){
-                $q_r = $this->db->query("SELECT Rate FROM `buffalo_fat_clr` WHERE dairy_id = '$id' AND Clr = ".$row_s['Clr']);
-                $rate = $q_r->result_array();
-                foreach($rate as $row_r){
-                    $rr = array(
-                        "Clr"=>$row_s['Clr'],
-                        "Rate"=>$row_r['Rate']
-                    );
-                    $a[$i] = $rr;
-                    $i++;
+            foreach($fat as $row_f){
+                array_push($fat_arr, $row_f['Fat']);
+                $q_s = $this->db->query("SELECT Clr FROM `buffalo_fat_clr` WHERE dairy_id = '$id' AND Fat = ".$row_f['Fat']);
+                $snf = $q_s->result_array();
+                $i = 0;
+                foreach($snf as $row_s){
+                    $q_r = $this->db->query("SELECT Rate FROM `buffalo_fat_clr` WHERE dairy_id = '$id' AND Clr = ".$row_s['Clr']);
+                    $rate = $q_r->result_array();
+                    foreach($rate as $row_r){
+                        $rr = array(
+                            "Clr"=>$row_s['Clr'],
+                            "Rate"=>$row_r['Rate']
+                        );
+                        $a[$i] = $rr;
+                        $i++;
+                    }
                 }
             }
-        }
-        $Snf = "";
-        $output = array();
-        $key = 0;
-        foreach($a as $item=>$rate){
-            if($rate['Clr'] != $Snf){
-                if($item != 0){
-                    $key++;
+            $Snf = "";
+            $output = array();
+            $key = 0;
+            foreach($a as $item=>$rate){
+                if($rate['Clr'] != $Snf){
+                    if($item != 0){
+                        $key++;
+                    }
+                    $output[$key]['Clr'] =  $rate['Clr'];
+                    $keyRate = 0;
                 }
-                $output[$key]['Clr'] =  $rate['Clr'];
-                $keyRate = 0;
+    //            $output[$key]['Rate'][$keyRate] = $rate['Rate'];
+                $output[$key][$keyRate] = $rate['Rate'];
+                $Snf = $rate['Clr'];
+                $keyRate++;
             }
-//            $output[$key]['Rate'][$keyRate] = $rate['Rate'];
-            $output[$key][$keyRate] = $rate['Rate'];
-            $Snf = $rate['Clr'];
-            $keyRate++;
+            // print the output
+    //        echo "<pre>";
+    //        print_r($output);
+    //        echo "</pre>";exit;
+            foreach($output as $result){
+                $array[] = array_values($result);
+            }
+
+            $data['fat'] = $fat_arr;
+            $data['vals'] = $array;
+        }else{
+            $data['fat'] = $fat_arr;
+            $data['vals'] = $array;
         }
-        // print the output
-//        echo "<pre>";
-//        print_r($output);
-//        echo "</pre>";exit;
-        foreach($output as $result){
-            $array[] = array_values($result);
-        }
-        
-        $data['fat'] = $fat_arr;
-        $data['vals'] = $array;
         $this->load->view("common/header");
         $this->load->view("rate/bfat_clr_index", $data);
         $this->load->view("common/footer");
@@ -648,62 +691,67 @@ class Rate extends CI_Controller{
         }
         $q = $this->db->query("SELECT DISTINCT(Fat) FROM `buffalo_fat_clr` WHERE dairy_id = '$id'");
         $fat = $q->result_array();
-        $fat_arr = array("CLRTAB");
-//        echo "<pre>";
-        foreach($fat as $row_f){
-            array_push($fat_arr, $row_f['Fat']);
-            $q_s = $this->db->query("SELECT Clr FROM `buffalo_fat_clr` WHERE dairy_id = '$id' AND Fat = ".$row_f['Fat']);
-            $snf = $q_s->result_array();
-            $i = 0;
-            foreach($snf as $row_s){
-                $q_r = $this->db->query("SELECT Rate FROM `buffalo_fat_clr` WHERE dairy_id = '$id' AND Clr = ".$row_s['Clr']);
-                $rate = $q_r->result_array();
-                foreach($rate as $row_r){
-                    $rr = array(
-                        "Clr"=>$row_s['Clr'],
-                        "Rate"=>$row_r['Rate']
-                    );
-                    $a[$i] = $rr;
-                    $i++;
+        if(!empty($fat)){
+            $fat_arr = array("CLRTAB");
+    //        echo "<pre>";
+            foreach($fat as $row_f){
+                array_push($fat_arr, $row_f['Fat']);
+                $q_s = $this->db->query("SELECT Clr FROM `buffalo_fat_clr` WHERE dairy_id = '$id' AND Fat = ".$row_f['Fat']);
+                $snf = $q_s->result_array();
+                $i = 0;
+                foreach($snf as $row_s){
+                    $q_r = $this->db->query("SELECT Rate FROM `buffalo_fat_clr` WHERE dairy_id = '$id' AND Clr = ".$row_s['Clr']);
+                    $rate = $q_r->result_array();
+                    foreach($rate as $row_r){
+                        $rr = array(
+                            "Clr"=>$row_s['Clr'],
+                            "Rate"=>$row_r['Rate']
+                        );
+                        $a[$i] = $rr;
+                        $i++;
+                    }
                 }
             }
-        }
-        
-        $Clr = "";
-        $output = array();
-        $key = 0;
-        foreach($a as $item=>$rate){
-            if($rate['Clr'] != $Clr){
-                if($item != 0){
-                    $key++;
+
+            $Clr = "";
+            $output = array();
+            $key = 0;
+            foreach($a as $item=>$rate){
+                if($rate['Clr'] != $Clr){
+                    if($item != 0){
+                        $key++;
+                    }
+                    $output[$key]['Clr'] =  $rate['Clr'];
+                    $keyRate = 0;
                 }
-                $output[$key]['Clr'] =  $rate['Clr'];
-                $keyRate = 0;
+                $output[$key][$keyRate] = $rate['Rate'];
+                $Clr = $rate['Clr'];
+                $keyRate++;
             }
-            $output[$key][$keyRate] = $rate['Rate'];
-            $Clr = $rate['Clr'];
-            $keyRate++;
-        }
-        // print the output
-//        echo "<pre>";
-//        print_r($output);
-//        echo "</pre>";exit;
-        foreach($output as $result){
-            $array[] = array_values($result);
-        }
-//        echo "<pre>";
-//        print_r($array);exit;
-        $fp = fopen('php://output', 'w');
-        if ($fp && $array) {
-            header('Content-Type: text/csv');
-            header('Content-Disposition: attachment; filename="CLR.csv"');
-            header('Pragma: no-cache');
-            header('Expires: 0');
-            fputcsv($fp, $fat_arr);
-            foreach($array as $rr){
-                fputcsv($fp, $rr);
+            // print the output
+    //        echo "<pre>";
+    //        print_r($output);
+    //        echo "</pre>";exit;
+            foreach($output as $result){
+                $array[] = array_values($result);
             }
-            die;
+    //        echo "<pre>";
+    //        print_r($array);exit;
+            $fp = fopen('php://output', 'w');
+            if ($fp && $array) {
+                header('Content-Type: text/csv');
+                header('Content-Disposition: attachment; filename="CLR.csv"');
+                header('Pragma: no-cache');
+                header('Expires: 0');
+                fputcsv($fp, $fat_arr);
+                foreach($array as $rr){
+                    fputcsv($fp, $rr);
+                }
+                die;
+            }
+        }else{
+            $this->session->set_flashdata("message", "There is no data in clr");
+            redirect("rate/bfat_clr", "refresh");
         }
     }
 }
