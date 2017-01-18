@@ -30,6 +30,17 @@
                     <!-- Small boxes (Stat box) -->
                     <div class="row">
                         <?php
+                        if($this->session->flashdata('message')){
+                        ?>
+                        <div class="alert alert-danger alert-dismissable">
+                            <i class="fa fa-check"></i>
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            <?php echo $this->session->flashdata('message'); ?>
+                        </div>
+                        <?php
+                            }
+                        ?>
+                        <?php
                         if($this->session->flashdata('success')){
                         ?>
                         <div class="alert alert-success alert-dismissable">

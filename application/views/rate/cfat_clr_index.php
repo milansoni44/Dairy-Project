@@ -1,6 +1,10 @@
             <script>
                 $(document).ready(function(){
                     $("#example2").DataTable();
+                    $("#cow_fat").on("click", function(e){
+                       e.preventDefault();
+                       location.href = "<?php echo base_url(); ?>index.php/rate/import_bfat_snf";
+                    });
                     $("#cow_fat_clr").on("click", function(e){
                         e.preventDefault();
                         location.href = "<?php echo base_url(); ?>index.php/rate/export_cfatclr";

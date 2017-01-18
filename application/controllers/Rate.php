@@ -88,17 +88,22 @@ class Rate extends CI_Controller{
             redirect("/", "refresh");
         }
         $data = $this->rate_model->get_bfat();
-        $fp = fopen('php://output', 'w');
-        if ($fp && $data) {
-            header('Content-Type: text/csv');
-            header('Content-Disposition: attachment; filename="BFAT.csv"');
-            header('Pragma: no-cache');
-            header('Expires: 0');
-            fputcsv($fp, array("BUFFAT"));
-            foreach($data as $rr){
-                fputcsv($fp, array($rr['Rate']));
+        if(!empty($data)){
+            $fp = fopen('php://output', 'w');
+            if ($fp && $data) {
+                header('Content-Type: text/csv');
+                header('Content-Disposition: attachment; filename="BFAT.csv"');
+                header('Pragma: no-cache');
+                header('Expires: 0');
+                fputcsv($fp, array("BUFFAT"));
+                foreach($data as $rr){
+                    fputcsv($fp, array($rr['Rate']));
+                }
+                die;
             }
-            die;
+        }else{
+            $this->session->set_flashdata("message", "There is not data for bufalo fat");
+            redirect("rate","refresh");
         }
     }
     
@@ -173,17 +178,22 @@ class Rate extends CI_Controller{
             redirect("/", "refresh");
         }
         $data = $this->rate_model->get_cfat();
-        $fp = fopen('php://output', 'w');
-        if ($fp && $data) {
-            header('Content-Type: text/csv');
-            header('Content-Disposition: attachment; filename="CFAT.csv"');
-            header('Pragma: no-cache');
-            header('Expires: 0');
-            fputcsv($fp, array("COWFAT"));
-            foreach($data as $rr){
-                fputcsv($fp, array($rr['Rate']));
+        if(!empty($data)){
+            $fp = fopen('php://output', 'w');
+            if ($fp && $data) {
+                header('Content-Type: text/csv');
+                header('Content-Disposition: attachment; filename="CFAT.csv"');
+                header('Pragma: no-cache');
+                header('Expires: 0');
+                fputcsv($fp, array("COWFAT"));
+                foreach($data as $rr){
+                    fputcsv($fp, array($rr['Rate']));
+                }
+                die;
             }
-            die;
+        }else{
+            $this->session->set_flashdata("message", "There is no data for cow fat");
+            redirect("rate/cfat", "refresh");
         }
     }
     
