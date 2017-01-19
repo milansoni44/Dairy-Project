@@ -132,46 +132,6 @@ class Society extends CI_Controller
             $this->load->view("common/footer");
         }
     }
-    
-    // For mobile webservices
-    
-    
-    function login(){
-        $response = array();
-        if($this->input->post()){
-            $array = array(
-                "username"=>$this->input->post("username"),
-                "password"=>md5($this->input->post("password")),
-            );
-            $data = $this->auth_model->check_login($array);
-            if($data){
-                if($this->auth_model->check_userType($data->id) == "society"){
-                    $dairy = $this->auth_model->get_dairy($data->id);
-                    $response['error'] = FALSE;
-                    $response['dairy'] = $dairy->name;
-                    $response['data'] = $data;
-
-                    http_response_code(200);
-                    echo json_encode($response);
-                }else{
-                    $response['error'] = TRUE;
-                    $response['message'] = "Username or password is invalid";
-                    http_response_code(401);
-                    echo json_encode($response);
-                }
-            }else{
-                $response['error'] = TRUE;
-                $response['message'] = "Username or password is invalid";
-                http_response_code(401);
-                echo json_encode($response);
-            }
-        }else{
-            $response['error'] = TRUE;
-            $response['message'] = "Please try again letter";
-            http_response_code(401);
-            echo json_encode($response);
-        }
-    }
 }
 
 /** application/controllers/Society.php */
