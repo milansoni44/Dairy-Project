@@ -19,6 +19,9 @@ class Customers extends CI_Controller {
         $this->load->model("machine_model");
         $this->load->model("society_model");
         $this->load->database();
+        if(!$this->auth_lib->is_logged_in()){
+            redirect("auth/login","refresh");
+        }
     }
 
     function index() {

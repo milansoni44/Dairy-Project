@@ -16,6 +16,9 @@ class Dairy extends CI_Controller{
         $this->load->helper("security");
         $this->load->library("session");
         $this->load->database();
+        if(!$this->auth_lib->is_logged_in()){
+            redirect("auth/login","refresh");
+        }
     }
     
     public function index(){

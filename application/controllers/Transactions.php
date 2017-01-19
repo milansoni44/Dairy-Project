@@ -78,7 +78,7 @@ class Transactions extends CI_Controller {
                             );
 //                            echo "<pre>";
 //                            print_r($customer_data);exit;
-                            $this->customer_model->add_customer($customer_data, $data[13], $society);
+                            $this->customer_model->add_customer($customer_data, $machine_id, $society);
                             $cid = $this->db->insert_id();
 //                            $adhar = $this->transaction_model->get_adhar($cid);
                             $transaction_single = array(

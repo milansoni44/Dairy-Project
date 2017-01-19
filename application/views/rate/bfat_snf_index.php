@@ -55,7 +55,9 @@
                             <div class="box">
                                 <div class="box-header">
                                     <h3 class="box-title">Hover Data Table</h3>
+                                    <?php if($this->session->userdata("group") == "dairy"){ ?>
                                     <span class="pull-right"><button class="btn btn-primary" id="buffalo_fat_snf">Import Buffalo SNF</button></span>
+                                    <?php } ?>
                                     <span class="pull-right"><button class="btn btn-primary" id="buffalo_fat_snf_csv">Download SNF</button></span>
                                 </div><!-- /.box-header -->
                                 <?php if(!empty($fat)){ ?>

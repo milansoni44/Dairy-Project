@@ -16,6 +16,9 @@ class Society extends CI_Controller
         $this->load->library("session");
         $this->load->library("form_validation");
         $this->load->database();
+        if(!$this->auth_lib->is_logged_in()){
+            redirect("auth/login","refresh");
+        }
     }
     
     public function index()

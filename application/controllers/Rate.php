@@ -14,6 +14,9 @@ class Rate extends CI_Controller{
         $this->load->model("rate_model");
         $this->load->model("setting_model");
         $this->load->database();
+        if(!$this->auth_lib->is_logged_in()){
+            redirect("auth/login","refresh");
+        }
     }
     
     function index(){

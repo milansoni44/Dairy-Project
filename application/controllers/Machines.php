@@ -22,6 +22,9 @@ class Machines extends CI_Controller{
         $this->load->model("dairy_model");
         $this->load->model("society_model");
         $this->load->database();
+        if(!$this->auth_lib->is_logged_in()){
+            redirect("auth/login","refresh");
+        }
     }
     /**
      * display all the machines
