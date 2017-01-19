@@ -9,7 +9,7 @@
 /**
  * Description of Api
  *
- * @author Intel
+ * @author Milan & Abhay
  */
 class Api extends CI_Controller {
 
@@ -326,6 +326,5 @@ class Api extends CI_Controller {
         http_response_code($http_response_code);
         echo json_encode($response);
     }
-
     /* society app webservice * End */
 }
