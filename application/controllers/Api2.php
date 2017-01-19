@@ -122,7 +122,7 @@ class Api extends CI_Controller {
             if ($mobile && $mobile != "" && $mobile != NULL) {
                 $result = $this->db->query(" SELECT `id` FROM `customers` WHERE `mobile`=" . $mobile);
 
-                if ($result->row('id')) {
+                if ($result) {
                     $otp = (int) $this->generateOTP();
                     $customer_id = $result->row('id');
                     $result2 = $this->db->query(" UPDATE `customers` SET `otp`=" . $otp . " WHERE `id`=" . $customer_id);
