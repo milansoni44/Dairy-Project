@@ -247,16 +247,16 @@
                         <li class="treeview">
                             <a href="#">
                                 <i class="fa fa-bar-chart-o"></i>
-                                <span>Milk Producers </span>
+                                <span>Milk Suppliers </span>
                                 <i class="fa fa-angle-left pull-right"></i>
                             </a>
                             <ul class="treeview-menu">
                                 <?php if($this->session->userdata("group") == "dairy"){ ?>
-                                <li><a href="<?php echo base_url(); ?>index.php/customers/society_index"> <span>Milk Producer</span></a></li>
+                                <li><a href="<?php echo base_url(); ?>index.php/customers/society_index"> <span>Milk Supplier</span></a></li>
                                 <?php } ?>
                                 <?php if($this->session->userdata("group") == "society"){ ?>
-                                <li><a href="<?php echo base_url(); ?>index.php/customers"> <span>Milk Producer</span></a></li>
-                                <li><a href="<?php echo base_url(); ?>index.php/customers/import">Import Milk Producer</a></li>
+                                <li><a href="<?php echo base_url(); ?>index.php/customers"> <span>Milk Supplier</span></a></li>
+                                <li><a href="<?php echo base_url(); ?>index.php/customers/import">Import Milk Supplier</a></li>
                                 <?php } ?>
                             </ul>
                         </li>

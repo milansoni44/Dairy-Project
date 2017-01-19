@@ -7,12 +7,12 @@
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
                     <h1>
-                        Milk Producers
-                        <small>List Milk Producer</small>
+                        Milk Suppliers
+                        <small>List Milk Supplier</small>
                     </h1>
                     <ol class="breadcrumb">
                         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-                        <li class="active">Milk Producer</li>
+                        <li class="active">Milk Supplier</li>
                     </ol>
                 </section>
 
@@ -61,8 +61,8 @@
                                 <div class="box-header">
                                     <h3 class="box-title">Hover Data Table</h3>
                                     <?php if($this->session->userdata("group") == "society") {?>
-                                    <span class="pull-right"><a href="<?php echo base_url(); ?>index.php/customers/add" class="btn btn-primary" style="color: #fff;">Add Milk Producer</a></span>
-                                    <span class="pull-right"><a href="<?php echo base_url(); ?>index.php/customers/import" class="btn btn-primary" style="color: #fff;">Import Milk Producer</a></span>
+                                    <span class="pull-right"><a href="<?php echo base_url(); ?>index.php/customers/add" class="btn btn-primary" style="color: #fff;">Add Milk Supplier</a></span>
+                                    <span class="pull-right"><a href="<?php echo base_url(); ?>index.php/customers/import" class="btn btn-primary" style="color: #fff;">Import Milk Suppliers</a></span>
                                     <?php } ?>
                                 </div><!-- /.box-header -->
                                 <div class="box-body table-responsive">
