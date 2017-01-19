@@ -320,8 +320,7 @@ class Api extends CI_Controller {
                                             SUM(`netamt`) AS `total_amount`, 
                                             COUNT(`cid`) AS `producer`,
                                             (SELECT `machine_id` FROM `machines` `m` WHERE `m`.`id` = `transactions`.`deviceid` ) AS `machine_code`
-                                           
-                    FROM `transactions` WHERE `society_id`=" . $society_id . " AND `type`='C' AND `date`='" . $date . "' ");
+                    FROM `transactions` WHERE `society_id`=" . $society_id . " AND shift='$shift' AND `type`='C' AND `date`='" . $date . "' ");
 
                     $result_buf = $this->db->query("SELECT 
                                             SUM(`weight`) AS `total_litre`, 
@@ -331,7 +330,7 @@ class Api extends CI_Controller {
                                             SUM(`netamt`) AS `total_amount`, 
                                             COUNT(`cid`) AS `producer`,
                                             (SELECT `machine_id` FROM `machines` `m` WHERE `m`.`id` = `transactions`.`deviceid` ) AS `machine_code`
-                    FROM `transactions` WHERE `society_id`=" . $society_id . " AND `type`='B' AND `date`='" . $date . "' ");
+                    FROM `transactions` WHERE `society_id`=" . $society_id . " AND shift='$shift' AND `type`='B' AND `date`='" . $date . "' ");
                     
                     $http_response_code = 200;
                     $response = array(
