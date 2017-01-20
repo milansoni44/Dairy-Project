@@ -36,7 +36,7 @@
                         <div class="col-xs-12">
                             <div class="box">
                                 <div class="box-header">
-                                    <h3 class="box-title">Hover Data Table</h3>
+                                    <h3 class="box-title"><!-- Hover Data Table --></h3>
                                     <span class="pull-right"><a href="<?php echo base_url(); ?>index.php/machines/add" class="btn btn-primary" style="color: #fff;">Add Machines</a></span>
                                 </div><!-- /.box-header -->
                                 <div class="box-body table-responsive">

@@ -135,10 +135,10 @@
                                 <!-- User image -->
                                 <li class="user-header bg-light-blue">
                                     <img src="<?php echo base_url(); ?>assets/img/avatar3.png" class="img-circle" alt="User Image" />
-                                    <p>
+<!--                                    <p>
                                         Jane Doe - Web Developer
                                         <small>Member since Nov. 2017</small>
-                                    </p>
+                                    </p>-->
                                 </li>
                                 <!-- Menu Body -->
 <!--                                <li class="user-body">
@@ -154,9 +154,9 @@
                                 </li>-->
                                 <!-- Menu Footer-->
                                 <li class="user-footer">
-                                    <div class="pull-left">
+<!--                                    <div class="pull-left">
                                         <a href="#" class="btn btn-default btn-flat">Profile</a>
-                                    </div>
+                                    </div>-->
                                     <div class="pull-right">
                                         <a href="<?php echo base_url(); ?>index.php/auth/logout" class="btn btn-default btn-flat">Sign out</a>
                                     </div>

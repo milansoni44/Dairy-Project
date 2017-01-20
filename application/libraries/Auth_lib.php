@@ -26,21 +26,6 @@ class Auth_lib {
     }
     
     public function get_machines($type = NULL, $id = NULL){
-        /*if($type == "dairy"){
-            $q = $this->CI->db->query("SELECT m.machine_type,dmp.id, m.from_date, m.to_date, m.machine_id, m.validity FROM dairy_machine_map dmp
-LEFT JOIN machines m ON m.id = dmp.machine_id
-LEFT JOIN users u ON u.id = dmp.dairy_id
-WHERE u.id = '$id'");
-        }else if($type == "society"){
-            $q = $this->CI->db->query("SELECT m.machine_type,dmp.id, m.from_date, m.to_date, m.machine_id, m.validity FROM society_machine_map dmp
-LEFT JOIN machines m ON m.id = dmp.machine_id
-LEFT JOIN users u ON u.id = dmp.society_id
-WHERE u.id = '$id'");
-        }else{
-            $q = $this->CI->db->query("SELECT * FROM machines");
-        }
-//        echo $this->CI->db->last_query();exit;
-         */
         if($type == "dairy"){
             $q = $this->CI->db->query("SELECT n.message FROM notification n
                                 LEFT JOIN notification_read nr ON nr.notification_id = n.id

@@ -36,8 +36,10 @@
                         <div class="col-xs-12">
                             <div class="box">
                                 <div class="box-header">
-                                    <h3 class="box-title">Hover Data Table</h3>
+                                    <h3 class="box-title"><!-- Hover Data Table --></h3>
+                                    <?php if($this->session->userdata("group") == "dairy"){ ?>
                                     <span class="pull-right"><a href="<?php echo base_url(); ?>index.php/society/add" class="btn btn-primary" style="color: #fff;">Add Society</a></span>
+                                    <?php } ?>
                                 </div><!-- /.box-header -->
                                 <div class="box-body table-responsive">
                                     <table id="example2" class="table table-bordered table-hover">
@@ -50,7 +52,9 @@
                                                 <th>Area</th>
                                                 <th>Contact Person</th>
                                                 <th>Mobile</th>
+                                                <?php if($this->session->userdata("group") == "dairy"){ ?>
                                                 <th>Action</th>
+                                                <?php } ?>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -66,10 +70,12 @@
                                                 <td><?php echo $row->area; ?></td>
                                                 <td><?php echo $row->contact_person; ?></td>
                                                 <td><?php echo $row->mobile; ?></td>
+                                                <?php if($this->session->userdata("group") == "dairy"){ ?>
                                                 <td>
                                                     <a href="<?php echo base_url(); ?>index.php/society/edit/<?php echo $row->id; ?>">Edit</a>
                                                     <a href="<?php echo base_url(); ?>index.php/society/delete/<?php echo $row->id; ?>">Delete</a>
                                                 </td>
+                                                <?php } ?>
                                             </tr>
                                             <?php
                                                     }

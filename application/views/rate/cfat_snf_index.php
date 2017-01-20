@@ -54,7 +54,7 @@
                         <div class="col-xs-12">
                             <div class="box">
                                 <div class="box-header">
-                                    <h3 class="box-title">Hover Data Table</h3>
+                                    <h3 class="box-title"><!-- Hover Data Table --></h3>
                                     <?php if($this->session->userdata("group") == "dairy"){ ?>
                                     <span class="pull-right"><button class="btn btn-primary" id="cow_fat">Import Cow Fat</button></span>
                                     <?php } ?>

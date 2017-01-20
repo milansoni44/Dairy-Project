@@ -4,7 +4,7 @@
  *
  * @author Milan Soni
  */
-class Society extends CI_Controller
+class Society extends MY_Controller
 {
     public function __construct() 
     {
@@ -29,7 +29,7 @@ class Society extends CI_Controller
         }
         $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
         $data['society'] = $this->society_model->get_society();
-        $this->load->view('common/header', $data);
+        $this->load->view('common/header', $this->data);
         $this->load->view('society/index',$data);
         $this->load->view('common/footer');
     }
@@ -77,7 +77,7 @@ class Society extends CI_Controller
         }else{
             $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
             $data['states'] = $this->dairy_model->get_states();
-            $this->load->view("common/header", $data);
+            $this->load->view("common/header", $this->data);
             $this->load->view("society/add",$data);
             $this->load->view("common/footer");
         }
@@ -127,7 +127,7 @@ class Society extends CI_Controller
             $data['id'] = $id;
             $data['society'] = $this->society_model->get_society_by_id($id);
             $data['states'] = $this->dairy_model->get_states();
-            $this->load->view("common/header", $data);
+            $this->load->view("common/header", $this->data);
             $this->load->view("society/edit",$data);
             $this->load->view("common/footer");
         }

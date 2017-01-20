@@ -91,7 +91,7 @@
             <div class="col-xs-12">
                 <div class="box">
                     <div class="box-header">
-                        <h3 class="box-title">Hover Data Table</h3>
+                        <h3 class="box-title"><!-- Hover Data Table --></h3>
                         <span class="pull-right" id="total_net" style="font-weight: bold;"></span><br>
                         <span class="pull-right" id="total_litre" style="font-weight: bold;"></span>
                     </div><!-- /.box-header -->

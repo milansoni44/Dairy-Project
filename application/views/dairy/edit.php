@@ -86,7 +86,7 @@
                                 <form role="form" class="form-horizontal" id="add_dairy_form" action="<?php echo base_url(); ?>index.php/dairy/edit/<?php echo $id; ?>" method="post">
                                     <div class="box-body">
                                         <div class="form-group">
-                                            <label class="control-label col-md-2" for="name">Name</label>
+                                            <label class="control-label col-md-2" for="name">Name <span style="color:red;">*</span></label>
                                             <div class="col-md-4">
                                                 <input type="text" name="name" class="form-control" id="name" value="<?php echo set_value("name", $dairy->name); ?>"/>
                                                 <?php if(isset($errors['name'])){
@@ -95,7 +95,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="control-label col-md-2" for="username">Username</label>
+                                            <label class="control-label col-md-2" for="username">Username <span style="color:red;">*</span></label>
                                             <div class="col-md-4">
                                                 <input type="text" name="username" class="form-control" id="username" value="<?php echo set_value("username", $dairy->username); ?>"/>
                                                 <?php if(isset($errors['username'])){
@@ -113,7 +113,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="control-label col-md-2" for="password">Password</label>
+                                            <label class="control-label col-md-2" for="password">Password <span style="color:red;">*</span></label>
                                             <div class="col-md-4">
                                                 <input type="password" name="password" class="form-control" id="password"/>
                                                 <?php if(isset($errors['password'])){
@@ -122,7 +122,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="control-label col-md-2" for="mobile">Mobile</label>
+                                            <label class="control-label col-md-2" for="mobile">Mobile <span style="color:red;">*</span></label>
                                             <div class="col-md-4">
                                                 <input type="text" name="mobile" class="form-control" id="mobile" value="<?php echo set_value("mobile", $dairy->mobile); ?>"/>
                                                 <?php if(isset($errors['mobile'])){

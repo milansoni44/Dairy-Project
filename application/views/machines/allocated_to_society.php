@@ -36,8 +36,10 @@
                         <div class="col-xs-12">
                             <div class="box">
                                 <div class="box-header">
-                                    <h3 class="box-title">Hover Data Table</h3>
+                                    <h3 class="box-title"><!-- Hover Data Table --></h3>
+                                    <?php if($this->session->userdata("group") == "dairy"){ ?>
                                     <span class="pull-right"><a href="<?php echo base_url(); ?>index.php/machines/allocate_to_soc" class="btn btn-primary" style="color: #fff;">Allocate Machine</a></span>
+                                    <?php } ?>
                                 </div><!-- /.box-header -->
                                 <div class="box-body table-responsive">
                                     <table id="example2" class="table table-bordered table-hover">
@@ -45,7 +47,9 @@
                                             <tr>
                                                 <th>Machine ID</th>
                                                 <th>Society</th>
-                                                <th>Actions</th>
+                                                <?php if($this->session->userdata("group") == "dairy"){ ?>
+                                                <th>Actions</th
+                                                <?php } ?>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -56,10 +60,12 @@
                                             <tr>
                                                 <td><?php echo $row->machine_id; ?></td>
                                                 <td><?php echo $row->name; ?></td>
+                                                <?php if($this->session->userdata("group") == "dairy"){ ?>
                                                 <td>
                                                     <a href="<?php echo base_url(); ?>index.php/machines/edit_society_machine/<?php echo $row->id; ?>">Edit</a>
                                                     <a href="<?php echo base_url(); ?>index.php/machines/delete/<?php echo $row->id; ?>">Delete</a>
                                                 </td>
+                                                <?php } ?>
                                             </tr>
                                             <?php
                                                     }
@@ -70,7 +76,9 @@
                                             <tr>
                                                 <th>Machine ID</th>
                                                 <th>Society</th>
+                                                <?php if($this->session->userdata("group") == "dairy"){ ?>
                                                 <th>Actions</th>
+                                                <?php } ?>
                                             </tr>
                                         </tfoot>
                                     </table>

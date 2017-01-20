@@ -9,7 +9,7 @@ ini_set('date.timezone', 'Asia/Kolkata');
  */
 ini_set('precision', '15');
 
-class Transactions extends CI_Controller {
+class Transactions extends MY_Controller {
 
     //put your code here
     function __construct() {
@@ -32,7 +32,7 @@ class Transactions extends CI_Controller {
         $data['transaction'] = $this->transaction_model->get_transactions();
 //        echo "<pre>";
 //        print_r($data['transaction']);exit;
-        $this->load->view("common/header", $data);
+        $this->load->view("common/header", $this->data);
         $this->load->view("transactions/index", $data);
         $this->load->view("common/footer");
     }
@@ -66,15 +66,8 @@ class Transactions extends CI_Controller {
                             continue;
                         }
                         if ($this->customer_model->check_exist_adhar($data[7]) === FALSE) {
-//                            echo "Hello";exit;
-//                            $this->session->set_flashdata("message","Line:$i Adhar no not exist");
-//                            $i++;
-//                            continue;
                             $customer_data = array(
                                 "adhar_no" => $data[7],
-//                                "society_id"=>$society,
-//                                "dairy_id"=>$dairy,
-//                                "machine_id"=>$machine_id,
                             );
 //                            echo "<pre>";
 //                            print_r($customer_data);exit;
@@ -107,6 +100,14 @@ class Transactions extends CI_Controller {
                             continue;
                         }
                         $cid = $this->transaction_model->get_cid($data[7]);
+                        if($this->customer_model->check_exist_customer_machine($cid, $machine_id) === FALSE){
+                            $cust_machine = array(
+                                "cid"=>$cid,
+                                "machine_id"=>$machine_id,
+                                "society_id"=>$society
+                            );
+                            $this->customer_model->insert_customer_machine($cust_machine);
+                        }
                         $t_date = str_replace('/', '-', $data[14]);
                         $trans = array(
                             "dairy_id" => $dairy,
@@ -142,7 +143,7 @@ class Transactions extends CI_Controller {
                 redirect("transactions/daily", "refresh");
             }
         } else {
-            $this->load->view("common/header");
+            $this->load->view("common/header", $this->data);
             $this->load->view("transactions/import");
             $this->load->view("common/footer");
         }
@@ -220,14 +221,14 @@ class Transactions extends CI_Controller {
         if ($this->form_validation->run() == TRUE) {
 //            $data['transactions'] = $this->transaction_model->get_transactions($this->input->post("date"), $this->input->post("to_date"));
             $data['customers'] = $this->customer_model->get_customer();
-            $this->load->view("common/header");
+            $this->load->view("common/header", $this->data);
             $this->load->view("transactions/daily", $data);
             $this->load->view("common/footer");
         } else {
             $data['errors'] = $this->form_validation->error_array();
 //            $data['transactions'] = $this->transaction_model->get_transactions(date("Y-m-d"), date("Y-m-d"));
             $data['customers'] = $this->customer_model->get_customer();
-            $this->load->view("common/header");
+            $this->load->view("common/header", $this->data);
             $this->load->view("transactions/daily", $data);
             $this->load->view("common/footer");
         }
@@ -322,12 +323,12 @@ class Transactions extends CI_Controller {
         if ($this->form_validation->run() == TRUE) {
             $data['txn_society'] = $this->transaction_model->get_society_txn($this->input->post("society"));
             $data['society'] = $this->transaction_model->get_societies();
-            $this->load->view("common/header");
+            $this->load->view("common/header", $this->data);
             $this->load->view("transactions/dairy_txn", $data);
             $this->load->view("common/footer");
         } else {
             $data['society'] = $this->transaction_model->get_societies();
-            $this->load->view("common/header");
+            $this->load->view("common/header", $this->data);
             $this->load->view("transactions/dairy_txn", $data);
             $this->load->view("common/footer");
         }
@@ -362,11 +363,11 @@ class Transactions extends CI_Controller {
         $this->form_validation->set_rules("to_date", "Date", "trim|required|callback_check_dates");
 
         if ($this->form_validation->run() == TRUE) {
-            $this->load->view("common/header");
+            $this->load->view("common/header", $this->data);
             $this->load->view("transactions/daily_admin");
             $this->load->view("common/footer");
         } else {
-            $this->load->view("common/header");
+            $this->load->view("common/header", $this->data);
             $this->load->view("transactions/daily_admin");
             $this->load->view("common/footer");
         }
@@ -396,13 +397,13 @@ class Transactions extends CI_Controller {
 
         if ($this->form_validation->run() == TRUE) {
             $data['transactions'] = $this->transaction_model->get_monthly_transaction($this->input->post("date"));
-            $this->load->view("common/header");
+            $this->load->view("common/header", $this->data);
             $this->load->view("transactions/monthly", $data);
             $this->load->view("common/footer");
         } else {
             $data['errors'] = $this->form_validation->error_array();
             $data['transactions'] = $this->transaction_model->get_monthly_transaction(date("Y-m"));
-            $this->load->view("common/header");
+            $this->load->view("common/header", $this->data);
             $this->load->view("transactions/monthly", $data);
             $this->load->view("common/footer");
         }
@@ -413,12 +414,12 @@ class Transactions extends CI_Controller {
 //            echo "Hello";exit;
             $data['transactions'] = $this->transaction_model->get_customer_transaction($this->input->post("customer"));
             $data['customers'] = $this->customer_model->get_customer_txn();
-            $this->load->view("common/header");
+            $this->load->view("common/header", $this->data);
             $this->load->view("transactions/customer", $data);
             $this->load->view("common/footer");
         } else {
             $data['customers'] = $this->customer_model->get_customer_txn();
-            $this->load->view("common/header");
+            $this->load->view("common/header", $this->data);
             $this->load->view("transactions/customer", $data);
             $this->load->view("common/footer");
         }

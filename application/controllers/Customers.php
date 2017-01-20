@@ -7,7 +7,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  * @author Milan Soni
  */
-class Customers extends CI_Controller {
+class Customers extends MY_Controller {
 
     //put your code here
     function __construct() {
@@ -25,12 +25,12 @@ class Customers extends CI_Controller {
     }
 
     function index() {
-        $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
+//        $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
         $data['customers'] = $this->customer_model->get_customer();
         if ($this->session->userdata("group") == "dairy") {
             $data['society'] = $this->society_model->get_society();
         }
-        $this->load->view("common/header", $data);
+        $this->load->view("common/header", $this->data);
         $this->load->view("customers/index", $data);
         $this->load->view("common/footer");
     }
@@ -42,22 +42,22 @@ class Customers extends CI_Controller {
         }
 
         if ($this->input->post()) {
-            $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
+//            $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
             $id = $this->input->post("society");
             $data['customers'] = $this->customer_model->get_society_customer($id);
             if ($this->session->userdata("group") == "dairy") {
                 $data['society'] = $this->society_model->get_society();
             }
-            $this->load->view("common/header", $data);
+            $this->load->view("common/header", $this->data);
             $this->load->view("customers/society_index", $data);
             $this->load->view("common/footer");
         } else {
-            $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
+//            $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
             $data['customers'] = $this->customer_model->get_customer();
             if ($this->session->userdata("group") == "dairy") {
                 $data['society'] = $this->society_model->get_society();
             }
-            $this->load->view("common/header", $data);
+            $this->load->view("common/header", $this->data);
             $this->load->view("customers/society_index", $data);
             $this->load->view("common/footer");
         }
@@ -111,9 +111,9 @@ class Customers extends CI_Controller {
             $this->session->set_flashdata("success", "Member added successfully");
             redirect("customers", "refresh");
         } else {
-            $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
+            //$data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
             $data['machine'] = $this->machine_model->allocated_soc_machine($this->session->userdata("id"));
-            $this->load->view("common/header", $data);
+            $this->load->view("common/header", $this->data);
             $this->load->view("customers/add", $data);
             $this->load->view("common/footer");
         }
@@ -158,11 +158,11 @@ class Customers extends CI_Controller {
             $this->session->set_flashdata("success", "Member updated successfully");
             redirect("customers", "refresh");
         } else {
-            $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
+            //$data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
             $data['machine'] = $this->machine_model->allocated_soc_machine($this->session->userdata("id"));
             $data['member'] = $this->customer_model->get_customer_by_id($id);
             $data['id'] = $id;
-            $this->load->view("common/header", $data);
+            $this->load->view("common/header", $this->data);
             $this->load->view("customers/edit", $data);
             $this->load->view("common/footer");
         }
@@ -251,19 +251,19 @@ class Customers extends CI_Controller {
             $this->session->set_flashdata("message", $data_validate);
             redirect("customers", "refresh");
         } else {
-            $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
+            //$data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
             $data['machine'] = $this->machine_model->allocated_soc_machine($this->session->userdata("id"));
 //            $data['tmp'] = $this->customer_model->get_tmp_data();
-            $this->load->view("common/header", $data);
+            $this->load->view("common/header", $this->data);
             $this->load->view("customers/import", $data);
             $this->load->view("common/footer");
         }
     }
 
     function correct() {
-        $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
+        //$data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
         $data['tmp'] = $this->customer_model->get_tmpData();
-        $this->load->view("common/header", $data);
+        $this->load->view("common/header", $this->data);
         $this->load->view("customers/correct", $data);
         $this->load->view("common/footer");
     }
@@ -301,11 +301,11 @@ class Customers extends CI_Controller {
             $this->session->set_flashdata("success", "Member added successfully");
             redirect("customers", "refresh");
         } else {
-            $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
+//            $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
             $data['machine'] = $this->machine_model->allocated_soc_machine($this->session->userdata("id"));
             $data['member'] = $this->customer_model->get_tmpCustomer_by_id($id);
             $data['id'] = $id;
-            $this->load->view("common/header", $data);
+            $this->load->view("common/header", $this->data);
             $this->load->view("customers/edit_correct", $data);
             $this->load->view("common/footer");
         }
@@ -393,104 +393,13 @@ class Customers extends CI_Controller {
             $this->session->set_flashdata("message", $data_validate);
             redirect("customers", "refresh");
         } else {
-            $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
+//            $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
             $data['machine'] = $this->machine_model->allocated_soc_machine($this->session->userdata("id"));
             $data['tmp'] = $this->customer_model->get_tmp_data();
-            $this->load->view("common/header", $data);
+            $this->load->view("common/header", $this->data);
             $this->load->view("customers/import", $data);
             $this->load->view("common/footer");
         }
-    }
-
-    public function generateOTP() {
-        return substr(str_shuffle("0123456789"), 0, 4);
-    }
-
-    public function login() {
-        $response = array();
-        $http_response_code = 401;
-
-        if ($this->input->server("REQUEST_METHOD") === "POST") {
-            $mobile = $this->input->post('mobile');
-            $result = $this->db->query(" SELECT `id` FROM `customers` WHERE `mobile`=" . $mobile);
-
-            if ($result->num_rows > 0) {
-                $otp = (int) $this->generateOTP();
-                $customer_id = $result->row('id');
-                $result2 = $this->db->query(" UPDATE `customers` SET `otp`=" . $otp . " WHERE `id`=" . $customer_id);
-
-                if ($result2) {
-                    /* Message to client start */
-                    //$otp = "454545";
-                    $ch = curl_init();
-                    //$mobile="4654654654";
-                    $msg = $otp . " is your one time password (OTP) at Dairysuite App";
-                    //$msg = "Onetime Password (OTP) for your login is ".$otp;
-                    $msg = urlencode($msg);
-
-                    curl_setopt($ch, CURLOPT_URL, "http://ip.shreesms.net/smsserver/SMS10N.aspx?Userid=BPUNGI&UserPassword=12345&PhoneNumber=$mobile&Text=$msg");
-                    $output = curl_exec($ch);
-
-                    curl_close($ch);
-                    /* Message to client end */
-                    $http_response_code = 200;
-                    $response = array(
-                        'error' => FALSE,
-                        'customer_id' => $customer_id,
-                        'message' => "OTP has been sent to given mobile number"
-                    );
-                } else {
-                    $response = array(
-                        'error' => TRUE,
-                        'message' => "error in saving OTP"
-                    );
-                }
-            } else {
-                $response = array(
-                    'error' => TRUE,
-                    'message' => "Your mobile number is not saved in our system"
-                );
-            }
-        } else {
-            $response = array(
-                'error' => TRUE,
-                'message' => "Your method is invalid."
-            );
-        }
-        http_response_code($http_response_code);
-        echo json_encode($response);
-    }
-
-    public function loginOTPSubmit() {
-        $response = array();
-        $http_response_code = 401;
-
-        if ($this->input->server("REQUEST_METHOD") === "POST") {
-            $customer_id = $this->input->post('customer_id');
-            $otp = $this->input->post('otp');
-            $result = $this->db->query("SELECT COUNT(*) AS `total` FROM `customers` WHERE `id`=" . $customer_id . " AND `otp`=" . $otp);
-
-            if ($result->row('total') > 0) {
-                $result = $this->db->query(" UPDATE `customers` SET `otp`=NULL WHERE `id`=" . $customer_id);
-                $http_response_code = 200;
-                $response = array(
-                    'error' => FALSE,
-                    'message' => "Login success"
-                );
-            } else {
-                $response = array(
-                    'error' => TRUE,
-                    'message' => "Invalid otp or maybe expired otp"
-                );
-            }
-        } else {
-            $response = array(
-                'error' => TRUE,
-                'message' => "Your method is invalid."
-            );
-        }
-        http_response_code($http_response_code);
-        echo json_encode($response);
     }
 }
 

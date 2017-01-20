@@ -4,7 +4,7 @@
  *
  * @author Milan Soni
  */
-class Dairy extends CI_Controller{
+class Dairy extends MY_Controller{
     //put your code here
     public function __construct() {
         parent::__construct();
@@ -26,9 +26,9 @@ class Dairy extends CI_Controller{
             $this->session->set_falshdata("message","Access Denied");
             redirect("/","refresh");
         }
-        $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
+//        $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
         $data['dairies'] = $this->dairy_model->get_dairy();
-        $this->load->view("common/header", $data);
+        $this->load->view("common/header", $this->data);
         $this->load->view("dairy/index",$data);
         $this->load->view("common/footer");
     }
@@ -46,6 +46,7 @@ class Dairy extends CI_Controller{
         $this->form_validation->set_rules("mobile","Mobile","trim|required|xss_clean");
         $this->form_validation->set_rules("address","Address","trim|xss_clean");
         $this->form_validation->set_rules("area","Area","trim|xss_clean");
+        $this->form_validation->set_rules("street","Street","trim|xss_clean");
         $this->form_validation->set_rules("contact_person","Contact Person","trim|xss_clean");
         $this->form_validation->set_rules("pincode","Pincode","trim|xss_clean");
         $this->form_validation->set_rules("state","State","trim|xss_clean");
@@ -79,10 +80,10 @@ class Dairy extends CI_Controller{
             $this->session->set_flashdata("success","Dairy data inserted successfully.");
             redirect("dairy",'refresh');
         }else{
-            $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
+//            $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
             $data['errors'] = $this->form_validation->error_array();
             $data['states'] = $this->dairy_model->get_states();
-            $this->load->view("common/header", $data);
+            $this->load->view("common/header", $this->data);
             $this->load->view("dairy/add",$data);
             $this->load->view("common/footer");
         }
@@ -101,6 +102,7 @@ class Dairy extends CI_Controller{
         $this->form_validation->set_rules("mobile","Mobile","trim|required|xss_clean");
         $this->form_validation->set_rules("address","Address","trim|xss_clean");
         $this->form_validation->set_rules("area","Area","trim|xss_clean");
+        $this->form_validation->set_rules("street","Street","trim|xss_clean");
         $this->form_validation->set_rules("contact_person","Contact Person","trim|xss_clean");
         $this->form_validation->set_rules("pincode","Pincode","trim|xss_clean");
         $this->form_validation->set_rules("state","State","trim|xss_clean");
@@ -136,13 +138,13 @@ class Dairy extends CI_Controller{
             $this->session->set_flashdata("success","Dairy data updated successfully.");
             redirect("dairy",'refresh');
         }else{
-            $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
+//            $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
             $data['errors'] = $this->form_validation->error_array();
             $data['dairy'] = $this->dairy_model->get_dairy_by_id($id);
             $data['states'] = $this->dairy_model->get_states();
             $data['cities'] = $this->dairy_model->get_cities_by_id($data['dairy']->state);
             $data['id'] = $id;
-            $this->load->view("common/header", $data);
+            $this->load->view("common/header", $this->data);
             $this->load->view("dairy/edit",$data);
             $this->load->view("common/footer");
         }

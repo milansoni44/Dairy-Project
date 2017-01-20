@@ -133,6 +133,21 @@ LEFT JOIN customers c ON c.id = t.cid WHERE t.dairy_id = '$id'");
         }
         return FALSE;
     }
+    
+    function check_exist_customer_machine($cid = NULL, $machine = NULL){
+        $q = $this->db->query("SELECT * FROM customer_machine WHERE machine_id = '$machine' AND cid = '$cid'");
+        if($q->num_rows() > 0){
+            return TRUE;
+        }
+        return FALSE;
+    }
+    
+    function insert_customer_machine($data = array()){
+        if($this->db->insert("customer_machine", $data)){
+            return TRUE;
+        }
+        return FALSE;
+    }
 
     function check_exist($col = NULL, $col_name = NULL, $id = NULL) {
         // change as per expiry '0000-00-00' if not then member not exist

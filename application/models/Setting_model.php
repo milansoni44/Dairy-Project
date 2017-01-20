@@ -13,7 +13,7 @@ class Setting_model extends CI_Model{
     function get_config($type = NULL, $limit = NULL){
         $this->db->where("config_name", $limit);
         $this->db->where("config_category",$type);
-        $q = $this->db->get("CONFIG_DATA");
+        $q = $this->db->get("config_data");
         if($q->num_rows() > 0){
             return $q->row();
         }

@@ -11,7 +11,7 @@
  *
  * @author Milan Soni
  */
-class Machines extends CI_Controller{
+class Machines extends MY_Controller{
     
     function __construct() {
         parent::__construct();
@@ -35,9 +35,9 @@ class Machines extends CI_Controller{
             redirect("/","refresh");
         }
         
-        $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
+//        $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
         $data['machines'] = $this->machine_model->get_machines();
-        $this->load->view("common/header", $data);
+        $this->load->view("common/header", $this->data);
         $this->load->view("machines/index",$data);
         $this->load->view("common/footer");
     }
@@ -75,9 +75,9 @@ class Machines extends CI_Controller{
             $this->session->set_flashdata("success","Machines data inserted successfully.");
             redirect("machines",'refresh');
         }else{
-            $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
-            $this->load->view("common/header", $data);
-            $this->load->view("machines/add", $data);
+//            $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
+            $this->load->view("common/header", $this->data);
+            $this->load->view("machines/add");
             $this->load->view("common/footer");
         }
     }
@@ -106,10 +106,10 @@ class Machines extends CI_Controller{
             $this->session->set_flashdata("success","Machines data updated successfully.");
             redirect("machines",'refresh');
         }else{
-            $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
+//            $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
             $data['machine'] = $this->machine_model->get_machine_by_id($id);
             $data['id'] = $id;
-            $this->load->view("common/header", $data);
+            $this->load->view("common/header", $this->data);
             $this->load->view("machines/edit", $data);
             $this->load->view("common/footer");
         }
@@ -119,9 +119,9 @@ class Machines extends CI_Controller{
      */
     function allocate(){
         if($this->session->userdata("group") == "admin" || $this->session->userdata("group") == "dairy"){
-            $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
+//            $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
             $data['allocated_machines'] = $this->machine_model->mapped_machine();
-            $this->load->view("common/header", $data);
+            $this->load->view("common/header", $this->data);
             $this->load->view("machines/allocated_machines",$data);
             $this->load->view("common/footer");
         }else{
@@ -134,9 +134,9 @@ class Machines extends CI_Controller{
      */
     function allocated_to_society(){
         if($this->session->userdata("group") == "dairy" || $this->session->userdata("group") == "admin" || $this->session->userdata("group") == "society"){
-            $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
+//            $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
             $data['allocated_machines'] = $this->machine_model->mapped_society_machine();
-            $this->load->view("common/header", $data);
+            $this->load->view("common/header", $this->data);
             $this->load->view("machines/allocated_to_society",$data);
             $this->load->view("common/footer");
         }else{
@@ -163,10 +163,10 @@ class Machines extends CI_Controller{
             $this->session->set_flashdata("success","Machine added to dairy successfully.");
             redirect("machines/allocate",'refresh');
         }else{
-            $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
+//            $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
             $data['dairy'] = $this->dairy_model->get_dairy();
             $data['machines'] = $this->machine_model->not_allocated_machines();
-            $this->load->view("common/header", $data);
+            $this->load->view("common/header", $this->data);
             $this->load->view("machines/allocate",$data);
             $this->load->view("common/footer");
         }
@@ -197,7 +197,7 @@ class Machines extends CI_Controller{
             $data['machines'] = $this->machine_model->allocated_dairy_machine($id);
             $data['mapped_machine'] = $this->machine_model->get_dairyMachine_by_id($id);
             $data['id'] = $id;
-            $this->load->view("common/header", $data);
+            $this->load->view("common/header", $this->data);
             $this->load->view("machines/edit_allocate",$data);
             $this->load->view("common/footer");
         }
@@ -223,10 +223,10 @@ class Machines extends CI_Controller{
             $this->session->set_flashdata("success","Machine added to society successfully.");
             redirect("machines/allocated_to_society",'refresh');
         }else{
-            $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
+//            $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
             $data['society'] = $this->society_model->get_society();
             $data['machines'] = $this->machine_model->not_allocated_soc_machines();
-            $this->load->view("common/header", $data);
+            $this->load->view("common/header", $this->data);
             $this->load->view("machines/allocate_to_soc",$data);
             $this->load->view("common/footer");
         }
@@ -251,12 +251,12 @@ class Machines extends CI_Controller{
             $this->session->set_flashdata("success","Machine updated to society successfully.");
             redirect("machines/allocated_to_society",'refresh');
         }else{
-            $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
+//            $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
             $data['id'] = $id;
             $data['society_machine'] = $this->machine_model->get_societyMachine_by_id($id);
             $data['society'] = $this->society_model->get_society();
             $data['machines'] = $this->machine_model->allocated_soc_machine($id);
-            $this->load->view("common/header", $data);
+            $this->load->view("common/header", $this->data);
             $this->load->view("machines/edit_society_machine",$data);
             $this->load->view("common/footer");
         }

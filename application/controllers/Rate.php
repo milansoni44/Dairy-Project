@@ -4,7 +4,7 @@
  *
  * @author Milan Soni
  */
-class Rate extends CI_Controller{
+class Rate extends MY_Controller{
     //put your code here
     function __construct() {
         parent::__construct();
@@ -29,7 +29,7 @@ class Rate extends CI_Controller{
 //                $this->session->set_userdata("machine_notify",($this->session->userdata("machine_notify")-1));
 //            }
             $data['bf_rate'] = $this->rate_model->get_bufallo_rate();
-            $this->load->view("common/header");
+            $this->load->view("common/header", $this->data);
             $this->load->view("rate/index", $data);
             $this->load->view("common/footer");
         }
@@ -79,7 +79,7 @@ class Rate extends CI_Controller{
                 redirect("rate","refresh");
             }
         }else{
-            $this->load->view("common/header");
+            $this->load->view("common/header", $this->data);
             $this->load->view("rate/bfat");
             $this->load->view("common/footer");
         }
@@ -118,7 +118,7 @@ class Rate extends CI_Controller{
         
         if($this->session->userdata("group") == "dairy" || $this->session->userdata("group") == "society"){
             $data['c_rate'] = $this->rate_model->get_cow_fatrate();
-            $this->load->view("common/header");
+            $this->load->view("common/header", $this->data);
             $this->load->view("rate/cfat_index", $data);
             $this->load->view("common/footer");
         }
@@ -169,7 +169,7 @@ class Rate extends CI_Controller{
                 redirect("rate/cfat", "refresh");
             }
         }else{
-            $this->load->view("common/header");
+            $this->load->view("common/header", $this->data);
             $this->load->view("rate/cfat");
             $this->load->view("common/footer");
         }
@@ -205,7 +205,7 @@ class Rate extends CI_Controller{
             $this->session->set_flashdata("message", "Access Denied");
             redirect("/", "refresh");
         }
-        $this->load->view("common/header");
+        $this->load->view("common/header", $this->data);
         $this->load->view("rate/cfat_snf");
         $this->load->view("common/footer");
     }
@@ -273,7 +273,7 @@ class Rate extends CI_Controller{
             $data['fat'] = $fat_arr;
             $data['vals'] = $array;
         }
-        $this->load->view("common/header");
+        $this->load->view("common/header", $this->data);
         $this->load->view("rate/bfat_snf_index",$data);
         $this->load->view("common/footer");
     }
@@ -413,7 +413,7 @@ class Rate extends CI_Controller{
             $data['fat'] = $fat_arr;
             $data['vals'] = $array;
         }
-        $this->load->view("common/header");
+        $this->load->view("common/header", $this->data);
         $this->load->view("rate/cfat_snf_index", $data);
         $this->load->view("common/footer");
     }
@@ -551,7 +551,7 @@ class Rate extends CI_Controller{
             $data['fat'] = $fat_arr;
             $data['vals'] = $array;
         }
-        $this->load->view("common/header");
+        $this->load->view("common/header", $this->data);
         $this->load->view("rate/cfat_clr_index", $data);
         $this->load->view("common/footer");
     }
@@ -691,7 +691,7 @@ class Rate extends CI_Controller{
             $data['fat'] = $fat_arr;
             $data['vals'] = $array;
         }
-        $this->load->view("common/header");
+        $this->load->view("common/header", $this->data);
         $this->load->view("rate/bfat_clr_index", $data);
         $this->load->view("common/footer");
     }

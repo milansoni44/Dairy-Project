@@ -51,7 +51,7 @@
                         <div class="col-xs-12">
                             <div class="box">
                                 <div class="box-header">
-                                    <h3 class="box-title">Hover Data Table</h3>
+                                    <h3 class="box-title"><!-- Hover Data Table --></h3>
 <!--                                    <span class="pull-right"><a href="<?php echo base_url(); ?>index.php/dairy/add" class="btn btn-primary" style="color: #fff;">Add Transaction</a></span>-->
                                 </div><!-- /.box-header -->
                                 <form action="<?php echo base_url(); ?>index.php/transactions/customer" method="post" class="form-horizontal" id="customer_transaction">

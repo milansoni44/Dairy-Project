@@ -54,7 +54,7 @@
                         <div class="col-xs-12">
                             <div class="box">
                                 <div class="box-header">
-                                    <h3 class="box-title">Hover Data Table</h3>
+                                    <h3 class="box-title"><!-- Hover Data Table --></h3>
                                     <?php if($this->session->userdata("group") == "dairy"){ ?>
                                     <span class="pull-right"><button class="btn btn-primary" id="buffalo_fat">Import Buffalo Fat</button></span>
                                     <?php } ?>
@@ -66,7 +66,7 @@
                                             <tr>
                                                 <th>Fat</th>
                                                 <th>Rate</th>
-                                                <th>Action</th>
+                                                <!--<th>Action</th>-->
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -77,10 +77,10 @@
                                             <tr>
                                                 <td><?php echo $row->Fat; ?></td>
                                                 <td><?php echo $row->Rate; ?></td>
-                                                <td>
-                                                    <a href="<?php echo base_url(); ?>index.php/customers/edit/<?php echo $row->Fat; ?>">Edit</a>
+<!--                                                <td>
+                                                    <a href="<?php echo base_url(); ?>index.php/rate/edit/<?php echo $row->Fat; ?>">Edit</a>
                                                     <a href="<?php echo base_url(); ?>index.php/customers/delete/<?php echo $row->Fat; ?>">Delete</a>
-                                                </td>
+                                                </td>-->
                                             </tr>
                                             <?php
                                                     }

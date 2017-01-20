@@ -209,7 +209,7 @@
                         <div class="col-xs-12">
                             <div class="box">
                                 <div class="box-header">
-                                    <h3 class="box-title">Hover Data Table</h3>
+                                    <h3 class="box-title"><!-- Hover Data Table --></h3>
 <!--                                    <span class="pull-right" id="total_net" style="font-weight: bold;"></span><br>
                                     <span class="pull-right" id="total_litre" style="font-weight: bold;"></span><br>
                                     <span class="pull-right" id="avg_fat" style="font-weight: bold;"></span><br>
@@ -236,13 +236,17 @@
                                             <div class="col-md-4">
                                                 <input type="text" name="date" placeholder="yyyy-mm-dd" id="date" class="form-control datepicker" value="<?php echo set_value("date", date("Y-m-d")); ?>" autocomplete="off" />
                                             </div>
-                                        </div>
-                                        <div class="form-group">
                                             <label class="control-label col-sm-2" for="to_date">To Date</label>
                                             <div class="col-md-4">
                                                 <input type="text" name="to_date" placeholder="yyyy-mm-dd" id="to_date" class="form-control datepicker" value="<?php echo set_value("to_date", date("Y-m-d")); ?>" autocomplete="off" />
                                             </div>
                                         </div>
+                                        <!--<div class="form-group">-->
+<!--                                            <label class="control-label col-sm-2" for="to_date">To Date</label>-->
+<!--                                            <div class="col-md-4">
+                                                <input type="text" name="to_date" placeholder="yyyy-mm-dd" id="to_date" class="form-control datepicker" value="<?php echo set_value("to_date", date("Y-m-d")); ?>" autocomplete="off" />
+                                            </div>-->
+                                        <!--</div>-->
                                         <div class="form-group">
                                             <label class="control-label col-sm-2" for="shift">Shift</label>
                                             <div class="col-md-4">

@@ -59,7 +59,7 @@
                         <div class="col-xs-12">
                             <div class="box">
                                 <div class="box-header">
-                                    <h3 class="box-title">Hover Data Table</h3>
+                                    <h3 class="box-title"><!-- Hover Data Table --></h3>
                                     <?php if($this->session->userdata("group") == "society") {?>
                                     <span class="pull-right"><a href="<?php echo base_url(); ?>index.php/customers/add" class="btn btn-primary" style="color: #fff;">Add Milk Supplier</a></span>
                                     <span class="pull-right"><a href="<?php echo base_url(); ?>index.php/customers/import" class="btn btn-primary" style="color: #fff;">Import Milk Suppliers</a></span>
