@@ -47,7 +47,8 @@
                                             <tr>
                                                 <th>Machine ID</th>
                                                 <th>Machine Name</th>
-                                                <th>Type</th>
+                                                <th>Machine Type</th>
+                                                <th>Validity</th>
                                                 <th>Society</th>
                                                 <?php if($this->session->userdata("group") == "admin"){ ?>
                                                 <th>Actions</th>
@@ -63,6 +64,7 @@
                                                 <td><?php echo $row->machine_id; ?></td>
                                                 <td><?php echo $row->machine_name; ?></td>
                                                 <td><?php echo $row->machine_type; ?></td>
+                                                <td><?php echo $row->validity; ?></td>
                                                 <td><?php echo $row->name; ?></td>
                                                 <?php if($this->session->userdata("group") == "admin"){ ?>
                                                 <td>

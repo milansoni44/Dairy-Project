@@ -51,20 +51,17 @@ class Machines extends MY_Controller{
         }
         // validation for machines
         
-        if(isset($_POST['submit'])){
+        if( $this->input->server("REQUEST_METHOD") === "POST" ){
 //            echo "<pre>";
 //            print_r($_POST);exit;
-            
             $i = 0;
             foreach($_POST['machine_id'] as $row){
-                $range[$i] = explode("-", $_POST['date_validity'][$i]);
-                $from_date = date("Y-m-d", strtotime($range[$i][0]));
-                $to_date = date("Y-m-d", strtotime($range[$i][1]));
                 $machine_data[] = array(
                     "machine_id"=>$row,
+                    "machine_name"=>$_POST['machine_name'][$i],
+                    "machine_type"=>$_POST['type'][$i],
                     "validity"=> $_POST['validity'][$i],
-                    "from_date"=>$from_date,
-                    "to_date"=>$to_date,
+                    "dairy_id"=>$_POST['dairy_id'][$i]
                 );
                 $i++;
             }
@@ -75,9 +72,9 @@ class Machines extends MY_Controller{
             $this->session->set_flashdata("success","Machines data inserted successfully.");
             redirect("machines",'refresh');
         }else{
-//            $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
+            $data['dairy_info'] = $this->dairy_model->get_dairy();
             $this->load->view("common/header", $this->data);
-            $this->load->view("machines/add");
+            $this->load->view("machines/add", $data);
             $this->load->view("common/footer");
         }
     }

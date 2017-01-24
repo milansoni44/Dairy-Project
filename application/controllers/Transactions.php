@@ -65,6 +65,11 @@ class Transactions extends MY_Controller {
                         $society = $this->transaction_model->get_society_id($data[13])->society_id;
                         $dairy = $this->transaction_model->get_dairy_id($data[13])->dairy_id;
                         $machine_id = $this->transaction_model->get_machine_id($data[13])->mid;
+                        $valid_society_machine = $this->transaction_model->check_mapped_society_machine($machine_id, $this->session->userdata("id"));
+                        if($valid_society_machine === FALSE){
+                            $this->session->set_flashdata("message", "Machine is not allocated to current society.");
+                            redirect("transactions/import_txn", "refresh");
+                        }
                         if ($data[7] == "") {
                             $this->session->set_flashdata("message", "Line:$i Adhar no required");
                             $i++;
@@ -138,8 +143,13 @@ class Transactions extends MY_Controller {
 //                        print_r($trans);exit;
                         $this->transaction_model->insert_single($trans);
                     } else {
-                        $i++;
-                        continue;
+                        if($data[0] == "CUST" && $data[1] == "FAT" && $data[2] == "CLR" && $data[3] == "SNF"){
+                            $i++;
+                            continue;
+                        }else{
+                            $this->session->set_flashdata("message", "Invalid transaction file.");
+                            redirect("transactions/import_txn", "refresh");
+                        }
                     }
                 }
 //                exit;

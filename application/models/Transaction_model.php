@@ -241,7 +241,15 @@ class Transaction_model extends CI_Model {
         }
         return FALSE;
     }
-
+    
+    function check_mapped_society_machine($machine_id = NULL, $soc_id){
+        $q = $this->db->query("SELECT * FROM machines WHERE society_id = '$soc_id'");
+        if($q->num_rows() > 0){
+            return TRUE;
+        }else{
+            return FALSE;
+        }
+    }
 }
 
 /** application/Models/Transaction_model.php */

@@ -30,8 +30,8 @@ class Dairy_model extends CI_Model{
     public function get_dairy(){
         $q = $this->db->select("users.*")
                 ->from("users")
-                ->join("user_groups","user_groups.user_id = users.id","LEFT")
-                ->join("groups","groups.id = user_groups.group_id","LEFT")
+                ->join("user_groups","user_groups.user_id = users.id","INNER")
+                ->join("groups","groups.id = user_groups.group_id","INNER")
                 ->where("groups.name","dairy")
                 ->get();
 //        echo $this->db->last_query();exit;

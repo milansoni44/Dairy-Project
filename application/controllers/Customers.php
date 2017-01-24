@@ -439,6 +439,33 @@ class Customers extends MY_Controller {
             $this->load->view("common/footer");
         }
     }
+    
+    public function export_customer(){
+        $data = $this->db->query("SELECT c.mem_code, c.customer_name, c.mobile, c.adhar_no, c.type FROM customers c
+                                LEFT JOIN customer_machine cm ON cm.cid = c.id
+                                WHERE machine_id = '13'");
+        
+        if($data->num_rows() > 0){
+            $data1 = $data->result_array();
+        }
+        foreach($data1 as $row){
+            $data_final[] = array_values($row);
+        }
+//        echo "<pre>";
+//        print_r($data_final);exit;
+        $fp = fopen('php://output', 'w');
+        if ($fp && $data) {
+            header('Content-Type: text/csv');
+            header('Content-Disposition: attachment; filename="CUST.csv"');
+            header('Pragma: no-cache');
+            header('Expires: 0');
+            fputcsv($fp, array("MEM CODE","NAME","MOBILE","ADHAR","TYPE"));
+            foreach($data_final as $rr){
+                fputcsv($fp, $rr);
+            }
+            die;
+        }
+    }
 }
 
 /** application/controllers/Customer.php */
