@@ -202,12 +202,45 @@ class Customers extends MY_Controller {
                         $data_validate[] = array("Error" => "Please fill all the fileds", "Line" => $i);
                         $i++;
                         continue;
+                    }
+                    $cid = $this->customer_model->check_exist($col4, "adhar_no");
+                    if ($cid === FALSE) {
+                        $customer_data = array(
+                            "customer_name" => $col[1],
+                            "mem_code" => $col[0],
+                            "mobile" => $col[2],
+                            "adhar_no" => $col[3],
+                            "type" => $col[4],
+                            "created_at" => date("Y-m-d"),
+                        );
+                        $this->customer_model->add_customer($customer_data, $machine_id);
+                    }else{
+                        if($this->customer_model->check_exist_customer_machine($cid, $machine_id)){
+                            $data_validate[] = array("Error" => "Customer already exist", "Line" => $i);
+                            $i++;
+                            continue;
+                        }else{
+                            $cust_machine = array(
+                                "cid"=>$cid,
+                                "machine_id"=>$machine_id,
+                                "society_id"=>$this->session->userdata("id")
+                            );
+                            $this->customer_model->insert_customer_machine($cust_machine);
+                            $i++;
+                            continue;
+                        }
+                    }
+                    // code change on 24-01-2017 due to customer_machine
+                    /*if ($col1 == "" || $col2 == "" || $col3 == "" || $col4 == "" || $col4 == "") {
+                        $data_validate[] = array("Error" => "Please fill all the fileds", "Line" => $i);
+                        $i++;
+                        continue;
                     } else if ($this->customer_model->check_exist($col3, "mobile") === FALSE && $this->customer_model->check_exist($col4, "adhar_no") === FALSE) {
-                        $data_validate[] = array("Error" => "Mobile: $col3 and Adhar: $col4 fields already exist", "Line" => $i);
+                        $data_validate[] = array("Error" => "Adhar no: $col3 and Adhar: $col4 fields already exist", "Line" => $i);
                         $i++;
                         continue;
                     } else if ($this->customer_model->check_exist($col3, "mobile") === FALSE && $this->customer_model->check_exist($col4, "adhar_no")) {
-                        $data_validate[] = array("Error" => "Mobile: $col3 field already exist", "Line" => $i);
+                        $data_validate[] = array("Error" => "Adhar: $col3 field already exist", "Line" => $i);
                         $i++;
                         continue;
                     } else if ($this->customer_model->check_exist($col3, "mobile") && $this->customer_model->check_exist($col4, "adhar_no") === FALSE) {
@@ -244,7 +277,7 @@ class Customers extends MY_Controller {
                         $this->customer_model->add_customer($customer_data, $machine_id);
                         $i++;
                         continue;
-                    }
+                    }*/
                 }
             }
 //            exit;

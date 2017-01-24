@@ -44,7 +44,7 @@ class Society extends MY_Controller
         // validation for society
         $this->form_validation->set_rules("name","Name","trim|required");
         $this->form_validation->set_rules("username","Username","trim|required");
-        $this->form_validation->set_rules("email","Email","trim|required|valid_email");
+        $this->form_validation->set_rules("email","Email","trim|valid_email");
         $this->form_validation->set_rules("password","Password","trim|required");
         $this->form_validation->set_rules("mobile","Mobile","trim|required");
         
@@ -75,6 +75,7 @@ class Society extends MY_Controller
             $this->session->set_flashdata("success","Society data inserted successfully.");
             redirect("society",'refresh');
         }else{
+            echo validation_errors();exit;
             $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
             $data['states'] = $this->dairy_model->get_states();
             $this->load->view("common/header", $this->data);

@@ -141,7 +141,7 @@ WHERE m.dairy_id = '$id'");
         if(!$id){
             
         }else{
-            $q1 = $this->db->query("SELECT machine_id,id FROM machines WHERE id = '$id'");
+            $q1 = $this->db->query("SELECT machine_id,id FROM machines WHERE society_id = '$id'");
         }
 //        echo $this->db->last_query();exit;
         if($q1->num_rows() > 0){

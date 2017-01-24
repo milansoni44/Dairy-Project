@@ -161,7 +161,7 @@ class Machines extends MY_Controller{
 //        print_r($map_data);exit;
         if(!empty($map_data) && $this->machine_model->map_dairy_machine($map_data)){
             $this->session->set_flashdata("success","Machine added to dairy successfully.");
-            redirect("machines/allocate",'refresh');
+            redirect("machines",'refresh');
         }else{
 //            $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
             $data['dairy'] = $this->dairy_model->get_dairy();
@@ -221,7 +221,7 @@ class Machines extends MY_Controller{
 //            $cnt = $this->db->query("SELECT * FROM notification WHERE dairy_id = '".$map_data['society_id']."' AND is_read = '0'");
 //            $this->session->set_userdata('machine_notify', $cnt);
             $this->session->set_flashdata("success","Machine added to society successfully.");
-            redirect("machines/allocated_to_society",'refresh');
+            redirect("machines/allocate",'refresh');
         }else{
 //            $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
             $data['society'] = $this->society_model->get_society();

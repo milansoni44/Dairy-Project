@@ -135,7 +135,8 @@ LEFT JOIN customers c ON c.id = t.cid WHERE t.dairy_id = '$id'");
     }
     
     function check_exist_customer_machine($cid = NULL, $machine = NULL){
-        $q = $this->db->query("SELECT * FROM customer_machine WHERE machine_id = '$machine' AND cid = '$cid'");
+        $id = $this->session->userdata("id");
+        $q = $this->db->query("SELECT * FROM customer_machine WHERE machine_id = '$machine' AND cid = '$cid' AND society_id = '$id'");
         if($q->num_rows() > 0){
             return TRUE;
         }
@@ -150,27 +151,14 @@ LEFT JOIN customers c ON c.id = t.cid WHERE t.dairy_id = '$id'");
     }
 
     function check_exist($col = NULL, $col_name = NULL, $id = NULL) {
-        // change as per expiry '0000-00-00' if not then member not exist
-//        if($col_name == "mem_code"){
-//            $q = $this->db->query("SELECT * FROM customers WHERE $col_name = '$col' AND expiry = '0000-00-00'");
-//            echo $this->db->last_query();exit;
-//        }else{
-//            $q = $this->db->query("SELECT * FROM customers WHERE $col_name = '$col' AND expiry = '0000-00-00'");
-//        }
-//        echo $this->db->last_query();
-//        echo "<br>";
-        if (!$id) {
-            $soc_id = $this->session->userdata("id");
-            $q = $this->db->query("SELECT * FROM customers WHERE $col_name = '$col'");
-        } else {
-            $soc_id = $this->session->userdata("id");
-            $q = $this->db->query("SELECT * FROM customers WHERE $col_name = '$col' AND id NOT IN('$id')");
-        }
+        $soc_id = $this->session->userdata("id");
+        $q = $this->db->query("SELECT * FROM customers c WHERE c.$col_name = '$col'");
 //        echo $this->db->last_query();exit;
         if ($q->num_rows() > 0) {
+            return $q->row()->id;
+        }else{
             return FALSE;
         }
-        return TRUE;
     }
 
     /* function batch_insert_customer($data = array()){
