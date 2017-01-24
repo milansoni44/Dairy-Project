@@ -177,6 +177,11 @@ class Customers extends MY_Controller {
         if (isset($_POST['submit'])) {
             $machine_id = $_POST['machine'];
             $data_validate = array();
+            $ext = pathinfo($_FILES['import_member']['name'], PATHINFO_EXTENSION);
+            if($ext != "csv"){
+                $this->session->set_flashdata("message", "Only CSV file is accepted");
+                redirect("customers/import", "refresh");
+            }
             $name = $_FILES['import_member']['name'];
             $tmp = $_FILES['import_member']['tmp_name'];
 

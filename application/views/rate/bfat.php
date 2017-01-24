@@ -29,6 +29,17 @@
                     <!-- Small boxes (Stat box) -->
                     <div class="row">
                         <div class="col-xs-12">
+                            <?php
+                            if($this->session->flashdata('message')){
+                            ?>
+                            <div class="alert alert-danger alert-dismissable">
+                                <i class="fa fa-check"></i>
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                <?php echo $this->session->flashdata('message'); ?>
+                            </div>
+                            <?php
+                                }
+                            ?>
                             <div class="box">
                                 <div class="box-header">
                                     <h3 class="box-title">Import Bfat</h3>

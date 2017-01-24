@@ -43,6 +43,11 @@ class Transactions extends MY_Controller {
             redirect("/", "refresh");
         }
         if ($this->input->post()) {
+            $ext = pathinfo($_FILES['transaction']['name'], PATHINFO_EXTENSION);
+            if($ext != "csv"){
+                $this->session->set_flashdata("message", "Only CSV file is accepted");
+                redirect("transactions/import_txn", "refresh");
+            }
             $csv = $_FILES['transaction']['tmp_name'];
             if (($getfile = fopen($csv, "r")) !== FALSE) {
                 $data = fgetcsv($getfile, 1000, ",");

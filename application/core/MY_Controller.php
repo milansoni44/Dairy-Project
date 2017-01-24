@@ -22,6 +22,8 @@ class MY_Controller extends CI_Controller{
         $type = $this->session->userdata("group");
         $id = $this->session->userdata("id");
         $this->data['notifications'] = $this->auth_lib->get_machines($type, $id);
-        $this->data['machine_count'] = $this->machine_model->totalCount();
+        if($type == "dairy" || $type == "admin"){
+            $this->data['machine_count'] = $this->machine_model->totalCount();
+        }
     }
 }

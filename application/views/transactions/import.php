@@ -2,15 +2,15 @@
     $(document).ready(function(){
         $("#add_dairy_form").validate({
             rules: {
-                machine: "required",
-                import_member:{
+//                machine: "required",
+                transaction:{
                     required: true,
                     extension: "docx|rtf|doc|pdf"
                 }
             },
             messages: {
-                machine: "Please select machine",
-                import_member:{
+//                machine: "Please select machine",
+                transaction:{
                     required: "Please select file",
                     extension: "Please upload valid file formats"
                 }
@@ -36,6 +36,17 @@
                     <!-- Small boxes (Stat box) -->
                     <div class="row">
                         <div class="col-xs-12">
+                            <?php
+                            if($this->session->flashdata('message')){
+                            ?>
+                            <div class="alert alert-danger alert-dismissable">
+                                <i class="fa fa-check"></i>
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                <?php echo $this->session->flashdata('message'); ?>
+                            </div>
+                            <?php
+                                }
+                            ?>
                             <div class="box">
                                 <div class="box-header">
                                     <h3 class="box-title">Import Transaction</h3>

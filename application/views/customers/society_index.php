@@ -69,8 +69,9 @@
                                                     }
                                                 ?>
                                             </select>
-                                           
-                                            
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input type="submit" name="submit" value="Submit" id="submit" class="btn btn-primary">
                                         </div>
                                     </div>
                                     

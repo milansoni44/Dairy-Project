@@ -44,6 +44,11 @@ class Rate extends MY_Controller{
             $res_low = $this->setting_model->get_config("BUFFALO","FAT_LOW_LIMIT")->config_value;
             $res_high = $this->setting_model->get_config("BUFFALO","FAT_HIGH_LIMIT")->config_value;
     //        print_r($_FILES);exit;
+            $ext = pathinfo($_FILES['import_bfat']['name'], PATHINFO_EXTENSION);
+            if($ext != "csv"){
+                $this->session->set_flashdata("message", "Only CSV file is accepted");
+                redirect("rate/import_bfat", "refresh");
+            }
             $csv_file = $_FILES['import_bfat']['tmp_name'];
             if (($getfile = fopen($csv_file, "r")) !== FALSE) {
                 $data = fgetcsv($getfile, 1000, ",");
@@ -133,6 +138,11 @@ class Rate extends MY_Controller{
             $res_low = $this->setting_model->get_config("COW","FAT_LOW_LIMIT")->config_value;
             $res_high = $this->setting_model->get_config("COW","FAT_HIGH_LIMIT")->config_value;
     //        print_r($_FILES);exit;
+            $ext = pathinfo($_FILES['import_cfat']['name'], PATHINFO_EXTENSION);
+            if($ext != "csv"){
+                $this->session->set_flashdata("message", "Only CSV file is accepted");
+                redirect("rate/import_cfat", "refresh");
+            }
             $csv_file = $_FILES['import_cfat']['tmp_name'];
             if (($getfile = fopen($csv_file, "r")) !== FALSE) {
                 $data = fgetcsv($getfile, 1000, ",");
