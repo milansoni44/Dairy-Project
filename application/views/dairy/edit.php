@@ -31,6 +31,12 @@
             }
         });
         
+        // reset password active
+        $("#reset_pass").on("click", function(e){
+            e.preventDefault();
+            $("#password").show();
+            $(this).hide();
+        });
         // on change state ajax
         $("#states").on("change", function(){
             var s_id = $(this).val();
@@ -115,10 +121,11 @@
                                         <div class="form-group">
                                             <label class="control-label col-md-2" for="password">Password </label>
                                             <div class="col-md-4">
-                                                <input type="password" name="password" class="form-control" id="password" />
+                                                <input type="password" name="password" class="form-control" id="password" style="display: none;" />
                                                 <?php if(isset($errors['password'])){
                                                     echo "<label class='error'>".$errors['password']."</label>";
                                                 } ?>
+                                                <span style="position: relative; top: 10px;"><a style="cursor: pointer;" id="reset_pass">Reset Password</a></span>
                                             </div>
                                         </div>
                                         <div class="form-group">

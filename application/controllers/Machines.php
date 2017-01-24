@@ -88,14 +88,12 @@ class Machines extends MY_Controller{
         if(isset($_POST['submit'])){
 //            echo "<pre>";
 //            print_r($_POST);exit;
-            $range = explode("-", $_POST['date_validity']);
-            $from_date = date("Y-m-d", strtotime($range[0]));
-            $to_date = date("Y-m-d", strtotime($range[1]));
             $machine_data = array(
                 "machine_id"=>$_POST['machine_id'],
+                "machine_name"=>$_POST['machine_name'],
+                "machine_type"=>$_POST['type'],
+                "dairy_id"=>$_POST['dairy_id'],
                 "validity"=> $_POST['validity'],
-                "from_date"=>$from_date,
-                "to_date"=>$to_date,
             );
         }
         
@@ -105,6 +103,7 @@ class Machines extends MY_Controller{
         }else{
 //            $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
             $data['machine'] = $this->machine_model->get_machine_by_id($id);
+            $data['dairy_info'] = $this->dairy_model->get_dairy();
             $data['id'] = $id;
             $this->load->view("common/header", $this->data);
             $this->load->view("machines/edit", $data);

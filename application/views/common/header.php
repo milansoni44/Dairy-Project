@@ -226,7 +226,7 @@
                                 <?php if($this->session->userdata("group") == "admin"){ ?>
                                 <li><a href="<?php echo base_url(); ?>index.php/machines"><i class="fa fa-angle-double-right"></i> Machines <span class="label label-warning" style="float: right;"><?php echo $machine_count->total_allocated."/".$machine_count->total_machine; ?></span></a></li>
                                 <li><a href="<?php echo base_url(); ?>index.php/machines/add"><i class="fa fa-angle-double-right"></i> Add Machine</a></li>
-                                <li><a href="<?php echo base_url(); ?>index.php/machines/add_allocate"><i class="fa fa-angle-double-right"></i> Add Dairy Machine</a></li>
+<!--                                <li><a href="<?php echo base_url(); ?>index.php/machines/add_allocate"><i class="fa fa-angle-double-right"></i> Add Dairy Machine</a></li>-->
                                 <?php } ?>
                                 <?php if($this->session->userdata("group") == "dairy"){ ?>
                                 <li><a href="<?php echo base_url(); ?>index.php/machines/allocate"><i class="fa fa-angle-double-right"></i> Machines <span class="label label-warning" style="float: right;"><?php echo $machine_count->total_allocated."/".$machine_count->total_machine; ?></span></a></li>
