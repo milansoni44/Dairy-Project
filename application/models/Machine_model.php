@@ -324,6 +324,17 @@ WHERE m.dairy_id = '$id'");
         }
         return FALSE;
     }
+    
+    function totalCount(){
+        if($this->session->userdata("group") == "admin"){
+            $q = $this->db->query("SELECT COUNT(*) AS total_machine, (SELECT COUNT(*) FROM machines m_in WHERE m_in.dairy_id IS NOT NULL) AS total_allocated FROM machines");
+        }else if($this->session->userdata("group") == "dairy"){
+            $id = $this->session->userdata("id");
+            $q = $this->db->query("SELECT COUNT(*) AS total_machine, (SELECT COUNT(*) FROM machines m_in WHERE m_in.society_id IS NOT NULL) AS total_allocated FROM machines WHERE dairy_id = '$id'");
+        }
+//        echo $this->db->last_query();
+        return $q->row();
+    }
 }
 
 /** application/Models/Machine_model.php */

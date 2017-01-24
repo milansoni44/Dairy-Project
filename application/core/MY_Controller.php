@@ -17,9 +17,11 @@ class MY_Controller extends CI_Controller{
     public function __construct() {
         parent::__construct();
         $this->load->library("session");
+        $this->load->model("machine_model");
         $this->load->library("auth_lib");
         $type = $this->session->userdata("group");
         $id = $this->session->userdata("id");
         $this->data['notifications'] = $this->auth_lib->get_machines($type, $id);
+        $this->data['machine_count'] = $this->machine_model->totalCount();
     }
 }

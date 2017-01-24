@@ -203,10 +203,16 @@
                         <?php 
                             if($this->session->userdata("group") == "admin"){
                         ?>
-                        <li>
-                            <a href="<?php echo base_url(); ?>index.php/dairy">
-                                <i class="fa fa-th"></i> <span>Dairy</span>
+                        <li class="treeview">
+                            <a href="#">
+                                <i class="fa fa-bar-chart-o"></i>
+                                <span>Dairy</span>
+                                <i class="fa fa-angle-left pull-right"></i>
                             </a>
+                            <ul class="treeview-menu">
+                                <li><a href="<?php echo base_url(); ?>index.php/dairy/add"><i class="fa fa-angle-double-right"></i> Add Dairy</a></li>
+                                <li><a href="<?php echo base_url(); ?>index.php/dairy"><i class="fa fa-angle-double-right"></i> Dairy List</a></li>
+                            </ul>
                         </li>
                         <?php } ?>
                         <?php if($this->session->userdata("group") == "admin" || $this->session->userdata("group") == "dairy" || $this->session->userdata("group") == "society"){ ?>
@@ -216,23 +222,14 @@
                                 <span>Machines</span>
                                 <i class="fa fa-angle-left pull-right"></i>
                             </a>
-<!--                            <ul class="treeview-menu">
-                                <?php if($this->session->userdata("group") == "admin"){ ?>
-                                <li><a href="<?php echo base_url(); ?>index.php/machines"><i class="fa fa-angle-double-right"></i> Machines</a></li>
-                                <?php } ?>
-                                <?php if($this->session->userdata("group") == "dairy" || $this->session->userdata("group") == "admin"){ ?>
-                                <li><a href="<?php echo base_url(); ?>index.php/machines/allocate"><i class="fa fa-angle-double-right"></i> Total Allocated</a></li>
-                                <?php } ?>
-                                <li><a href="<?php echo base_url(); ?>index.php/machines/allocated_to_society"><i class="fa fa-angle-double-right"></i> Allocated</a></li>
-                            </ul>-->
                             <ul class="treeview-menu">
                                 <?php if($this->session->userdata("group") == "admin"){ ?>
-                                <li><a href="<?php echo base_url(); ?>index.php/machines"><i class="fa fa-angle-double-right"></i> Machines</a></li>
+                                <li><a href="<?php echo base_url(); ?>index.php/machines"><i class="fa fa-angle-double-right"></i> Machines <span class="label label-warning" style="float: right;"><?php echo $machine_count->total_allocated."/".$machine_count->total_machine; ?></span></a></li>
                                 <li><a href="<?php echo base_url(); ?>index.php/machines/add"><i class="fa fa-angle-double-right"></i> Add Machine</a></li>
                                 <li><a href="<?php echo base_url(); ?>index.php/machines/add_allocate"><i class="fa fa-angle-double-right"></i> Add Dairy Machine</a></li>
                                 <?php } ?>
                                 <?php if($this->session->userdata("group") == "dairy"){ ?>
-                                <li><a href="<?php echo base_url(); ?>index.php/machines/allocate"><i class="fa fa-angle-double-right"></i> Machines</a></li>
+                                <li><a href="<?php echo base_url(); ?>index.php/machines/allocate"><i class="fa fa-angle-double-right"></i> Machines <span class="label label-warning" style="float: right;"><?php echo $machine_count->total_allocated."/".$machine_count->total_machine; ?></span></a></li>
                                 <li><a href="<?php echo base_url(); ?>index.php/machines/allocate_to_soc"><i class="fa fa-angle-double-right"></i> Add Society Machine</a></li>
                                 <?php } ?>
                                 <?php if($this->session->userdata("group") == "society"){ ?>
@@ -270,6 +267,7 @@
                                 <?php } ?>
                                 <?php if($this->session->userdata("group") == "society"){ ?>
                                 <li><a href="<?php echo base_url(); ?>index.php/customers"> <span>Milk Supplier</span></a></li>
+                                <li><a href="<?php echo base_url(); ?>index.php/customers/add"> <span>Add Milk Supplier</span></a></li>
                                 <li><a href="<?php echo base_url(); ?>index.php/customers/import">Import Milk Supplier</a></li>
                                 <?php } ?>
                             </ul>

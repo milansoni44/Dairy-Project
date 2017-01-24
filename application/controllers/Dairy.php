@@ -110,9 +110,9 @@ class Dairy extends MY_Controller{
         
         if($this->form_validation->run() == TRUE){
             $validity = $this->input->post("validity");
-            $dd = explode("-", $validity);
-            $start_date = date("Y-m-d", strtotime($dd[0]));
-            $end_date = date("Y-m-d", strtotime($dd[1]));
+//            $dd = explode("-", $validity);
+//            $start_date = date("Y-m-d", strtotime($dd[0]));
+//            $end_date = date("Y-m-d", strtotime($dd[1]));
             $data = array(
                 "name"=> ucfirst($this->input->post("name")),
                 "username"=>  $this->input->post("username"),
@@ -125,8 +125,8 @@ class Dairy extends MY_Controller{
                 "pincode"=>  $this->input->post("pincode"),
                 "state"=>  $this->input->post("state"),
                 "city"=>  $this->input->post("city"),
-                "validity_start_date"=>$start_date,
-                "validity_end_date"=>$end_date,
+//                "validity_start_date"=>$start_date,
+//                "validity_end_date"=>$end_date,
             );
             if($this->input->post("password") != ""){
                 $data["password"] = md5($this->input->post("password"));

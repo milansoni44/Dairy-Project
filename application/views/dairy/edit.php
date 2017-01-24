@@ -113,9 +113,9 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="control-label col-md-2" for="password">Password <span style="color:red;">*</span></label>
+                                            <label class="control-label col-md-2" for="password">Password </label>
                                             <div class="col-md-4">
-                                                <input type="password" name="password" class="form-control" id="password"/>
+                                                <input type="password" name="password" class="form-control" id="password" />
                                                 <?php if(isset($errors['password'])){
                                                     echo "<label class='error'>".$errors['password']."</label>";
                                                 } ?>
