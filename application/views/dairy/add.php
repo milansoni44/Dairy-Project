@@ -14,7 +14,7 @@
                 mobile: {
                     required: true,
                     number: true,
-                    minlength: 6,
+                    minlength: 10,
                     maxlength: 12,
                 }
             },
@@ -31,7 +31,7 @@
                 mobile: {
                     required: "Please enter mobile",
                     number: "Only numeric value is allowed",
-                    minlength: "Minimum 6 character allowed",
+                    minlength: "Minimum 10 character allowed",
                     maxlength: "Maximum 12 character allowed",
                 }
             }

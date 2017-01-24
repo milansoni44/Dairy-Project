@@ -334,26 +334,22 @@ class Transactions extends MY_Controller {
         }
     }
 
-    function dairy_txn_datatable($id = NULL) {
+    function dairy_txn_datatable($id = NULL, $date_range = NULL) {
         if($this->session->userdata("group") == "society"){
             $id = $this->session->userdata("id");
         }
-//        $id = $this->session->userdata("id");
         $this->datatables->select("s.name, ROUND(AVG(t.fat), 2) as fat, ROUND(AVG(t.clr), 2) as clr, ROUND(AVG(t.snf), 2) as snf, ROUND(AVG(t.weight), 2) as weight, ROUND(SUM(t.netamt), 2) as netamt")
                 ->from("transactions t")
-//            ->join("machines m","m.machine_id = t.deviceid","LEFT")
-//            ->join("society_machine_map smm","smm.machine_id = m.id","LEFT")
                 ->join("users s", "s.id = t.society_id", "LEFT")
-//            ->join("dairy_machine_map dmm","dmm.machine_id = m.id","LEFT")
                 ->join("users d", "d.id = t.dairy_id", "LEFT");
         if(!$id){
+            $date = explode('|', $date_range);
+            $this->db->where('t.date BETWEEN "'. date('Y-m-d', strtotime($date[0])). '" and "'. date('Y-m-d', strtotime($date[1])).'"');
             $this->datatables->group_by("t.society_id");
             $this->datatables->where("t.society_id", $id);
         }else{
             $this->datatables->where("t.society_id", $id);
         }
-//                ->where("t.dairy_id", $id);
-//        $this->datatables->group_by("t.society_id");
         echo $this->datatables->generate();
     }
 

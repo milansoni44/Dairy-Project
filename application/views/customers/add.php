@@ -4,17 +4,30 @@
             rules: {
                 machine: "required",
                 member_name: "required",
-                mobile: "required",
+                mobile: {
+                        required: true,
+                        number: true,
+                        maxlength: 12
+                },
                 adhar_no: "required",
-                member_code: "required",
+                member_code: {
+                    required: true,
+                    number: true
+                },
                 type: "required",
             },
             messages: {
                 machine: "Please select machine",
                 member_name: "Please enter name",
-                mobile: "Please Enter mobile number",
-                mobile: "Please enter Adhar Number",
-                member_code: "Please enter member code",
+                mobile: {
+                    required: "Please Enter mobile number",
+                    number: "Please enter valid number",
+                    maxlength: "Number only 12 digits"
+                },
+                member_code: {
+                    required: "Member code is required",
+                    number: "Please enter valid number"
+                },
                 type: "Please select type",
             }
         });
@@ -46,7 +59,7 @@
                                 <form role="form" class="form-horizontal" id="add_dairy_form" action="<?php echo base_url(); ?>index.php/customers/add" method="post">
                                     <div class="box-body">
                                         <div class="form-group">
-                                            <label class="control-label col-sm-2" for="machine">Machine</label>
+                                            <label class="control-label col-sm-2" for="machine">Machine <span style="color:red;">*</span></label>
                                             <div class="col-md-4">
                                                 <select class="form-control" id="machine" name="machine">
                                                     <option value="">Select Machine</option>
@@ -63,25 +76,25 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="control-label col-sm-2" for="member_name"> Member Name</label>
+                                            <label class="control-label col-sm-2" for="member_name"> Member Name <span style="color:red;">*</span></label>
                                             <div class="col-md-4">
                                                 <input type="text" name="member_name" id="member_name" class="form-control" />
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="control-label col-sm-2" for="mobile"> Mobile</label>
+                                            <label class="control-label col-sm-2" for="mobile"> Mobile <span style="color: red;">*</span></label>
                                             <div class="col-md-4">
                                                 <input type="text" name="mobile" id="mobile" class="form-control" />
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="control-label col-sm-2" for="adhar_no"> Adhar No</label>
+                                            <label class="control-label col-sm-2" for="adhar_no"> Adhar No <span style="color:red;">*</span></label>
                                             <div class="col-md-4">
                                                 <input type="text" name="adhar_no" id="adhar_no" class="form-control" />
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="control-label col-sm-2" for="member_code"> Member Code</label>
+                                            <label class="control-label col-sm-2" for="member_code"> Member Code <span style="color: red;">*</span></label>
                                             <div class="col-md-4">
                                                 <input type="text" name="member_code" id="member_code" class="form-control" />
                                             </div>

@@ -4,11 +4,16 @@
             format: 'yyyy-mm-dd',
             autoclose: true
         });
+        $("#date_range").daterangepicker();
         var oTable = $('#example2').dataTable({
             "processing": true,
             "serverSide": true,
-            <?php if($this->input->post()){ ?>
-            "sAjaxSource": '<?php echo base_url(); ?>index.php/transactions/dairy_txn_datatable/<?php echo $this->input->post("society"); ?>',
+            <?php 
+                if($this->input->post()){ 
+                    $split_date = explode('-', $this->input->post("date_range"));
+                    $date_range = date('Y-m-d', strtotime(trim(str_replace('-', '/',$split_date[0]))))."|".date('Y-m-d', strtotime(trim(str_replace('-', '/',$split_date[1]))));
+            ?>
+            "sAjaxSource": '<?php echo base_url(); ?>index.php/transactions/dairy_txn_datatable/<?php echo $this->input->post("society"); ?>/<?php echo $date_range; ?>',
             <?php }else{ ?>
             "sAjaxSource": '<?php echo base_url(); ?>index.php/transactions/dairy_txn_datatable',
             <?php } ?>
@@ -99,8 +104,8 @@
                     <form action="<?php echo base_url(); ?>index.php/transactions/daily_txn" method="post" class="form-horizontal">
                         <div class="box-body">
                             <div class="form-group">
-                                <label class="control-label col-sm-2" for="society">Society</label>
-                                <div class="col-md-4">
+                                <label class="control-label col-md-2" for="society">Society</label>
+                                <div class="col-md-3">
                                     <select class="form-control" name="society" id="society">
                                         <option value="">--Select Society--</option>
                                         <?php
@@ -114,9 +119,13 @@
                                         ?>
                                     </select>
                                 </div>
-                            </div>
-                            <div>
-                                <input type="submit" name="submit" value="Submit" class="btn btn-primary" />
+                                <label class="control-label col-md-1" for="date_range">Date</label>
+                                <div class="col-md-3">
+                                   <input type="text" name="date_range" class="form-control" id="date_range" />
+                                </div>
+                                <div class="col-md-2">
+                                   <input type="submit" name="submit" value="Submit" id="submit" class="btn btn-primary" />
+                               </div>
                             </div>
                         </div>
                     </form>

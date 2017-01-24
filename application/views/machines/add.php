@@ -19,8 +19,8 @@
                 ele += "<div class='form-group'><label class='control-label col-md-2' for='name'>Machine "+i+"</label><div class='col-md-2'>";
                 ele += "<input type='text' name='machine_id[]' id='machine_id_"+i+"' class='form-control' placeholder='Machine ID'/><br>";
                 ele += "<select name='validity[]' class='form-control validity'><option value=''>-- Select Validity--</option><option value='3m'> 3 months </option><option value='6m'> 6 months </option><option value='9m'> 9 months </option><option value='1y'> 1 Year </option></select>";
-                ele += "</div><input type='text' name='date_validity[]' class='form-control reservation' style='width:15%;' placeholder='Validity'/><button class='btn btn-danger remove' id='remove-"+i+"' style='margin-top:18px;'>Remove</button></div>";
-                ele += "</div></div>";
+                ele += "</div><input type='text' name='machine_name[]' class='form-control' style='width:15%;' placeholder='Machine Name'/><!--<input type='text' name='date_validity[]' class='form-control reservation' style='width:15%;' placeholder='Validity'/>--><select name='type[]' class='form-control type' style='width:15%; margin-top:19px;'><option value='USB'> USB </option><option value='BLUETOOTH'> BLUETOOTH </option><option value='GPRS'> GPRS </option></select>";
+                ele += "<button class='btn btn-danger remove' id='remove-"+i+"' style='margin-top:18px;'>Remove</button></div></div></div>";
             }
             $(ele).insertAfter("div.form-group");
         });

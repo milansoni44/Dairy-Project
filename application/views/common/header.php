@@ -49,7 +49,7 @@
             <a href="<?php echo base_url(); ?>" class="logo">
                 <!-- Add the class icon to your logo image or logo icon to add the margining -->
                 <?php if($this->session->userdata("group") == "dairy" || $this->session->userdata("group") == "admin"){ ?>
-                AdminLTE
+                <?php echo ucfirst($this->session->userdata("username")); ?>
                 <?php }else{ 
                     echo $this->session->userdata("dairy"); 
                 }
@@ -216,7 +216,7 @@
                                 <span>Machines</span>
                                 <i class="fa fa-angle-left pull-right"></i>
                             </a>
-                            <ul class="treeview-menu">
+<!--                            <ul class="treeview-menu">
                                 <?php if($this->session->userdata("group") == "admin"){ ?>
                                 <li><a href="<?php echo base_url(); ?>index.php/machines"><i class="fa fa-angle-double-right"></i> Machines</a></li>
                                 <?php } ?>
@@ -224,6 +224,19 @@
                                 <li><a href="<?php echo base_url(); ?>index.php/machines/allocate"><i class="fa fa-angle-double-right"></i> Total Allocated</a></li>
                                 <?php } ?>
                                 <li><a href="<?php echo base_url(); ?>index.php/machines/allocated_to_society"><i class="fa fa-angle-double-right"></i> Allocated</a></li>
+                            </ul>-->
+                            <ul class="treeview-menu">
+                                <?php if($this->session->userdata("group") == "admin"){ ?>
+                                <li><a href="<?php echo base_url(); ?>index.php/machines"><i class="fa fa-angle-double-right"></i> Machines</a></li>
+                                <li><a href="<?php echo base_url(); ?>index.php/machines/add"><i class="fa fa-angle-double-right"></i> Add Machine</a></li>
+                                <?php } ?>
+                                <?php if($this->session->userdata("group") == "dairy"){ ?>
+                                <li><a href="<?php echo base_url(); ?>index.php/machines/allocate"><i class="fa fa-angle-double-right"></i> Machines</a></li>
+                                <li><a href="<?php echo base_url(); ?>index.php/machines/allocate_to_soc"><i class="fa fa-angle-double-right"></i> Add Society Machine</a></li>
+                                <?php } ?>
+                                <?php if($this->session->userdata("group") == "society"){ ?>
+                                <li><a href="<?php echo base_url(); ?>index.php/machines/allocated_to_society"><i class="fa fa-angle-double-right"></i> Allocated</a></li>
+                                <?php } ?>
                             </ul>
                         </li>
                         <?php } ?>

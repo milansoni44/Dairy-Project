@@ -55,8 +55,8 @@
                                 </div><!-- /.box-header -->
                                 <form class="form-horizontal" method="post" action="<?php echo base_url(); ?>index.php/customers/society_index">
                                     <div class="form-group">
-                                        <label class="control-label col-sm-2" for="society">Society</label>
-                                        <div class="col-md-4">
+                                        <label class="control-label col-md-2" for="society">Society</label>
+                                        <div class="col-md-3">
                                             <select class="form-control" name="society" id="society">
                                                 <option value="">--Select Society--</option>
                                                 <?php 
@@ -69,11 +69,11 @@
                                                     }
                                                 ?>
                                             </select>
+                                           
+                                            
                                         </div>
                                     </div>
-                                    <div class="footer" style="margin-left: 100px;">
-                                        <input type="submit" name="submit" id="submit" class="btn btn-primary" />
-                                    </div>
+                                    
                                 </form>
                                 <div class="box-body table-responsive">
                                     <?php if($this->input->post()){ ?>

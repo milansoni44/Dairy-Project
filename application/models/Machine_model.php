@@ -122,69 +122,20 @@ class Machine_model extends CI_Model{
      * @param type $id
      * @return boolean
      */
-    function allocated_dairy_machine($id = NULL){
-        if(!$id){
-//            $q1 = $this->db->get("dairy_machine_map");
-            $q1 = $this->db->query("SELECT * FROM machines");
-        }else{
-//            $q1 = $this->db->query("SELECT * FROM dairy_machine_map WHERE id NOT IN($id)");
-            $q1 = $this->db->query("SELECT * FROM machines WHERE id = '$id' OR dairy_id IS NULL");
-        }
+    function allocated_dairy_machine(){
+        $id = $this->session->userdata("id");
+        $q = $this->db->query("SELECT m.*, u.name FROM machines m
+LEFT JOIN users u ON u.id = m.society_id
+WHERE m.dairy_id = '$id'");
 //        echo $this->db->last_query();exit;
-        /*if($q1->num_rows() > 0){
-            foreach($q1->result() as $row){
-                $row1[] = $row->id;
-            }
-            $machine_ids = implode("','", $row1);
-        }
-        
-        if(!empty($machine_ids)){
-            $q = $this->db->query("SELECT * FROM machines WHERE id NOT IN ('".$machine_ids."')");
-        }else{
-            $q = $this->db->query("SELECT * FROM machines");
-        }*/
-//        echo $this->db->last_query();exit;
-        if($q1->num_rows() > 0){
-            foreach($q1->result() as $m){
+        if($q->num_rows() > 0){
+            foreach($q->result() as $m){
                 $m1[] = $m;
             }
             return $m1;
         }
         return FALSE;
     }
-    /**
-     * get all available machines for society
-     * @param type $id
-     * @return boolean
-     */
-    /*function allocated_soc_machine($id = NULL){
-        if(!$id){
-            $q = $this->db->get("society_machine_map");
-        }else{
-            $q = $this->db->query("SELECT * FROM society_machine_map WHERE id NOT IN($id)");
-        }
-        echo $this->db->last_query();exit;
-        if($q->num_rows() > 0){
-            foreach($q->result() as $row){
-                $row1[] = $row->machine_id;
-            }
-            $machine_ids = implode("','",$row1);
-        }
-        
-        if(!empty($machine_ids)){
-            $q1 = $this->db->query("SELECT dmm.*, m.machine_id AS mid FROM dairy_machine_map dmm LEFT JOIN machines m ON m.id = dmm.machine_id WHERE dmm.machine_id NOT IN ('".$machine_ids."')");
-        }else{
-            $q1 = $this->db->query("SELECT dmm.*, m.machine_id AS mid FROM dairy_machine_map dmm LEFT JOIN machines m ON m.id = dmm.machine_id");
-        }
-//        echo $this->db->last_query();exit;
-        if($q1->num_rows() > 0){
-            foreach($q1->result() as $m){
-                $m1[] = $m;
-            }
-            return $m1;
-        }
-        return FALSE;
-    }*/
     
     function allocated_soc_machine($id = NULL){
         if(!$id){
@@ -312,46 +263,8 @@ class Machine_model extends CI_Model{
     }
     
     function mapped_society_machine(){
-        if($this->session->userdata("group") == "society"){
-            $id = $this->session->userdata("id");
-            $q = $this->db->query("SELECT m.id, m.machine_id, s.name FROM machines m
-                                LEFT JOIN users s ON s.id = m.society_id
-                                WHERE society_id = '$id'");
-        }else if($this->session->userdata("group") == "dairy"){
-            $id = $this->session->userdata("id");
-            $q = $this->db->query("SELECT m.id, m.machine_id, s.name FROM machines m
-                                LEFT JOIN users d ON d.id = m.dairy_id
-                                LEFT JOIN users s ON s.dairy_id = m.dairy_id
-                                WHERE d.id = '$id' AND m.society_id IS NOT NULL");
-        }else{
-            $q = $this->db->query("SELECT m.id, m.machine_id, s.name FROM machines m
-                                LEFT JOIN users d ON d.id = m.dairy_id
-                                LEFT JOIN users s ON s.dairy_id = m.dairy_id WHERE m.society_id IS NOT NULL");
-        }
-        /*$this->db->select("society_machine_map.id,users.name,machines.machine_id")
-            ->from("users")
-            ->join("user_groups","user_groups.user_id = users.id","LEFT")
-            ->join("groups","groups.id = user_groups.group_id","LEFT")
-            ->join("society_machine_map","society_machine_map.society_id = users.id")
-            ->join("machines","machines.id = society_machine_map.machine_id")
-            ->where("groups.name","society");
-        if($this->session->userdata("group") == "society"){
-            $this->db->where("users.id",$this->session->userdata("id"));
-            $q = $this->db->get();
-        }else if($this->session->userdata("group") == "dairy"){
-            $this->db->where("users.dairy_id", $this->session->userdata("id"));
-            $q = $this->db->get();
-        }else{
-            $q = $this->db->get();
-        }
-//        echo $this->db->last_query();exit;
-        if($q->num_rows() > 0){
-            foreach($q->result() as $row){
-                $row1[] = $row;
-            }
-            return $row1;
-        }
-        return FALSE;*/
+        $id = $this->session->userdata("id");
+        $q = $this->db->query("SELECT * FROM machines WHERE society_id = '$id'");
         if($q->num_rows() > 0){
             foreach($q->result() as $row){
                 $row1[] = $row;

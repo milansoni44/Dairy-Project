@@ -46,7 +46,8 @@
                                         <thead>
                                             <tr>
                                                 <th>Machine ID</th>
-                                                <th>Society</th>
+                                                <th>Machine Name</th>
+                                                <th>Type</th>
                                                 <?php if($this->session->userdata("group") == "dairy"){ ?>
                                                 <th>Actions</th
                                                 <?php } ?>
@@ -59,7 +60,8 @@
                                             ?>
                                             <tr>
                                                 <td><?php echo $row->machine_id; ?></td>
-                                                <td><?php echo $row->name; ?></td>
+                                                <td><?php echo $row->machine_name; ?></td>
+                                                <td><?php echo $row->machine_type; ?></td>
                                                 <?php if($this->session->userdata("group") == "dairy"){ ?>
                                                 <td>
                                                     <a href="<?php echo base_url(); ?>index.php/machines/edit_society_machine/<?php echo $row->id; ?>">Edit</a>
@@ -75,7 +77,8 @@
                                         <tfoot>
                                             <tr>
                                                 <th>Machine ID</th>
-                                                <th>Society</th>
+                                                <th>Machine Name</th>
+                                                <th>Type</th>
                                                 <?php if($this->session->userdata("group") == "dairy"){ ?>
                                                 <th>Actions</th>
                                                 <?php } ?>

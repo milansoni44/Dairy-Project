@@ -5,7 +5,7 @@
                 name: "required",
                 username: { 
                     required: true,
-                    minlength: 2
+                    minlength: 5
                 },
                 password: "required",
                 email: {
@@ -14,7 +14,7 @@
                 mobile: {
                     required: true,
                     number: true,
-                    minlength: 6,
+                    minlength: 10,
                     maxlength: 12,
                 }
             },
@@ -31,7 +31,7 @@
                 mobile: {
                     required: "Please enter mobile",
                     number: "Only numeric value is allowed",
-                    minlength: "Minimum 6 character allowed",
+                    minlength: "Minimum 10 character allowed",
                     maxlength: "Maximum 12 character allowed",
                 }
             }
@@ -89,7 +89,7 @@
                                 <form role="form" class="form-horizontal" id="add_dairy_form" action="<?php echo base_url(); ?>index.php/society/add" method="post">
                                     <div class="box-body">
                                         <div class="form-group">
-                                            <label class="control-label col-md-2" for="name">Name</label>
+                                            <label class="control-label col-md-2" for="name">Name <span style="color:red;">*</span></label>
                                             <div class="col-md-4">
                                                 <input type="text" name="name" class="form-control" id="name"/>
                                                 <?php if(isset($errors['name'])){
@@ -98,7 +98,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="control-label col-md-2" for="username">Username</label>
+                                            <label class="control-label col-md-2" for="username">Username <span style="color:red;">*</span></label>
                                             <div class="col-md-4">
                                                 <input type="text" name="username" class="form-control" id="username"/>
                                                 <?php if(isset($errors['username'])){
@@ -116,7 +116,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="control-label col-md-2" for="password">Password</label>
+                                            <label class="control-label col-md-2" for="password">Password <span style="color:red;">*</span></label>
                                             <div class="col-md-4">
                                                 <input type="password" name="password" class="form-control" id="password"/>
                                                 <?php if(isset($errors['password'])){
@@ -125,7 +125,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="control-label col-md-2" for="mobile">Mobile</label>
+                                            <label class="control-label col-md-2" for="mobile">Mobile <span style="color:red;">*</span></label>
                                             <div class="col-md-4">
                                                 <input type="text" name="mobile" class="form-control" id="mobile"/>
                                                 <?php if(isset($errors['mobile'])){

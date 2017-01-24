@@ -118,9 +118,9 @@ class Machines extends MY_Controller{
      * display dairy associated machines
      */
     function allocate(){
-        if($this->session->userdata("group") == "admin" || $this->session->userdata("group") == "dairy"){
+        if($this->session->userdata("group") == "dairy"){
 //            $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
-            $data['allocated_machines'] = $this->machine_model->mapped_machine();
+            $data['allocated_machines'] = $this->machine_model->allocated_dairy_machine();
             $this->load->view("common/header", $this->data);
             $this->load->view("machines/allocated_machines",$data);
             $this->load->view("common/footer");

@@ -94,7 +94,7 @@
                                                 <td><?php echo $row->ac_no; ?></td>
                                                 <td>
                                                     <a href="<?php echo base_url(); ?>index.php/customers/edit/<?php echo $row->id; ?>">Edit</a>
-                                                    <a href="<?php echo base_url(); ?>index.php/customers/delete/<?php echo $row->id; ?>">Delete</a>
+<!--                                                    <a href="<?php echo base_url(); ?>index.php/customers/delete/<?php echo $row->id; ?>">Delete</a>-->
                                                 </td>
                                             </tr>
                                             <?php
