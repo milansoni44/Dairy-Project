@@ -45,7 +45,9 @@
                                     <table id="example2" class="table table-bordered table-hover">
                                         <thead>
                                             <tr>
+                                                <?php if($this->session->userdata("group") == "admin"){ ?>
                                                 <th>Dairy</th>
+                                                <?php } ?>
                                                 <th>Name</th>
                                                 <th>Username</th>
                                                 <th>Address</th>
@@ -63,7 +65,9 @@
                                                     foreach($society as $row){
                                             ?>
                                             <tr>
+                                                <?php if($this->session->userdata("group") == "admin"){ ?>
                                                 <td><?php echo $row->dairy_name; ?></td>
+                                                <?php } ?>
                                                 <td><?php echo $row->name; ?></td>
                                                 <td><?php echo $row->username; ?></td>
                                                 <td><?php echo $row->address; ?></td>
@@ -73,7 +77,7 @@
                                                 <?php if($this->session->userdata("group") == "dairy"){ ?>
                                                 <td>
                                                     <a href="<?php echo base_url(); ?>index.php/society/edit/<?php echo $row->id; ?>">Edit</a>
-                                                    <a href="<?php echo base_url(); ?>index.php/society/delete/<?php echo $row->id; ?>">Delete</a>
+                                                    <a href="<?php echo base_url(); ?>index.php/society/change_status/<?php echo $row->id; ?>"><?php if($row->society_status == '0'){ ?> Activate<?php }else{ ?>Deactivate <?php } ?></a>
                                                 </td>
                                                 <?php } ?>
                                             </tr>

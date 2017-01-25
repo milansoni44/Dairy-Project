@@ -27,7 +27,7 @@ class Society extends MY_Controller
             $this->session->set_flashdata("message","Access Denied");
             redirect("/","refresh");
         }
-        $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
+        //$data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
         $data['society'] = $this->society_model->get_society();
         $this->load->view('common/header', $this->data);
         $this->load->view('society/index',$data);
@@ -131,6 +131,13 @@ class Society extends MY_Controller
             $this->load->view("common/header", $this->data);
             $this->load->view("society/edit",$data);
             $this->load->view("common/footer");
+        }
+    }
+    
+    function change_status($id = NULL){
+        if($this->society_model->change_status($id)){
+            $this->session->set_flashdata("success", "Status changed successfully");
+            redirect("society", "refresh");
         }
     }
 }

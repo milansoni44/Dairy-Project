@@ -14,7 +14,7 @@ class Society_model extends CI_Model
     
     public function get_society()
     {
-        $this->db->select("s.*, d.name AS dairy_name")
+        $this->db->select("s.id, s.name, s.username, s.email, s.address, s.area, s.contact_person, s.mobile, s.street, s.pincode, s.state, s.city, s.acc_no, s.bank_name, s.acc_type, s.ifsc, s.status as society_status, d.name AS dairy_name")
         ->from("users s")
         ->join("user_groups ug","ug.user_id = s.id","LEFT")
         ->join("groups g","g.id = ug.group_id","LEFT")
@@ -77,6 +77,14 @@ class Society_model extends CI_Model
     function edit_society($data = array(), $id = NULL){
         $this->db->where('id',$id);
         if($this->db->update("users", $data)){
+            return TRUE;
+        }
+        return FALSE;
+    }
+    
+    function change_status($id = NULL){
+        //UPDATE machines SET `status` = NOT `status` WHERE id = '16'
+        if($this->db->query("UPDATE users SET `status` = NOT `status` WHERE id = '$id'")){
             return TRUE;
         }
         return FALSE;

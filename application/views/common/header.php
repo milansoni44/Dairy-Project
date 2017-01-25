@@ -135,10 +135,10 @@
                                 <!-- User image -->
                                 <li class="user-header bg-light-blue">
                                     <img src="<?php echo base_url(); ?>assets/img/avatar3.png" class="img-circle" alt="User Image" />
-<!--                                    <p>
-                                        Jane Doe - Web Developer
-                                        <small>Member since Nov. 2017</small>
-                                    </p>-->
+                                    <p>
+                                        <?php echo ucfirst($this->session->userdata("username")); ?>
+<!--                                        <small>Member since Nov. 2017</small>-->
+                                    </p>
                                 </li>
                                 <!-- Menu Body -->
 <!--                                <li class="user-body">
