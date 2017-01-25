@@ -119,6 +119,15 @@ class Rate_model extends CI_Model{
         }
         return FALSE;
     }
+    
+    function delete_rate($table = NULL){
+        $id = $this->session->userdata("id");
+        $this->db->where("dairy_id", $id);
+        if($this->db->delete($table)){
+            return TRUE;
+        }
+        return FALSE;
+    }
 }
 
 /** application/Models/Rate_model.php */

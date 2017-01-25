@@ -5,6 +5,10 @@
                         e.preventDefault();
                         location.href = "<?php echo base_url(); ?>index.php/rate/export_bfatclr";
                     });
+                    $("#buff_fat_clr_import").on("click", function(e){
+                        e.preventDefault();
+                        location.href = "<?php echo base_url(); ?>index.php/rate/import_bfat_clr";
+                    });
                 });
             </script>
             <aside class="right-side">
@@ -51,7 +55,7 @@
                                 <div class="box-header">
                                     <h3 class="box-title"><!-- Hover Data Table --></h3>
                                     <?php if($this->session->userdata("group") == "dairy"){ ?>
-                                    <span class="pull-right"><button class="btn btn-primary" id="cow_fat">Import Buffalo Fat</button></span>
+                                    <span class="pull-right"><button class="btn btn-primary" id="buff_fat_clr_import">Import Buffalo Fat</button></span>
                                     <?php } ?>
                                     <span class="pull-right"><button class="btn btn-primary" id="buff_fat_clr">Download CLR</button></span>
                                 </div><!-- /.box-header -->

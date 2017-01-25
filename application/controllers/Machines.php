@@ -44,18 +44,22 @@ class Machines extends MY_Controller{
     /**
      * add new machine
      */
-    function add(){
-        if($this->session->userdata("group") != "admin"){
+    function add()
+	{
+        if($this->session->userdata("group") != "admin")
+		{
             $this->session->set_falshdata("message","Access Denied");
             redirect("/","refresh");
         }
         // validation for machines
         
-        if( $this->input->server("REQUEST_METHOD") === "POST" ){
+        if( $this->input->server("REQUEST_METHOD") === "POST" )
+		{
 //            echo "<pre>";
 //            print_r($_POST);exit;
             $i = 0;
-            foreach($_POST['machine_id'] as $row){
+            foreach($_POST['machine_id'] as $row)
+			{
                 $machine_data[] = array(
                     "machine_id"=>$row,
                     "machine_name"=>$_POST['machine_name'][$i],
@@ -63,6 +67,14 @@ class Machines extends MY_Controller{
                     "validity"=> $_POST['validity'][$i],
                     "dairy_id"=>$_POST['dairy_id'][$i]
                 );
+				
+				$notify_msg = $_POST['machine_name'][$i].' ('.$row.') successfully allocated to {dairy_name}.';
+				
+				$this->db->query("INSERT INTO `notification` SET 
+										`message`='".$notify_msg."',
+										`dairy_id`='".$_POST['dairy_id'][$i]."'
+								");
+				
                 $i++;
             }
 //            print_r($machine_data);exit;

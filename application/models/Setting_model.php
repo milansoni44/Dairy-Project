@@ -22,6 +22,7 @@ class Setting_model extends CI_Model{
     
     function delete_bf_data($table = NULL, $dairy_id = NULL){
         if($this->db->delete($table, array("dairy_id"=>$dairy_id))){
+//            echo $this->db->last_query();exit;
             return TRUE;
         }
         return FALSE;
@@ -29,6 +30,20 @@ class Setting_model extends CI_Model{
     
     function delete_c_data($table = NULL, $dairy_id = NULL){
         if($this->db->delete($table, array("dairy_id"=>$dairy_id))){
+            return TRUE;
+        }
+        return FALSE;
+    }
+    
+    function insert_bfat_snf_data($data = array()){
+        if($this->db->insert_batch('buffalo_fat_snf', $data)){
+            return TRUE;
+        }
+        return FALSE;
+    }
+    
+    function insert_bfat_clr_data($data = array()){
+        if($this->db->insert_batch('buffalo_fat_clr', $data)){
             return TRUE;
         }
         return FALSE;

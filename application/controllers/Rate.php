@@ -215,9 +215,54 @@ class Rate extends MY_Controller{
             $this->session->set_flashdata("message", "Access Denied");
             redirect("/", "refresh");
         }
-        $this->load->view("common/header", $this->data);
-        $this->load->view("rate/cfat_snf");
-        $this->load->view("common/footer");
+        
+        if($this->input->server('REQUEST_METHOD') == 'POST'){
+            $res_low = $this->setting_model->get_config("BUFFALO","SNF_LOW_LIMIT")->config_value;
+            $res_high = $this->setting_model->get_config("BUFFALO","SNF_HIGH_LIMIT")->config_value;
+            
+            $csvFile = $_FILES['import_bfat']['tmp_name'];
+            if (($getfile = fopen($csvFile, "r")) !== FALSE) {
+            //    $data = fgetcsv($getfile, 1000, ",");
+                $fat1 = $res_low;
+                $fat2 = $res_high;
+                $fat = $res_low;
+            //    $fat = $row_high[3];
+                $this->setting_model->delete_bf_data("buffalo_fat_snf", $this->session->userdata("id"));
+                $f_start = $fat1 * 10;
+                $f_end = $fat2 * 10;
+                $row = 1;
+                while (($data = fgetcsv($getfile, 1000, ",")) !== FALSE) {
+                    $data1[] = $data;
+                }
+//                echo "<pre>";
+//                print_r($data1);exit;
+                for($i = $f_start; $i <= $f_end; $i++){
+                    $snf = $res_low;
+                    for($j = $f_start; $j < count($data1[$i]); $j++){
+                        $a[] = array(
+                            "Fat"=>$fat1,
+                            "Snf"=>$snf,
+                            "Rate"=>  (number_format((float)$data1[$i][$j],3,'.','')/100),
+                            "dairy_id"=>$this->session->userdata("id")
+                        );
+                        $snf = $snf + 0.1;
+                    }
+                    $fat1 = $fat1 + 0.1;
+                }
+                fclose($getfile);
+                try{
+                    $this->setting_model->insert_bfat_snf_data($a);
+                    $this->session->set_flashdata("success", "Buffalo Fat SNF uploaded successfully.");
+                    redirect("rate/bfat_snf", "refresh");
+                } catch (Exception $ex) {
+                    
+                }
+            }
+        }else{
+            $this->load->view("common/header", $this->data);
+            $this->load->view("rate/bfat_snf");
+            $this->load->view("common/footer");
+        }
     }
     
     function bfat_snf(){
@@ -704,6 +749,56 @@ class Rate extends MY_Controller{
         $this->load->view("common/header", $this->data);
         $this->load->view("rate/bfat_clr_index", $data);
         $this->load->view("common/footer");
+    }
+    
+    function import_bfat_clr(){
+        if($this->input->server('REQUEST_METHOD') == 'POST'){
+            $res_low = $this->setting_model->get_config("BUFFALO","CLR_LOW_LIMIT")->config_value;
+            $res_high = $this->setting_model->get_config("BUFFALO","CLR_HIGH_LIMIT")->config_value;
+            
+            $csvFile = $_FILES['import_bfat']['tmp_name'];
+            
+            if (($getfile = fopen($csvFile, "r")) !== FALSE) {
+            $fat_low = $res_low;
+            $fat_high = $res_high;
+
+            $f_start = $res_low * 10;
+            $f_end = $res_high * 10;
+//            $this->db2->truncate("Buffalo_Fat_Clr");
+            $this->setting_model->delete_bf_data("buffalo_fat_clr", $this->session->userdata("id"));
+            while (($data = fgetcsv($getfile, 1000, ",")) !== FALSE) {
+                $data1[] = $data;
+            }
+            for($i = $f_start; $i < $f_end; $i++){
+                    $clr = $res_low;
+                    for($j = $f_start; $j < count($data1[$i]); $j++){
+            //            echo "Row $i AND Column $j Value=".$data1[$i][$j];
+            //            echo "<br>";
+                        $arr[] = array(
+                            "Fat"=>$fat_low,
+                            "Clr"=>$clr,
+                            "Rate"=>  (number_format((float)$data1[$i][$j],3,'.','')/100),
+                            "dairy_id"=>$this->session->userdata("id")
+                        );
+                        $clr = $clr + 0.1;
+                    }
+                    $fat_low = $fat_low + 0.1;
+                }
+                fclose($getfile);
+                try{
+                    $this->setting_model->insert_bfat_clr_data($arr);
+                    $this->session->set_flashdata("success", "Buffalo Fat Clr uploaded successfully.");
+                    redirect("rate/bfat_clr", "refresh");
+                } catch (Exception $ex) {
+                    return json_encode(array("success"=>FALSE));
+                    exit;
+                }
+            }
+        }else{
+            $this->load->view("common/header");
+            $this->load->view("rate/bfat_clr_import");
+            $this->load->view("common/footer");
+        }
     }
     
     function export_bfatclr(){
