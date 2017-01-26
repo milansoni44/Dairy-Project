@@ -37,6 +37,11 @@ class Setting_model extends CI_Model{
     
     function insert_bfat_snf_data($data = array()){
         if($this->db->insert_batch('buffalo_fat_snf', $data)){
+            $notification = array(
+                "message"=> "Buffalo Fat SNF updated",
+                "dairy_id"=>$this->session->userdata("id"),
+            );
+            $this->db->insert("notification", $notification);
             return TRUE;
         }
         return FALSE;
@@ -44,6 +49,23 @@ class Setting_model extends CI_Model{
     
     function insert_bfat_clr_data($data = array()){
         if($this->db->insert_batch('buffalo_fat_clr', $data)){
+            $notification = array(
+                "message"=> "Buffalo Fat CLR updated",
+                "dairy_id"=>$this->session->userdata("id"),
+            );
+            $this->db->insert("notification", $notification);
+            return TRUE;
+        }
+        return FALSE;
+    }
+    
+    function insert_cfat_clr_data($data = array()){
+        if($this->db->insert_batch('cow_fat_clr', $data)){
+            $notification = array(
+                "message"=> "Cow Fat CLR updated",
+                "dairy_id"=>$this->session->userdata("id"),
+            );
+            $this->db->insert("notification", $notification);
             return TRUE;
         }
         return FALSE;
@@ -51,6 +73,11 @@ class Setting_model extends CI_Model{
     
     function insert_cow_snf_data($data = array()){
         if($this->db->insert_batch('cow_fat_snf', $data)){
+            $notification = array(
+                "message"=> "Buffalo Fat CLR updated",
+                "dairy_id"=>$this->session->userdata("id"),
+            );
+            $this->db->insert("notification", $notification);
             return TRUE;
         }
         return FALSE;

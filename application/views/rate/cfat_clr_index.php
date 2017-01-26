@@ -3,7 +3,7 @@
                     $("#example2").DataTable();
                     $("#cow_fat").on("click", function(e){
                        e.preventDefault();
-                       location.href = "<?php echo base_url(); ?>index.php/rate/import_bfat_snf";
+                       location.href = "<?php echo base_url(); ?>index.php/rate/import_cfat_clr";
                     });
                     $("#cow_fat_clr").on("click", function(e){
                         e.preventDefault();
