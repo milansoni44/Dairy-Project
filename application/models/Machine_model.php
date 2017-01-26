@@ -34,16 +34,6 @@ class Machine_model extends CI_Model{
      * @return boolean
      */
     function get_machines(){
-//        $q = $this->db->get("machines");
-//        $q = $this->db->query("SELECT m.*, d.name as dairy_name, s.name as society_name FROM machines m
-//LEFT JOIN dairy_machine_map dmm
-//ON dmm.machine_id = m.id
-//LEFT JOIN society_machine_map smm
-//ON smm.machine_id = m.id
-//LEFT JOIN users d
-//ON d.id = dmm.dairy_id
-//LEFT JOIN users s
-//ON s.id = smm.society_id");
         $q = $this->db->query("SELECT machines.*, d.name AS dairy_name, s.name AS society_name FROM machines
                             LEFT JOIN users d ON d.id = machines.dairy_id
                             LEFT JOIN users s ON s.id = machines.society_id");
@@ -70,35 +60,6 @@ class Machine_model extends CI_Model{
     }
     
     function not_allocated_soc_machines(){
-//        $q = $this->db->select("machine_id")->get("society_machine_map");
-        /*$id = $this->session->userdata("id");
-        $q = $this->db->query("SELECT machine_id FROM dairy_machine_map WHERE dairy_id = '$id'");
-//        echo $this->db->last_query();exit;
-        if($q->num_rows() > 0){
-            foreach($q->result() as $rw){
-                $rw1[] = $rw->machine_id;
-            }
-        }
-        if(!empty($rw)){
-            $ex = implode("','", $rw1);
-            $q = $this->db->query("SELECT machine_id FROM society_machine_map WHERE machine_id IN('$ex')");
-        }else{
-            $q = $this->db->get("machines");
-        }
-        foreach($q->result() as $rw1){
-            $rw2[] = $rw1->machine_id;
-        }
-        $ex1 = implode("','", $rw2);
-//        echo $this->db->last_query();exit;
-        $q1 = $this->db->query("SELECT m.machine_id, m.id as mo_id FROM dairy_machine_map dmm LEFT JOIN machines m ON m.id = dmm.machine_id WHERE dmm.dairy_id = '$id' AND dmm.machine_id NOT IN('$ex1')");
-        echo $this->db->last_query();exit;
-        if($q1->num_rows() > 0){
-            foreach($q1->result() as $row12){
-                $row111[] = $row12;
-            }
-            return $row111;
-        }
-        return FALSE;*/
         $id = $this->session->userdata("id");
         $q = $this->db->query("SELECT id as mo_id, machine_id FROM machines WHERE society_id IS NULL AND dairy_id = '$id'");
         if($q->num_rows() > 0){

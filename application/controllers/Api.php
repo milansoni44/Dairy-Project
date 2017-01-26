@@ -199,12 +199,28 @@ class Api extends CI_Controller {
 
                 if ($result->row('total') > 0) {
                     $this->db->query(" UPDATE `customers` SET `otp`=NULL WHERE `id`=" . $customer_id);
-                    $result2 = $this->db->query("SELECT * FROM `customers` WHERE `id`=" . $customer_id);
-
+                    $result2 = $this->db->query("SELECT *,
+												(CASE `type` 
+												 WHEN 'C' THEN 'Cow' 
+												 WHEN 'B' THEN 'Buffalo' 
+												 ELSE NULL 
+												 END) AS `type_word`
+												FROM `customers` WHERE `id`=" . $customer_id);
+					$customer_info = $result2->row_array();
+					
+$result_meta = $this->db->query("SELECT `society_id`,
+( SELECT `u`.`name` FROM `users` `u` WHERE `u`.`id`=`customer_machine`.`society_id` ) AS `society_name`,
+( SELECT `u`.`dairy_id` FROM `users` `u` WHERE `u`.`id`=`customer_machine`.`society_id` ) AS `dairy_id`,
+( SELECT `u`.`name` FROM `users` `u` 
+WHERE `u`.`id`=( SELECT `ud`.`dairy_id` FROM `users` `ud` WHERE `ud`.`id`=`customer_machine`.`society_id` ) ) AS `dairy_name`
+					FROM `customer_machine` WHERE `cid`=".$customer_id);
+					$customer_meta_info = $result_meta->result_array();
+					
                     $http_response_code = 200;
                     $response = array(
                         'error' => FALSE,
-                        'customer_info' => $result2->row_array(),
+                        'customer_info' => $customer_info,
+                        'customer_meta_info' => $customer_meta_info,
                         'message' => "Login success"
                     );
                 } else {

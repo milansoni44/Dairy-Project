@@ -54,7 +54,7 @@ class Transactions extends MY_Controller {
 //                echo "<pre>";
                 $i = 0;
                 while (($data = fgetcsv($getfile, 1000, ",")) !== FALSE) {
-//                    print_r($data);
+//                    print_r($data);exit;
                     if ($i > 0) {
 //                        // check_exist machine id
                         $stat = $this->transaction_model->exist_machine($data[13]);

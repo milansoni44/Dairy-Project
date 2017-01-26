@@ -38,6 +38,19 @@ WHERE cs.society_id IN (SELECT GROUP_CONCAT(s.id) AS sid FROM users d LEFT JOIN 
         }
         return FALSE;
     }
+    
+    function get_customer_by_machine($machine = NULL){
+        $q = $this->db->query("SELECT c.* FROM customers c
+                                LEFT JOIN customer_machine cm ON cm.cid = c.id
+                                WHERE cm.machine_id = '$machine'");
+        if($q->num_rows() > 0){
+            foreach($q->result() as $row){
+                $row1[] = $row;
+            }
+            return $row1;
+        }
+        return FALSE;
+    }
 
     function get_customer_txn() {
         if ($this->session->userdata("group") == "admin") {
@@ -137,6 +150,7 @@ LEFT JOIN customers c ON c.id = t.cid WHERE t.dairy_id = '$id'");
     function check_exist_customer_machine($cid = NULL, $machine = NULL){
         $id = $this->session->userdata("id");
         $q = $this->db->query("SELECT * FROM customer_machine WHERE machine_id = '$machine' AND cid = '$cid' AND society_id = '$id'");
+//        echo $this->db->last_query();exit;
         if($q->num_rows() > 0){
             return TRUE;
         }

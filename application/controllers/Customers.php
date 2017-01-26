@@ -25,11 +25,17 @@ class Customers extends MY_Controller {
     }
 
     function index() {
-//        $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
-        $data['customers'] = $this->customer_model->get_customer();
+        if($this->input->server('REQUEST_METHOD') == 'POST'){
+//            echo "<pre>";
+//            print_r($_POST);exit;
+            $data['customers'] = $this->customer_model->get_customer_by_machine($this->input->post("society_machine"));
+        }else{
+            $data['customers'] = $this->customer_model->get_customer();
+        }
         if ($this->session->userdata("group") == "dairy") {
             $data['society'] = $this->society_model->get_society();
         }
+        $data['society_machine'] = $this->machine_model->allocated_soc_machine($this->session->userdata("id"));
         $this->load->view("common/header", $this->data);
         $this->load->view("customers/index", $data);
         $this->load->view("common/footer");

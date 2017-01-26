@@ -63,8 +63,31 @@
                                     <?php if($this->session->userdata("group") == "society") {?>
                                     <span class="pull-right"><a href="<?php echo base_url(); ?>index.php/customers/add" class="btn btn-primary" style="color: #fff;">Add Milk Supplier</a></span>
                                     <span class="pull-right"><a href="<?php echo base_url(); ?>index.php/customers/import" class="btn btn-primary" style="color: #fff;">Import Milk Suppliers</a></span>
+                                    <span class="pull-right"><a href="<?php echo base_url(); ?>index.php/customers/export_customer" class="btn btn-primary" style="color: #fff;">Download Milk Supplier</a></span>
                                     <?php } ?>
                                 </div><!-- /.box-header -->
+                                <form class="form-horizontal" action="<?php echo base_url(); ?>index.php/customers" method="post">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-2" for="society_machine">Machines</label>
+                                        <div class="col-md-4">
+                                            <select class="form-control" name="society_machine" id="society_machine">
+                                                <option value="">--Select Machine--</option>
+                                                <?php 
+                                                    if(!empty($society_machine)){
+                                                        foreach($society_machine as $rw){
+                                                ?>
+                                                <option value="<?php echo $rw->id; ?>" <?php if(isset($_POST['society_machine']) && $_POST['society_machine'] == $rw->id){ ?>selected <?php } ?>><?php echo $rw->machine_id; ?></option>
+                                                <?php
+                                                        }
+                                                    }
+                                                ?>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input type="submit" name="submit_machine" id="submit_machine" class="btn btn-primary" />
+                                        </div>
+                                    </div>
+                                </form>
                                 <div class="box-body table-responsive">
                                     <table id="example2" class="table table-bordered table-hover">
                                         <thead>
