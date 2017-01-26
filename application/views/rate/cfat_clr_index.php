@@ -15,11 +15,11 @@
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
                     <h1>
-                        Buffalo Fat SNF
+                        Buffalo Fat CLR
                     </h1>
                     <ol class="breadcrumb">
                         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-                        <li class="active">Buffalo Fat SNF</li>
+                        <li class="active">Buffalo Fat CLR</li>
                     </ol>
                 </section>
 
@@ -59,7 +59,7 @@
                                     <?php } ?>
                                     <span class="pull-right"><button class="btn btn-primary" id="cow_fat_clr">Download CLR</button></span>
                                 </div><!-- /.box-header -->
-                                <div class="box-body table-responsive">
+                                <div class="dwrapper">
                                     <?php if(!empty($fat)){ ?>
                                     <table id="fixed_hdr1">
                                         <thead>

@@ -155,7 +155,7 @@ WHERE m.dairy_id = '$id'");
     
     function map_society_machine($data = array()){
         $this->db->where("id", $data['machine_id']);
-        if($this->db->update("machines", array("society_id"=>$data['society_id']))){
+        if($this->db->update("machines", array("society_id"=>$data['society_id'], "from_date" => $data['from_date'], "to_date" => $data['to_date']))){
             return TRUE;
         }
         return FALSE;
@@ -307,6 +307,14 @@ WHERE m.dairy_id = '$id'");
         }
 //        echo $this->db->last_query();
         return $q->row();
+    }
+    
+    function get_validity($id = NULL){
+        $q = $this->db->get_where("machines", array("id"=>$id));
+        if($q->num_rows() > 0){
+            return $q->row()->validity;
+        }
+        return FALSE;
     }
 }
 
