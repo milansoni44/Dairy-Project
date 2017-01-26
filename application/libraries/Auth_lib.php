@@ -24,8 +24,32 @@ class Auth_lib {
     public function set_session_data($data = array()){
         $this->CI->session->set_userdata($data);
     }
+	
+	public function get_notification($type=NULL, $id=NULL)
+	{
+		$query = '';
+		if( $type === "dairy" )
+		{
+			$query = " SELECT * 
+						FROM `notification` 
+						WHERE `id` NOT IN ( SELECT `notification_id` FROM `notification_read` WHERE `dairy_id`=".$id." AND `is_read`=1 )";
+		}
+		else if( $type === "society" )
+		{
+			$query = " SELECT * 
+						FROM `notification` 
+						WHERE `id` NOT IN ( SELECT `notification_id` FROM `notification_read` WHERE `society_id`=".$id." AND `is_read`=1 )";
+		}
+		
+		if( $query != '' )
+		{
+			$result = $this->CI->db->query( $query );
+		//	print "<pre>"; print_r( $result->result_array() ); exit;
+		}
+	}
     
-    public function get_machines($type = NULL, $id = NULL){
+    public function get_machines($type = NULL, $id = NULL)
+	{
         if($type == "dairy"){
             $q = $this->CI->db->query("SELECT n.message FROM notification n
                                 LEFT JOIN notification_read nr ON nr.notification_id = n.id

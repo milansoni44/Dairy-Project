@@ -156,36 +156,9 @@ WHERE m.dairy_id = '$id'");
     function map_society_machine($data = array()){
         $this->db->where("id", $data['machine_id']);
         if($this->db->update("machines", array("society_id"=>$data['society_id']))){
-            $q = $this->db->get_where("machines", array("id"=>$data['machine_id']));
-            $machine = $q->row()->machine_id;
-            $notification = array(
-                "society_id"=>$data['society_id'],
-                "message"=>$machine." successfully added.",
-            );
-            $this->db->insert("notification",$notification);
-            $nid = $this->db->insert_id();
-            $notification_read = array(
-                "notification_id"=>$nid,
-                "society_id"=>$data['society_id'],
-                "is_read"=>0
-            );
-            $this->db->insert("notification_read", $notification_read);
             return TRUE;
         }
         return FALSE;
-        /*if($this->db->insert("society_machine_map",$data)){
-            $notification = array(
-                "type"=>"machine",
-                "machine_id"=>$data['machine_id'],
-                "society_id"=>$data['society_id'],
-                "dairy_id"=>$this->session->userdata("id"),
-                "message"=>$data['machine_id']." successfully added.",
-                "is_read"=>0
-            );
-            $this->db->insert("notification", $notification);
-            return TRUE;
-        }
-        return FALSE;*/
     }
     
     function map_dairy_machine($data = array()){

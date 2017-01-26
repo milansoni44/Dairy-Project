@@ -48,6 +48,13 @@ class Setting_model extends CI_Model{
         }
         return FALSE;
     }
+    
+    function insert_cow_snf_data($data = array()){
+        if($this->db->insert_batch('cow_fat_snf', $data)){
+            return TRUE;
+        }
+        return FALSE;
+    }
 }
 
 /** application/Models/Setting_model.php */

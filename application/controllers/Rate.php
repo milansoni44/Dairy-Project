@@ -220,6 +220,11 @@ class Rate extends MY_Controller{
             $res_low = $this->setting_model->get_config("BUFFALO","SNF_LOW_LIMIT")->config_value;
             $res_high = $this->setting_model->get_config("BUFFALO","SNF_HIGH_LIMIT")->config_value;
             
+            $ext = pathinfo($_FILES['import_bfat']['name'], PATHINFO_EXTENSION);
+            if($ext != 'csv'){
+                $this->session->set_flashdata("message", "Please select only csv file");
+                redirect("rate/import_bfat_snf", "refresh");
+            }
             $csvFile = $_FILES['import_bfat']['tmp_name'];
             if (($getfile = fopen($csvFile, "r")) !== FALSE) {
             //    $data = fgetcsv($getfile, 1000, ",");
@@ -471,6 +476,55 @@ class Rate extends MY_Controller{
         $this->load->view("common/header", $this->data);
         $this->load->view("rate/cfat_snf_index", $data);
         $this->load->view("common/footer");
+    }
+    
+    function import_cfat_snf(){
+        if($this->input->server('REQUEST_METHOD') == 'POST'){
+            $res_low = $this->setting_model->get_config("COW","SNF_LOW_LIMIT")->config_value;
+            $res_high = $this->setting_model->get_config("COW","SNF_HIGH_LIMIT")->config_value;
+            
+            $csvFile = $_FILES['import_cfat']['tmp_name'];
+            
+            if (($getfile = fopen($csvFile, "r")) !== FALSE) {
+            //    $data = fgetcsv($getfile, 1000, ",");
+                $fat1 = $res_low;
+                $fat2 = $res_high;
+                $fat = $res_low;
+            //    $fat = $row_high[3];
+                $this->setting_model->delete_bf_data("cow_fat_snf", $this->session->userdata("id"));
+                $f_start = $fat1 * 10;
+                $f_end = $fat2 * 10;
+                $row = 1;
+                while (($data = fgetcsv($getfile, 1000, ",")) !== FALSE) {
+                    $data1[] = $data;
+                }
+                for($i = $f_start; $i <= $f_end; $i++){
+                    $snf = $res_low;
+                    for($j = $f_start; $j < count($data1[$i]); $j++){
+                        $a[] = array(
+                            "Fat"=>$fat1,
+                            "Snf"=>$snf,
+                            "Rate"=>  (number_format((float)$data1[$i][$j],3,'.','')/100),
+                            "dairy_id"=>$this->session->userdata("id")
+                        );
+                        $snf = $snf + 0.1;
+                    }
+                    $fat1 = $fat1 + 0.1;
+                }
+                fclose($getfile);
+                try {
+                    $this->setting_model->insert_cow_snf_data($a);
+                    $this->session->set_flashdata("success", "Cow Fat SNF uploaded successfully.");
+                    redirect("rate/cfat_snf", "refresh");
+                } catch (Exception $ex) {
+                    
+                }
+            }
+        }else{
+            $this->load->view("common/header", $this->data);
+            $this->load->view("rate/cfat_snf_import");
+            $this->load->view("common/footer");
+        }
     }
     
     public function export_csnf(){
@@ -795,7 +849,7 @@ class Rate extends MY_Controller{
                 }
             }
         }else{
-            $this->load->view("common/header");
+            $this->load->view("common/header", $this->data);
             $this->load->view("rate/bfat_clr_import");
             $this->load->view("common/footer");
         }

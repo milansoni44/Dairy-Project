@@ -3,11 +3,15 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/wamp/www/dairysuite/application/views/society/edit.php</file>
-            <file>file:/C:/wamp/www/dairysuite/application/controllers/Customers.php</file>
-            <file>file:/C:/wamp/www/dairysuite/application/views/dairy/edit.php</file>
-            <file>file:/C:/wamp/www/dairysuite/application/views/machines/edit.php</file>
-            <file>file:/C:/wamp/www/dairysuite/application/controllers/Machines.php</file>
+            <file>file:/C:/wamp/www/dairysuite/application/views/rate/bfat_snf.php</file>
+            <file>file:/C:/wamp/www/dairysuite/application/views/rate/cfat.php</file>
+            <file>file:/C:/wamp/www/dairysuite/application/models/Rate_model.php</file>
+            <file>file:/C:/wamp/www/dairysuite/application/views/rate/cfat_snf_import.php</file>
+            <file>file:/C:/wamp/www/dairysuite/application/views/rate/bfat_clr_index.php</file>
+            <file>file:/C:/wamp/www/dairysuite/application/views/rate/cfat_snf_index.php</file>
+            <file>file:/C:/wamp/www/dairysuite/application/views/rate/bfat_clr_import.php</file>
+            <file>file:/C:/wamp/www/dairysuite/application/controllers/Rate.php</file>
+            <file>file:/C:/wamp/www/dairysuite/application/models/Setting_model.php</file>
         </group>
     </open-files>
 </project-private>

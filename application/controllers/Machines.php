@@ -213,24 +213,38 @@ class Machines extends MY_Controller{
     /**
      * add new machine to society
      */
-    function allocate_to_soc(){
+    function allocate_to_soc()
+	{
         if($this->session->userdata("group") == "society" || $this->session->userdata("group") == "admin"){
             $this->session->set_flashdata("message","Access Denied");
             redirect("/","refresh");
         }
-        if(isset($_POST['submit'])){
+        if(isset($_POST['submit']))
+		{
             $map_data = array(
                 "society_id"=>$this->input->post("society"),
                 "machine_id"=>$this->input->post("machine"),
             );
         }
 //        print_r($map_data);exit;
-        if(!empty($map_data) && $this->machine_model->map_society_machine($map_data)){
+        if(!empty($map_data) && $this->machine_model->map_society_machine($map_data))
+		{
 //            $cnt = $this->db->query("SELECT * FROM notification WHERE dairy_id = '".$map_data['society_id']."' AND is_read = '0'");
 //            $this->session->set_userdata('machine_notify', $cnt);
             $this->session->set_flashdata("success","Machine added to society successfully.");
+			
+			$machine_info = $this->machine_model->get_machine_by_id( $map_data['machine_id'] );
+			
+			$notify_msg = $machine_info->machine_id.' successfully allocated to {society_name}.';
+			$this->db->query("INSERT INTO `notification` SET 
+									`message`='".$notify_msg."',
+									`society_id`='".$map_data['society_id']."'
+							");
+			
             redirect("machines/allocate",'refresh');
-        }else{
+        }
+		else
+		{
 //            $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
             $data['society'] = $this->society_model->get_society();
             $data['machines'] = $this->machine_model->not_allocated_soc_machines();
