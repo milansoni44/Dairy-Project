@@ -30,20 +30,61 @@ class Auth_lib {
 		$query = '';
 		if( $type === "dairy" )
 		{
+			$query_total = " SELECT COUNT(*) AS `total` 
+						FROM `notification` 
+						WHERE `for_whom`=1 AND `dairy_id`=".$id." AND `id` NOT IN ( SELECT `notification_id` FROM `notification_read` WHERE `dairy_id`=".$id." AND `is_read`=1 )";
+			
 			$query = " SELECT * 
 						FROM `notification` 
-						WHERE `id` NOT IN ( SELECT `notification_id` FROM `notification_read` WHERE `dairy_id`=".$id." AND `is_read`=1 )";
+						WHERE `for_whom`=1 AND `dairy_id`=".$id." AND `id` NOT IN ( SELECT `notification_id` FROM `notification_read` WHERE `dairy_id`=".$id." AND `is_read`=1 ) LIMIT 10";
 		}
 		else if( $type === "society" )
 		{
-			$query = " SELECT * 
+			$query_total = "SELECT COUNT(*) AS `total` FROM (
+						SELECT * 
 						FROM `notification` 
-						WHERE `id` NOT IN ( SELECT `notification_id` FROM `notification_read` WHERE `society_id`=".$id." AND `is_read`=1 )";
+						WHERE 
+						`for_whom`=2 
+						AND `society_id`=".$id." 
+						AND `id` NOT IN ( SELECT `notification_id` FROM `notification_read` WHERE `society_id`=".$id." AND `is_read`=1 )
+
+						UNION
+
+						SELECT * 
+						FROM `notification` 
+						WHERE 
+						`for_whom`=2 
+						AND `id` NOT IN ( SELECT `notification_id` FROM `notification_read` WHERE `society_id`=".$id." AND `is_read`=1 )
+						AND `dairy_id`=( SELECT `u`.`dairy_id` FROM `users` `u` WHERE `u`.`id`=".$id." AND `notification`.`for_whom`=2 )
+					) AS `tmp`";
+					
+			$query = "SELECT * FROM (
+						SELECT * 
+						FROM `notification` 
+						WHERE 
+						`for_whom`=2 
+						AND `society_id`=".$id." 
+						AND `id` NOT IN ( SELECT `notification_id` FROM `notification_read` WHERE `society_id`=".$id." AND `is_read`=1 )
+
+						UNION
+
+						SELECT * 
+						FROM `notification` 
+						WHERE 
+						`for_whom`=2 
+						AND `id` NOT IN ( SELECT `notification_id` FROM `notification_read` WHERE `society_id`=".$id." AND `is_read`=1 )
+						AND `dairy_id`=( SELECT `u`.`dairy_id` FROM `users` `u` WHERE `u`.`id`=".$id." AND `notification`.`for_whom`=2 )
+					) AS `tmp`
+					ORDER BY `created_at` DESC LIMIT 10";
 		}
 		
 		if( $query != '' )
 		{
 			$result = $this->CI->db->query( $query );
+			$this->CI->data['notifications'] = $result->result_array();
+			
+			$result_total = $this->CI->db->query( $query_total );
+			$this->CI->data['total_notification'] = $result_total->row("total");
 		//	print "<pre>"; print_r( $result->result_array() ); exit;
 		}
 	}

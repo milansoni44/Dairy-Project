@@ -233,7 +233,20 @@ LEFT JOIN customers c ON c.id = t.cid WHERE t.dairy_id = '$id'");
         }
         return FALSE;
     }
-
+	
+	function get_customer_society($cid = NULL)
+	{
+		$q = $this->db->query("SELECT cm.society_id AS society_id, s.name AS society_name FROM customers c
+								LEFT JOIN customer_machine cm ON cm.cid = c.id
+								LEFT JOIN users s ON s.id = cm.society_id
+								WHERE c.id = '$cid'
+								GROUP BY cm.society_id");
+		if($q->num_rows() > 0)
+		{
+			return $q->result_array();
+		}
+		return FALSE;
+	}
 }
 
 /** application/Models/Customer_model.php */

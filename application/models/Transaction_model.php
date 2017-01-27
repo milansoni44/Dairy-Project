@@ -250,6 +250,25 @@ class Transaction_model extends CI_Model {
             return FALSE;
         }
     }
+	
+	function get_weekly_transaction($cid = NULL, $sid = NULL)
+	{
+		$date_end = date('Y-m-d');
+		$date_start = date('Y-m-d', strtotime('-7 days'));
+		
+		$q = $this->db->query("SELECT DATE_FORMAT(`t`.`date`, '%d-%M-%Y') AS `date`, `t`.`weight` AS `litre`, (SELECT CONCAT_WS('-',machine_name, machine_id) FROM machines WHERE `machines`.`id` = `t`.`deviceid`) AS machine,`t`.`type`, `s`.`name` AS `society_name`, `d`.`name` AS `dairy_name`, `t`.`fat`, t.clr, t.rate, t.netamt, `t`.`shift` FROM transactions t
+								LEFT JOIN `users` s ON s.id = t.society_id
+								LEFT JOIN `users` d ON d.id = t.dairy_id
+								WHERE t.cid = '$cid'
+								AND `t`.`date` BETWEEN '$date_start' AND '$date_end'");
+		/* echo $this->db->last_query();exit; */
+		if($q->num_rows() > 0)
+		{
+			return $q->result_array();
+		}
+		return FALSE;
+		
+	}
 }
 
 /** application/Models/Transaction_model.php */

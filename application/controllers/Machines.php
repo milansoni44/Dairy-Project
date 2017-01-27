@@ -30,13 +30,12 @@ class Machines extends MY_Controller {
     /**
      * display all the machines
      */
-    function index() {
+    function index()
+	{
         if ($this->session->userdata("group") == "dairy" || $this->session->userdata("group") == "society") {
             $this->session->set_flashdata("message", "Access Denied");
             redirect("/", "refresh");
         }
-
-//        $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
         $data['machines'] = $this->machine_model->get_machines();
         $this->load->view("common/header", $this->data);
         $this->load->view("machines/index", $data);
@@ -46,42 +45,69 @@ class Machines extends MY_Controller {
     /**
      * add new machine
      */
-    function add() {
-        if ($this->session->userdata("group") != "admin") {
+    function add()
+	{
+        if ($this->session->userdata("group") != "admin")
+		{
             $this->session->set_falshdata("message", "Access Denied");
             redirect("/", "refresh");
         }
         // validation for machines
 
-        if ($this->input->server("REQUEST_METHOD") === "POST") {
-//            echo "<pre>";
-//            print_r($_POST);exit;
+        if ($this->input->server("REQUEST_METHOD") === "POST")
+		{
+			$skiped_machine = array();
             $i = 0;
-            foreach ($_POST['machine_id'] as $row) {
-                $machine_data[] = array(
+			$added = 0;
+            foreach ($_POST['machine_id'] as $row)
+			{
+                $machine_data = array(
                     "machine_id" => $row,
                     "machine_name" => $_POST['machine_name'][$i],
                     "machine_type" => $_POST['type'][$i],
                     "validity" => $_POST['validity'][$i],
                     "dairy_id" => $_POST['dairy_id'][$i]
                 );
+				
+				$dup_res = $this->db->query(" SELECT COUNT(*) AS `total` FROM `machines` WHERE `machine_id` = '".$machine_data['machine_id']."'");
+				
+				if($dup_res->row('total') == 0)
+				{
+					$result = $this->machine_model->add_machine($machine_data);
+					
+					if($result)
+					{
+						$notify_msg = $_POST['machine_name'][$i] . ' (' . $row . ') successfully allocated to {dairy_name}.';
 
-                $notify_msg = $_POST['machine_name'][$i] . ' (' . $row . ') successfully allocated to {dairy_name}.';
-
-                $this->db->query("INSERT INTO `notification` SET 
-										`message`='" . $notify_msg . "',
-										`dairy_id`='" . $_POST['dairy_id'][$i] . "'
-								");
-
+						$this->db->query("INSERT INTO `notification` SET 
+												`message`='" . $notify_msg . "',
+												`for_whom`=1,
+												`dairy_id`='" . $_POST['dairy_id'][$i] . "'
+										");
+						$added++;
+					}
+					
+				}
+				else
+				{
+					$skiped_machine[] = $machine_data['machine_id'];
+				}
                 $i++;
             }
-//            print_r($machine_data);exit;
-        }
-
-        if (!empty($machine_data) && $this->machine_model->add_machine($machine_data)) {
-            $this->session->set_flashdata("success", "Machines data inserted successfully.");
+			
+			if( !empty($skiped_machine) )
+			{
+				$this->session->set_flashdata("message", implode(",", $skiped_machine)." is/are already inserted machine id(s).");
+			}
+			
+			if($added)
+			{
+				$this->session->set_flashdata("success", $added." machines data inserted successfully.");
+			}
             redirect("machines", 'refresh');
-        } else {
+        }
+		else
+		{
             $data['dairy_info'] = $this->dairy_model->get_dairy();
             $this->load->view("common/header", $this->data);
             $this->load->view("machines/add", $data);

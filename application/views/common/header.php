@@ -65,7 +65,7 @@
                     <span class="icon-bar"></span>
                 </a>
                 <?php 
-//                    echo "<pre>"; 
+ //                   echo "<pre>"; 
 //                    print_r($notifications);
 //                    echo "</pre>";
                 ?>
@@ -76,10 +76,12 @@
                         <li class="dropdown messages-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <i class="fa fa-bell-o"></i>
-                                <span class="label label-success"><?php echo $this->session->userdata("machine_notify"); ?></span>
+								
+								<span class="label label-success"><?php echo $total_notification; ?></span>
                             </a>
                             <ul class="dropdown-menu">
-                                <li class="header">You have <?php echo $this->session->userdata("machine_notify"); ?> notifications</li>
+							
+                                <li class="header">You have <?php echo $total_notification; ?> notifications</li>
                                 <li>
                                     <!-- inner menu: contains the actual data -->
                                     <ul class="menu">
@@ -93,20 +95,20 @@
                                                     <img src="img/avatar3.png" class="img-circle" alt="User Image"/>
                                                 </div>-->
                                                 <h4>
-                                                    <?php echo $noty->message; ?>
+                <?php echo str_replace("{society_name}", "you" , $noty['message']); ?>
 <!--                                                    <small><i class="fa fa-clock-o"></i> 5 mins</small>-->
                                                 </h4>
-<!--                                                <p><?php echo "Validity From ". $noty->from_date." to ". $noty->to_date; ?></p>-->
+<!--                                                <p><?php //echo "Validity From ". $noty->from_date." to ". $noty->to_date; ?></p>-->
                                             </a>
 <!--                                            <a href="#">
                                                 <div class="pull-left">
                                                     <img src="img/avatar3.png" class="img-circle" alt="User Image"/>
                                                 </div>
                                                 <h4>
-                                                    <?php echo $noty->message; ?>
+                                                    <?php //echo $noty->message; ?>
                                                     <small><i class="fa fa-clock-o"></i> 5 mins</small>
                                                 </h4>
-                                                <p><?php echo "Validity From ". $noty->from_date." to ". $noty->to_date; ?></p>
+                                                <p><?php //echo "Validity From ". $noty->from_date." to ". $noty->to_date; ?></p>
                                             </a>-->
                                         </li><!-- end message -->
                                         <?php

@@ -54,31 +54,18 @@
                                     <table id="example2" class="table table-bordered table-hover">
                                         <thead>
                                             <tr>
-                                                <th>Machine ID</th>
-                                                <th>Machine Name</th>
-                                                <th>Machine Type</th>
-                                                <th>Dairy</th>
-                                                <th>Society</th>
-                                                <th>Validity</th>
-                                                <th>Actions</th>
+                                                <th>Notification message</th>
+                                                <th>Date Time</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <?php 
-                                                if(!empty($machines)){
-                                                    foreach($machines as $row){
+                                                if(!empty($all_notification)){
+                                                    foreach($all_notification as $notify){
                                             ?>
                                             <tr>
-                                                <td><?php echo $row->machine_id; ?></td>
-                                                <td><?php echo $row->machine_name; ?></td>
-                                                <td><?php echo $row->machine_type; ?></td>
-                                                <td><?php echo $row->dairy_name; ?></td>
-                                                <td><?php echo $row->society_name; ?></td>
-                                                <td><?php echo $row->validity; ?></td>
-                                                <td>
-                                                    <a href="<?php echo base_url(); ?>index.php/machines/edit/<?php echo $row->id; ?>">Edit</a>
-                                                    <a href="<?php echo base_url(); ?>index.php/machines/delete/<?php echo $row->id; ?>">Delete</a>
-                                                </td>
+                                                <td><?php echo str_replace( "{dairy_name}", "you",$notify['message']); ?></td>
+                                                <td><?php echo date( "d-m-Y H:i a", strtotime($notify['created_at'])); ?></td>
                                             </tr>
                                             <?php
                                                     }

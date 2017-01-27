@@ -19,19 +19,21 @@ class Api extends CI_Controller {
         $this->load->model("auth_model");
         $this->load->model("society_model");
         $this->load->model("dairy_model");
+        $this->load->model("transaction_model");
+        $this->load->model("customer_model");
         $this->load->database();
     }
-    
-    function society_login(){
+
+    function society_login() {
         $response = array();
-        if($this->input->post()){
+        if ($this->input->post()) {
             $array = array(
-                "username"=>$this->input->post("username"),
-                "password"=>md5($this->input->post("password")),
+                "username" => $this->input->post("username"),
+                "password" => md5($this->input->post("password")),
             );
             $data = $this->auth_model->check_login($array);
-            if($data){
-                if($this->auth_model->check_userType($data->id) == "society"){
+            if ($data) {
+                if ($this->auth_model->check_userType($data->id) == "society") {
                     $dairy = $this->auth_model->get_dairy($data->id);
                     $response['error'] = FALSE;
                     $response['dairy'] = $dairy->name;
@@ -39,19 +41,19 @@ class Api extends CI_Controller {
 
                     http_response_code(200);
                     echo json_encode($response);
-                }else{
+                } else {
                     $response['error'] = TRUE;
                     $response['message'] = "Username or password is invalid";
                     http_response_code(401);
                     echo json_encode($response);
                 }
-            }else{
+            } else {
                 $response['error'] = TRUE;
                 $response['message'] = "Username or password is invalid";
                 http_response_code(401);
                 echo json_encode($response);
             }
-        }else{
+        } else {
             $response['error'] = TRUE;
             $response['message'] = "Please try again letter";
             http_response_code(401);
@@ -206,16 +208,16 @@ class Api extends CI_Controller {
 												 ELSE NULL 
 												 END) AS `type_word`
 												FROM `customers` WHERE `id`=" . $customer_id);
-					$customer_info = $result2->row_array();
-					
-$result_meta = $this->db->query("SELECT `society_id`,
+                    $customer_info = $result2->row_array();
+
+                    $result_meta = $this->db->query("SELECT `society_id`,
 ( SELECT `u`.`name` FROM `users` `u` WHERE `u`.`id`=`customer_machine`.`society_id` ) AS `society_name`,
 ( SELECT `u`.`dairy_id` FROM `users` `u` WHERE `u`.`id`=`customer_machine`.`society_id` ) AS `dairy_id`,
 ( SELECT `u`.`name` FROM `users` `u` 
 WHERE `u`.`id`=( SELECT `ud`.`dairy_id` FROM `users` `ud` WHERE `ud`.`id`=`customer_machine`.`society_id` ) ) AS `dairy_name`
-					FROM `customer_machine` WHERE `cid`=".$customer_id);
-					$customer_meta_info = $result_meta->result_array();
-					
+					FROM `customer_machine` WHERE `cid`=" . $customer_id);
+                    $customer_meta_info = $result_meta->result_array();
+
                     $http_response_code = 200;
                     $response = array(
                         'error' => FALSE,
@@ -327,7 +329,7 @@ WHERE `u`.`id`=( SELECT `ud`.`dairy_id` FROM `users` `ud` WHERE `ud`.`id`=`custo
                 $result_cnt = $this->db->query("SELECT 
 					COUNT(*) AS total
 		FROM `transactions` WHERE `society_id`=" . $society_id . " AND `date`='" . $date . "' ");
-                if($result_cnt->row("total") > 0){
+                if ($result_cnt->row("total") > 0) {
                     $result_cow = $this->db->query("SELECT 
                                             SUM(`weight`) AS `total_litre`, 
                                             AVG(`fat`) AS `avg_fat`, 
@@ -347,17 +349,17 @@ WHERE `u`.`id`=( SELECT `ud`.`dairy_id` FROM `users` `ud` WHERE `ud`.`id`=`custo
                                             COUNT(`cid`) AS `producer`,
                                             (SELECT `machine_id` FROM `machines` `m` WHERE `m`.`id` = `transactions`.`deviceid` ) AS `machine_code`
                     FROM `transactions` WHERE `society_id`=" . $society_id . " AND shift='$shift' AND `type`='B' AND `date`='" . $date . "' ");
-                    
+
                     $http_response_code = 200;
                     $response = array(
                         'error' => FALSE,
                         'data' => array(
-                            'date_shift' => date("d-M-Y", strtotime($date))." ( ". ($shift=="E" ? "Evening" : "Morning" ) ." )",
+                            'date_shift' => date("d-M-Y", strtotime($date)) . " ( " . ($shift == "E" ? "Evening" : "Morning" ) . " )",
                             'cow' => $result_cow->row_array(),
                             'buf' => $result_buf->row_array()
                         )
                     );
-                }else{
+                } else {
                     $response = array(
                         'error' => TRUE,
                         'message' => "There is no transactions as of now."
@@ -378,7 +380,7 @@ WHERE `u`.`id`=( SELECT `ud`.`dairy_id` FROM `users` `ud` WHERE `ud`.`id`=`custo
         http_response_code($http_response_code);
         echo json_encode($response);
     }
-    
+
     function import_json() {
         $response = array();
         $validation_error = array();
@@ -501,30 +503,84 @@ WHERE `u`.`id`=( SELECT `ud`.`dairy_id` FROM `users` `ud` WHERE `ud`.`id`=`custo
             echo json_encode($response);
         }
     }
-    
-    function search_txn(){
+
+    function search_txn() {
         $response = array();
-        if($this->input->post()){
+        if ($this->input->post()) {
             $sid = $this->input->post("sid");
             $str = $this->input->post("search");
-            if($txn_list = $this->transaction_model->search_txn($sid, $str)){
+            if ($txn_list = $this->transaction_model->search_txn($sid, $str)) {
                 $response['error'] = FALSE;
                 $response['message'] = "Data loaded successfully";
                 $response['data'] = $txn_list;
                 http_response_code(200);
                 echo json_encode($response);
-            }else{
+            } else {
                 $response['error'] = TRUE;
                 $response['message'] = "No data found";
                 http_response_code(404);
                 echo json_encode($response);
             }
-        }else{
+        } else {
             $response['error'] = TRUE;
             $response['message'] = "Please try again letter";
             http_response_code(400);
             echo json_encode($response);
         }
     }
+
+    function customer_weekly_transaction() 
+    {
+		$http_response_code = 401;
+		$society_arr = array();
+		$response = array();
+		$data['cow'] = array();
+		$data['buffalo'] = array();
+		$data['society'] = array();
+        if($this->input->server('REQUEST_METHOD') == 'POST'){
+			$cid = $this->input->post("cid");
+			$sid = $this->input->post("society_id");
+			$society_list = $this->customer_model->get_customer_society($cid);
+			if(!empty($society_list))
+			{
+				foreach($society_list as $rw_soc)
+				{	
+					$data['society'][] = $rw_soc;
+				}
+			}
+			$transaction = $this->transaction_model->get_weekly_transaction($cid, $sid);
+			if(!empty($transaction))
+			{
+				foreach($transaction as $rw_txn)
+				{
+					if($rw_txn['type'] == 'B')
+					{
+						$data['buffalo'][] = $rw_txn;
+					}
+					else
+					{
+						$data['cow'][] = $rw_txn;
+					}
+				}
+				$http_response_code = 200;
+				$response['error'] = FALSE;
+				$response['message'] = "Transaction Found";
+				$response['data'] = $data;
+			}
+			else
+			{
+				$response['error'] = TRUE;
+				$response['message'] = "No transaction found";
+			}
+			
+		}else{
+			$response['error'] = TRUE;
+			$response['message'] = "Invalid method";
+		}
+		
+		http_response_code($http_response_code);
+		echo json_encode($response);
+    }
+
     /* society app webservice * End */
 }

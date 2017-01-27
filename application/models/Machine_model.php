@@ -15,11 +15,15 @@ class Machine_model extends CI_Model{
      * @param type $data
      * @return boolean
      */
-    function add_machine($data = array()){
-        if($this->db->insert_batch("machines",$data)){
-            return TRUE;
-        }
-        return FALSE;
+    function add_machine($data = array())
+	{
+		$result = $this->db->query(" INSERT INTO `machines` SET 
+											`machine_id`='".$data['machine_id']."',
+											`machine_name`='".$data['machine_name']."',
+											`machine_type`='".$data['machine_type']."',
+											`validity`='".$data['validity']."',
+											`dairy_id`='".$data['dairy_id']."'	");
+		return $result ? TRUE : FALSE;
     }
     
     function edit_machine($data = array(), $id = NULL){
