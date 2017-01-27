@@ -238,6 +238,8 @@
                                             </div>
                                         </div>-->
                                     </div>
+                                    <input type="hidden" name="username_edit" id="username_edit" value="<?php echo $society->username; ?>" />
+                                    <input type="hidden" name="email_edit" id="email_edit" value="<?php echo $society->email; ?>" />
                                     <div class="box-footer">
                                         <button type="submit" class="btn btn-primary">Submit</button>
                                     </div>

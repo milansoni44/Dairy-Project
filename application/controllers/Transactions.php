@@ -272,6 +272,7 @@ class Transactions extends MY_Controller {
     }
 
     function get_daily_Buff_transaction() {
+		$date = date('Y-m-d');
         $this->datatables->select("c.customer_name as customer_name,t.fat,t.clr,t.snf,t.weight,t.rate,t.netamt,t.date")
                 ->from("transactions t")
                 ->join("machines m", "m.machine_id = t.deviceid", "LEFT")
@@ -279,18 +280,17 @@ class Transactions extends MY_Controller {
                 ->join("users d", "d.id = m.dairy_id", "LEFT")
                 ->join("customers c", "c.id = t.cid", "LEFT")
                 ->where("t.type", "B")
-                ->where("t.date", date("Y-m-d"));
-        if ($this->session->userdata("group") == "admin") {
-            echo $this->datatables->generate();
-        } else if ($this->session->userdata("group") == "dairy") {
+				->where("t.date", $date);
+                // ->where('t.date1 BETWEEN "' . date('Y-m-d') . '" AND "' . date('Y-m-d') . '"');
+        /* if ($this->session->userdata("group") == "dairy") {
             $id = $this->session->userdata("id");
             $this->datatables->where("t.dairy_id", $id);
             echo $this->datatables->generate();
-        } else {
+        } else { */
             $id = $this->session->userdata("id");
             $this->db->where("t.society_id", $id);
             echo $this->datatables->generate();
-        }
+        /* } */
     }
 
     function get_daily_transaction_post($from = NULL, $to = NULL, $shift = NULL, $customer = NULL) {

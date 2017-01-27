@@ -43,7 +43,7 @@ class Society extends MY_Controller
         
         // validation for society
         $this->form_validation->set_rules("name","Name","trim|required");
-        $this->form_validation->set_rules("username","Username","trim|required");
+        $this->form_validation->set_rules("username","Username","trim|required|is_unique[`users`.`username`]");
         $this->form_validation->set_rules("email","Email","trim|valid_email");
         $this->form_validation->set_rules("password","Password","trim|required");
         $this->form_validation->set_rules("mobile","Mobile","trim|required");
@@ -75,8 +75,7 @@ class Society extends MY_Controller
             $this->session->set_flashdata("success","Society data inserted successfully.");
             redirect("society",'refresh');
         }else{
-            echo validation_errors();exit;
-            $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
+            $data['errors'] = $this->form_validation->error_array();
             $data['states'] = $this->dairy_model->get_states();
             $this->load->view("common/header", $this->data);
             $this->load->view("society/add",$data);
@@ -91,8 +90,8 @@ class Society extends MY_Controller
 //        }
         // validation for society
         $this->form_validation->set_rules("name","Name","trim|required");
-        $this->form_validation->set_rules("username","Username","trim|required");
-        $this->form_validation->set_rules("email","Email","trim|required|valid_email");
+        $this->form_validation->set_rules("username","Username","trim|required|callback_check_username");
+        $this->form_validation->set_rules("email","Email","trim|valid_email|callback_check_email");
         $this->form_validation->set_rules("password","Password","trim");
         $this->form_validation->set_rules("mobile","Mobile","trim|required");
         
@@ -126,6 +125,7 @@ class Society extends MY_Controller
         }else{
             $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
             $data['id'] = $id;
+            $data['errors'] = $this->form_validation->error_array();
             $data['society'] = $this->society_model->get_society_by_id($id);
             $data['states'] = $this->dairy_model->get_states();
             $this->load->view("common/header", $this->data);
@@ -139,6 +139,32 @@ class Society extends MY_Controller
             $this->session->set_flashdata("success", "Status changed successfully");
             redirect("society", "refresh");
         }
+    }
+    
+    function check_username($str){
+        if($str == $this->input->post("username_edit")){
+            return TRUE;
+        }else{
+            if($this->dairy_model->check_username($str)){
+                $this->form_validation->set_message("check_username","The username is already exist.");
+                return FALSE;
+            }
+            return TRUE;
+        }
+        return TRUE;
+    }
+    
+    function check_email($str){
+        if($str == $this->input->post("email_edit")){
+            return TRUE;
+        }else{
+            if($this->dairy_model->check_email($str)){
+                $this->form_validation->set_message("check_email","The email is already exist.");
+                return FALSE;
+            }
+            return TRUE;
+        }
+        return TRUE;
     }
 }
 

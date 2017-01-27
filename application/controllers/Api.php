@@ -581,6 +581,5 @@ WHERE `u`.`id`=( SELECT `ud`.`dairy_id` FROM `users` `ud` WHERE `ud`.`id`=`custo
 		http_response_code($http_response_code);
 		echo json_encode($response);
     }
-
     /* society app webservice * End */
 }
