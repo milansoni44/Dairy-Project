@@ -193,6 +193,13 @@ class Dairy extends MY_Controller{
         }
         return TRUE;
     }
+    
+    function change_status($id = NULL){
+        if($this->dairy_model->change_status($id)){
+            $this->session->set_flashdata("success", "Status changed successfully");
+            redirect("dairy", "refresh");
+        }
+    }
 }
 
 /** application/controllers/Dairy.php */

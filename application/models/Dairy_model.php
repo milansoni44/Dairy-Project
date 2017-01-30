@@ -123,6 +123,14 @@ class Dairy_model extends CI_Model{
         return FALSE;
     }
     
+    function change_status($id = NULL){
+        //UPDATE machines SET `status` = NOT `status` WHERE id = '16'
+        if($this->db->query("UPDATE users SET `status` = NOT `status` WHERE id = '$id'")){
+            return TRUE;
+        }
+        return FALSE;
+    }
+    
 }
 
 /** application/Models/Dairy_model.php */

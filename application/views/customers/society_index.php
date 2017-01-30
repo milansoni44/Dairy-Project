@@ -85,8 +85,7 @@
                                                 <th>Name</th>
                                                 <th>Mobile</th>
                                                 <th>Adhar No</th>
-                                                <th>Created</th>
-                                                <th>Expiry</th>
+                                                <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -99,8 +98,7 @@
                                                 <td><?php echo $row->customer_name; ?></td>
                                                 <td><?php echo $row->mobile; ?></td>
                                                 <td><?php echo $row->adhar_no; ?></td>
-                                                <td><?php echo $row->created_at; ?></td>
-                                                <td><?php echo $row->expiry; ?></td>
+                                                <td></td>
                                             </tr>
                                             <?php
                                                     }

@@ -66,7 +66,7 @@
                                                 <td><?php echo $row->mobile; ?></td>
                                                 <td>
                                                     <a href="<?php echo base_url(); ?>index.php/dairy/edit/<?php echo $row->id; ?>">Edit</a>
-                                                    <a href="<?php echo base_url(); ?>index.php/dairy/delete/<?php echo $row->id; ?>">Delete</a>
+                                                    <a href="<?php echo base_url(); ?>index.php/dairy/change_status/<?php echo $row->id; ?>"><?php if($row->status == '0'){ ?> Activate<?php }else{ ?>Deactivate <?php } ?></a>
                                                 </td>
                                             </tr>
                                             <?php
