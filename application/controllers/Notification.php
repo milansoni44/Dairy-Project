@@ -55,7 +55,6 @@ class Notification extends MY_Controller {
         $this->load->view("notification/index", $this->data);
         $this->load->view("common/footer");
     }
-
 }
 
 ?>

@@ -33,41 +33,39 @@
                         <?php
                             }
                         ?>
+						<?php
+                        if($this->session->flashdata('message')){
+                        ?>
+                        <div class="alert alert-danger alert-dismissable">
+                            <i class="fa fa-check"></i>
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            <?php echo $this->session->flashdata('message'); ?>
+                        </div>
+                        <?php
+                            }
+                        ?>
                         <div class="col-xs-12">
                             <div class="box">
                                 <div class="box-header">
                                     <h3 class="box-title"><!-- Hover Data Table --></h3>
-                                    <?php if($this->session->userdata("group") == "admin"){ ?>
-                                    <span class="pull-right"><a href="<?php echo base_url(); ?>index.php/machines/add_allocate" class="btn btn-primary" style="color: #fff;">Allocate Machine</a></span>
-                                    <?php } ?>
+                                    <span class="pull-right"><a href="<?php echo base_url(); ?>index.php/machines/add" class="btn btn-primary" style="color: #fff;">Add Machines</a></span>
                                 </div><!-- /.box-header -->
                                 <div class="box-body table-responsive">
                                     <table id="example2" class="table table-bordered table-hover">
                                         <thead>
                                             <tr>
-                                                <th>Machine ID</th>
-                                                <th>Machine Name</th>
-                                                <th>Machine Type</th>
-                                                <th>Validity</th>
-                                                <th>Society</th>
-                                                <th>Actions</th>
+                                                <th>Notification message</th>
+                                                <th>Date Time</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <?php 
-                                                if(!empty($allocated_machines)){
-                                                    foreach($allocated_machines as $row){
+                                                if(!empty($all_notification)){
+                                                    foreach($all_notification as $notify){
                                             ?>
                                             <tr>
-                                                <td><?php echo $row->machine_id; ?></td>
-                                                <td><?php echo $row->machine_name; ?></td>
-                                                <td><?php echo $row->machine_type; ?></td>
-                                                <td><?php echo $row->validity; ?></td>
-                                                <td><?php echo $row->name; ?></td>
-                                                <td>
-                                                    <a href="<?php echo base_url(); ?>index.php/machines/edit_allocate/<?php echo $row->id; ?>">Edit</a>
-                                                    <a href="<?php echo base_url(); ?>index.php/machines/change_status/<?php echo $row->id; ?>"><?php if($row->status == '0'){ ?> Activate<?php }else{ ?>Deactivate <?php } ?></a>
-                                                </td>
+                                                <td><?php echo str_replace( "{dairy_name}", "you",$notify['message']); ?></td>
+                                                <td><?php echo date( "d-m-Y H:i a", strtotime($notify['created_at'])); ?></td>
                                             </tr>
                                             <?php
                                                     }

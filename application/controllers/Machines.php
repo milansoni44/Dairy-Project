@@ -332,6 +332,13 @@ class Machines extends MY_Controller {
             return $validity = (date('m/d/Y') . " - " . date('m/d/Y', strtotime($y)));
         }
     }
+    
+    function change_status($id = NULL){
+        if($this->machine_model->change_status($id)){
+            $this->session->set_flashdata("success", "Status changed successfully");
+            redirect("machines/allocate", "refresh");
+        }
+    }
 
 }
 

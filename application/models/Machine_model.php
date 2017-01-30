@@ -281,6 +281,14 @@ WHERE m.dairy_id = '$id'");
         }
         return FALSE;
     }
+    
+    function change_status($id = NULL){
+        //UPDATE machines SET `status` = NOT `status` WHERE id = '16'
+        if($this->db->query("UPDATE machines SET `status` = NOT `status` WHERE id = '$id'")){
+            return TRUE;
+        }
+        return FALSE;
+    }
 }
 
 /** application/Models/Machine_model.php */
