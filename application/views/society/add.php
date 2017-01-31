@@ -62,6 +62,20 @@
             });
         });
     });
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $("#blah").show()
+                $('#blah')
+                    .attr('src', e.target.result)
+                    .width(100)
+                    .height(100);
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
 </script>
             <aside class="right-side">
                 <!-- Content Header (Page header) -->
@@ -85,7 +99,7 @@
                                 <div class="box-header">
                                     <h3 class="box-title">Add Society</h3>
                                 </div><!-- /.box-header -->
-                                <form role="form" class="form-horizontal" id="add_dairy_form" action="<?php echo base_url(); ?>index.php/society/add" method="post">
+                                <form role="form" class="form-horizontal" id="add_dairy_form" action="<?php echo base_url(); ?>index.php/society/add" method="post" enctype="multipart/form-data">
                                     <div class="box-body">
                                         <div class="form-group">
                                             <label class="control-label col-md-2" for="name">Name <span style="color:red;">*</span></label>
@@ -222,12 +236,16 @@
                                                 <input type="text" name="ifsc" id="ifsc" class="form-control" value="<?php echo set_value("ifsc"); ?>" />
                                             </div>
                                         </div>
-<!--                                        <div class="form-group">
-                                            <label class="control-label col-md-2" for="city">City</label>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-2" for="logo">Logo</label>
                                             <div class="col-md-4">
-                                                
+                                                <input type="file" name="logo" id="logo" class="form-control" onchange="readURL(this);"/>
+                                                <?php if(isset($errors['logo'])){
+                                                    echo "<label class='error'>".$errors['logo']."</label>";
+                                                } ?>
+                                                <img id="blah" src="#" alt="your image" onerror="this.style.display='none'"/>
                                             </div>
-                                        </div>-->
+                                        </div>
                                     </div>
                                     <div class="box-footer">
                                         <button type="submit" class="btn btn-primary">Submit</button>

@@ -260,14 +260,49 @@ class Transaction_model extends CI_Model {
 								LEFT JOIN `users` s ON s.id = t.society_id
 								LEFT JOIN `users` d ON d.id = t.dairy_id
 								WHERE t.cid = '$cid'
-								AND `t`.`date` BETWEEN '$date_start' AND '$date_end'");
+								AND `t`.`date` BETWEEN '$date_start' AND '$date_end' ORDER BY `t`.`date` DESC");
+		/* echo $this->db->last_query();exit; */
+		if($q->num_rows() > 0)
+		{
+			return $q->result_array();
+		}
+		return FALSE;		
+	}
+	
+	function get_weekly_txn($cid)
+	{
+		$date_end = date('Y-m-d');
+		$date_start = date('Y-m-d', strtotime('-7 days'));
+		
+		$q = $this->db->query("SELECT `t`.`society_id`, SUM(`t`.`weight`) AS `litre`, (SELECT CONCAT_WS('-',machine_name, machine_id) FROM machines WHERE `machines`.`id` = `t`.`deviceid`) AS machine,`t`.`type`, `s`.`name` AS `society_name`, `d`.`name` AS `dairy_name`, AVG(`t`.`fat`) as `fat`, AVG(t.clr) AS `clr`, AVG(`t`.`rate`) AS `rate`, SUM(`t`.`netamt`) AS netamt, `t`.`shift` FROM transactions t
+								LEFT JOIN `users` s ON s.id = t.society_id
+								LEFT JOIN `users` d ON d.id = t.dairy_id
+								WHERE t.cid = '$cid'
+								AND `t`.`date` BETWEEN '$date_start' AND '$date_end' GROUP BY `t`.`deviceid`, `t`.`society_id` ORDER BY `t`.`date` DESC");
+		
 		/* echo $this->db->last_query();exit; */
 		if($q->num_rows() > 0)
 		{
 			return $q->result_array();
 		}
 		return FALSE;
+	}
+	
+	function get_customRangeTxn($data = array())
+	{
+		$q = $this->db->query("SELECT DATE_FORMAT(`t`.`date`, '%d-%M-%Y') AS `date`, `t`.`weight` AS `litre`, (SELECT CONCAT_WS('-',machine_name, machine_id) FROM machines WHERE `machines`.`id` = `t`.`deviceid`) AS machine,`t`.`type`, `s`.`name` AS `society_name`, `d`.`name` AS `dairy_name`, `t`.`fat`, t.clr, t.rate, t.netamt, `t`.`shift` FROM transactions t
+							LEFT JOIN users s ON s.id = t.society_id
+							LEFT JOIN users d ON d.id = t.dairy_id
+							WHERE t.type = '".$data['type']."'
+							AND t.cid = '".$data['cid']."'
+							AND t.date BETWEEN '".$data['from_date']."' AND '".$data['to_date']."' AND t.society_id = '".$data['society']."' ORDER BY `t`.`date` DESC");
+		// echo $this->db->last_query();exit;
 		
+		if($q->num_rows() > 0)
+		{
+			return $q->result_array();
+		}
+		return FALSE;
 	}
 }
 

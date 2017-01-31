@@ -14,7 +14,8 @@ class Customer_model extends CI_Model {
         parent::__construct();
     }
 
-    function get_customer() {
+    function get_customer()
+	{
         if ($this->session->userdata("group") == "admin") {
             $q = $this->db->query("SELECT * FROM customers c
 LEFT JOIN customer_machine cs ON cs.cid = c.id");

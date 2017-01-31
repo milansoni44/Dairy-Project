@@ -3,17 +3,22 @@
 //                    $('.dataTables_filter').css("float","right");
                     $('#example2').DataTable();
                 });
+				
+				function confirm_delete()
+				{
+					return confirm("Are your sure to delete this favourite report?");
+				}
             </script>
             <aside class="right-side">
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
                     <h1>
-                        Machines
-                        <small>List Machines</small>
+                        Favourite Report
+                        <small>List Favourite Report</small>
                     </h1>
                     <ol class="breadcrumb">
                         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-                        <li class="active">Machines</li>
+                        <li class="active">Favourite Report</li>
                     </ol>
                 </section>
 
@@ -33,39 +38,44 @@
                         <?php
                             }
                         ?>
-						<?php
-                        if($this->session->flashdata('message')){
-                        ?>
-                        <div class="alert alert-danger alert-dismissable">
-                            <i class="fa fa-check"></i>
-                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                            <?php echo $this->session->flashdata('message'); ?>
-                        </div>
-                        <?php
-                            }
-                        ?>
                         <div class="col-xs-12">
                             <div class="box">
                                 <div class="box-header">
                                     <h3 class="box-title"><!-- Hover Data Table --></h3>
-                                    <span class="pull-right"><a href="<?php echo base_url(); ?>index.php/machines/add" class="btn btn-primary" style="color: #fff;">Add Machines</a></span>
+                                    <span class="pull-right"><a href="<?php echo base_url(); ?>index.php/favourite_report/add" class="btn btn-primary" style="color: #fff;">Add Favourite Report</a></span>
                                 </div><!-- /.box-header -->
                                 <div class="box-body table-responsive">
                                     <table id="example2" class="table table-bordered table-hover">
                                         <thead>
                                             <tr>
-                                                <th>Notification message</th>
-                                                <th>Date Time</th>
+                                                <th>Report Name</th>
+                                                <th>Period</th>
+                                                <th>Shift</th>
+											<!--	
+                                                <th>Type</th>
+											-->
+                                                <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <?php 
-                                                if(!empty($all_notification)){
-                                                    foreach($all_notification as $notify){
+                                                if(!empty($all_favourite_report))
+												{
+                                                    foreach($all_favourite_report as $report)
+													{
                                             ?>
                                             <tr>
-                                                <td><?php echo str_replace( "{dairy_name}", "you",$notify['message']); ?></td>
-                                                <td><?php echo date( "d-m-Y H:i a", strtotime($notify['created_at'])); ?></td>
+                                                <td><?php echo $report['report_name']; ?></td>
+                                                <td><?php echo $report['period_word']; ?></td>
+                                                <td><?php echo $report['shift_word']; ?></td>
+											<!--
+                                                <td><?php echo $report['type_word']; ?></td>
+											-->
+                                                <td>
+													<a href="<?php echo base_url(); ?>index.php/favourite_report/update/<?php echo $report['id']?>/">Edit</a>
+													
+													<a href="<?php echo base_url(); ?>index.php/favourite_report/delete/<?php echo $report['id']?>/" onclick="return confirm_delete()">Delete</a>
+												</td>
                                             </tr>
                                             <?php
                                                     }

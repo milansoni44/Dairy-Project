@@ -581,5 +581,76 @@ WHERE `u`.`id`=( SELECT `ud`.`dairy_id` FROM `users` `ud` WHERE `ud`.`id`=`custo
 		http_response_code($http_response_code);
 		echo json_encode($response);
     }
+	
+	function customer_range_transaction()
+	{
+		$http_response_code = 401;
+		if($this->input->server('REQUEST_METHOD') == 'POST')
+		{
+			$society = $this->input->post("society_id");
+			$from_date = date('Y-m-d', strtotime(str_replace('/', '-', $this->input->post("from_date"))));
+			$to_date = date('Y-m-d', strtotime(str_replace('/', '-', $this->input->post("to_date"))));
+			$cid = $this->input->post("cid");
+			$type = $this->input->post("type");
+			
+			$data_arr = array(
+				"society"=>$society,
+				"from_date"=>$from_date,
+				"to_date"=>$to_date,
+				"cid"=>$cid,
+				"type"=>$type
+			);
+			$transaction = $this->transaction_model->get_customRangeTxn($data_arr);
+			if(!empty($transaction))
+			{
+				$http_response_code = 200;
+				$response['error'] = FALSE;
+				$response['message'] = "data found";
+				$response['data'] = $transaction;
+			}else{
+				$response['error'] = TRUE;
+				$response['message'] = "No data found";
+			}
+		}
+		else
+		{
+			$response['error'] = TRUE;
+			$response['message'] = "Invalid method";
+		}
+		http_response_code($http_response_code);
+		echo json_encode($response);
+	}
+	
+	function weekly_txn_summary()
+	{
+		$http_response_code = 401;
+		$society_id = 0;
+		if($this->input->server('REQUEST_METHOD') == 'POST')
+		{
+			// parameter may be exist
+			$cid = $this->input->post("cid");
+			$transaction = $this->transaction_model->get_weekly_txn($cid);
+			/* echo "<pre>";
+			print_r($transaction);exit; */
+			if(!empty($transaction))
+			{
+				/* print_r($transaction);exit; */
+			//	$society_ids = ;
+			//	print "<pre>";print_r( array_values(array_unique( array_column( $transaction, 'society_id' ) )) );exit;	
+			}
+			else
+			{
+				$response['error'] = TRUE;
+				$response['message'] = "Invalid method";
+			}
+		}
+		else
+		{
+			$response['error'] = TRUE;
+			$response['message'] = "Invalid method";
+		}
+		http_response_code($http_response_code);
+		echo json_encode($response);
+	}
     /* society app webservice * End */
 }

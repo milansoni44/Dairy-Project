@@ -275,6 +275,27 @@
                             </ul>
                         </li>
                         <?php } ?>
+						
+						<?php if($this->session->userdata("group") == "dairy" || $this->session->userdata("group") == "society"){ ?>
+                        <li class="treeview">
+                            <a href="#">
+                                <i class="fa fa-bar-chart-o"></i>
+                                <span>Favourite Report</span>
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li>
+									<a href="<?php echo base_url(); ?>index.php/favourite_report/"> 	<span>List</span>
+									</a>
+								</li>
+								<li>
+									<a href="<?php echo base_url(); ?>index.php/favourite_report/add/"> 	<span>Add</span>
+									</a>
+								</li>
+                            </ul>
+                        </li>
+                        <?php } ?>
+						
                         <?php if($this->session->userdata("group") == "dairy" || $this->session->userdata("group") == "society") { ?>
                         <li class="treeview">
                             <a href="#">

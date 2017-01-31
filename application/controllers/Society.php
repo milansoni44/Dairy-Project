@@ -15,6 +15,8 @@ class Society extends MY_Controller
         $this->load->model("dairy_model");
         $this->load->library("session");
         $this->load->library("form_validation");
+        $this->load->library("upload");
+        $this->load->helper("security");
         $this->load->database();
         if(!$this->auth_lib->is_logged_in()){
             redirect("auth/login","refresh");
@@ -42,13 +44,22 @@ class Society extends MY_Controller
         }
         
         // validation for society
-        $this->form_validation->set_rules("name","Name","trim|required");
+        $this->form_validation->set_rules("name","Name","trim|required|xss_clean");
         $this->form_validation->set_rules("username","Username","trim|required|is_unique[`users`.`username`]");
-        $this->form_validation->set_rules("email","Email","trim|valid_email");
-        $this->form_validation->set_rules("password","Password","trim|required");
-        $this->form_validation->set_rules("mobile","Mobile","trim|required");
+        $this->form_validation->set_rules("email","Email","trim|xss_clean|valid_email|is_unique[`users`.`email`]");
+        $this->form_validation->set_rules("password","Password","trim|required|xss_clean");
+        $this->form_validation->set_rules("mobile","Mobile","trim|required|xss_clean");
+        $this->form_validation->set_rules("address","Address","trim|xss_clean");
+        $this->form_validation->set_rules("area","Area","trim|xss_clean");
+        $this->form_validation->set_rules("street","Street","trim|xss_clean");
+        $this->form_validation->set_rules("contact_person","Contact Person","trim|xss_clean");
+        $this->form_validation->set_rules("pincode","Pincode","trim|xss_clean");
+        $this->form_validation->set_rules("state","State","trim|xss_clean");
+        $this->form_validation->set_rules("city","City","trim|xss_clean");
+        $this->form_validation->set_rules('logo', 'Logo', 'callback_image_upload');
         
         if($this->form_validation->run() == TRUE){
+            $img = $this->data['image_name'];
             $soc_data = array(
                 "dairy_id"=> $this->session->userdata("id"),
                 "name"=> ucfirst($this->input->post("name")),
@@ -67,6 +78,7 @@ class Society extends MY_Controller
                 "bank_name"=> $this->input->post("bank_name"),
                 "acc_type"=> $this->input->post("acc_type"),
                 "ifsc"=> $this->input->post("ifsc"),
+                "photo"=>$img
             );
 //            echo "<pre>";
 //            print_r($soc_data);exit;
@@ -80,6 +92,34 @@ class Society extends MY_Controller
             $this->load->view("common/header", $this->data);
             $this->load->view("society/add",$data);
             $this->load->view("common/footer");
+        }
+    }
+    
+    function image_upload(){
+        if($_FILES['logo']['size'] != 0){
+            $upload_dir = APPPATH.'../assets/uploads/';
+            if (!is_dir($upload_dir)) {
+                 mkdir($upload_dir);
+            }	
+            $config['upload_path']   = $upload_dir;
+            $config['allowed_types'] = 'gif|jpg|png|jpeg';
+            $config['file_name']     = 'userimage_'.substr(md5(rand()),0,7);
+            $config['overwrite']     = false;
+            $config['max_size']	 = '5120';
+
+            $this->upload->initialize($config);
+            if (!$this->upload->do_upload('logo')){
+                $this->form_validation->set_message('image_upload', $this->upload->display_errors());
+                return FALSE;
+            }	
+            else{
+                $this->upload_data['file'] =  $this->upload->data();
+                return $this->data['image_name'] = $this->upload_data['file']['file_name'];
+            }	
+        }	
+        else{
+//            $this->form_validation->set_message('image_upload', "No file selected");
+            return $this->data['image_name'] = "default.jpg";
         }
     }
     

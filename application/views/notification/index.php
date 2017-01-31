@@ -8,12 +8,12 @@
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
                     <h1>
-                        Machines
-                        <small>List Machines</small>
+                        Notifications
+                        <small>List Notifications</small>
                     </h1>
                     <ol class="breadcrumb">
                         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-                        <li class="active">Machines</li>
+                        <li class="active">Notifications</li>
                     </ol>
                 </section>
 
@@ -48,7 +48,6 @@
                             <div class="box">
                                 <div class="box-header">
                                     <h3 class="box-title"><!-- Hover Data Table --></h3>
-                                    <span class="pull-right"><a href="<?php echo base_url(); ?>index.php/machines/add" class="btn btn-primary" style="color: #fff;">Add Machines</a></span>
                                 </div><!-- /.box-header -->
                                 <div class="box-body table-responsive">
                                     <table id="example2" class="table table-bordered table-hover">

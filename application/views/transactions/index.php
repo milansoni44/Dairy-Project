@@ -62,8 +62,10 @@
                                         </thead>
                                         <tbody>
                                             <?php 
-                                                if(!empty($transaction)){
-                                                    foreach($transaction as $row){
+                                                if(!empty($transaction))
+												{
+                                                    foreach($transaction as $row)
+													{
                                             ?>
                                             <tr>
                                                 <td><?php echo $row->customer_name; ?></td>
