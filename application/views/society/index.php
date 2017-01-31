@@ -77,7 +77,7 @@
                                                 <?php if($this->session->userdata("group") == "dairy"){ ?>
                                                 <td>
                                                     <a href="<?php echo base_url(); ?>index.php/society/edit/<?php echo $row->id; ?>">Edit</a>
-                                                    <a href="<?php echo base_url(); ?>index.php/society/change_status/<?php echo $row->id; ?>"><?php if($row->society_status == '0'){ ?> Activate<?php }else{ ?>Deactivate <?php } ?></a>
+                                                    <a href="<?php echo base_url(); ?>index.php/society/change_status/<?php echo $row->id; ?>" <?php if($row->society_status == '0'){ ?> onclick="return confirm('Are you sure you want to activate?');" <?php }else{ ?> onclick="return confirm('Are you sure you want to deactivate?');" <?php } ?>><?php if($row->society_status == '0'){ ?> Activate<?php }else{ ?>Deactivate <?php } ?></a>
                                                 </td>
                                                 <?php } ?>
                                             </tr>

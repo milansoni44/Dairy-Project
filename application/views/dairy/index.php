@@ -66,7 +66,7 @@
                                                 <td><?php echo $row->mobile; ?></td>
                                                 <td>
                                                     <a href="<?php echo base_url(); ?>index.php/dairy/edit/<?php echo $row->id; ?>">Edit</a>
-                                                    <a href="<?php echo base_url(); ?>index.php/dairy/change_status/<?php echo $row->id; ?>"><?php if($row->status == '0'){ ?> Activate<?php }else{ ?>Deactivate <?php } ?></a>
+                                                    <a href="<?php echo base_url(); ?>index.php/dairy/change_status/<?php echo $row->id; ?>" <?php if($row->status == '0'){ ?> onclick="return confirm('Are you sure you want to activate?');" <?php }else{ ?> onclick="return confirm('Are you sure you want to deactivate?');" <?php } ?>><?php if($row->status == '0'){ ?> Activate<?php }else{ ?>Deactivate <?php } ?></a>
                                                 </td>
                                             </tr>
                                             <?php

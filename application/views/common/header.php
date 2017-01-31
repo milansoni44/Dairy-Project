@@ -251,6 +251,9 @@
                             </a>
                             <ul class="treeview-menu">
                                 <li><a href="<?php echo base_url(); ?>index.php/society"><i class="fa fa-angle-double-right"></i> Society</a></li>
+                                <?php if($this->session->userdata("group") == "dairy"){ ?>
+                                <li><a href="<?php echo base_url(); ?>index.php/society/add"><i class="fa fa-angle-double-right"></i> Add Society</a></li>
+                                <?php } ?>
                             </ul>
                         </li>
                         <?php 
