@@ -624,24 +624,27 @@ WHERE `u`.`id`=( SELECT `ud`.`dairy_id` FROM `users` `ud` WHERE `ud`.`id`=`custo
 	function weekly_txn_summary()
 	{
 		$http_response_code = 401;
-		$society_id = 0;
+		$cow_array = array();
+		$buff_array = array();
 		if($this->input->server('REQUEST_METHOD') == 'POST')
 		{
 			// parameter may be exist
 			$cid = $this->input->post("cid");
-			$transaction = $this->transaction_model->get_weekly_txn($cid);
-			/* echo "<pre>";
-			print_r($transaction);exit; */
-			if(!empty($transaction))
+            $buff_array = $this->transaction_model->get_weekly_buff_txn($cid);
+            $cow_array = $this->transaction_model->get_weekly_cow_txn($cid);
+            /*echo "<pre>";
+			print_r($transaction_buff);exit;*/
+            if(!empty($buff_array) || !empty($cow_array))
 			{
-				/* print_r($transaction);exit; */
-			//	$society_ids = ;
-			//	print "<pre>";print_r( array_values(array_unique( array_column( $transaction, 'society_id' ) )) );exit;	
+               $http_response_code = 200;
+                $response['error'] = FALSE;
+                $response['message'] = "Data found";
+                $response['data'] = array("cow"=>$cow_array, "buffalo"=> $buff_array);
 			}
 			else
 			{
 				$response['error'] = TRUE;
-				$response['message'] = "Invalid method";
+				$response['message'] = "No transaction found";
 			}
 		}
 		else
@@ -652,5 +655,24 @@ WHERE `u`.`id`=( SELECT `ud`.`dairy_id` FROM `users` `ud` WHERE `ud`.`id`=`custo
 		http_response_code($http_response_code);
 		echo json_encode($response);
 	}
+
+	function monthly_txn_summary()
+    {
+        $http_response_code = 401;
+        $cow_array = array();
+        $buff_array = array();
+        if($this->input->server('REQUEST_METHOD') == 'POST')
+        {
+            // parameters
+            $cid = $this->input->post("cid");
+            $buff_array = $this->transaction_model->get_weekly_buff_txn($cid);
+            $cow_array = $this->transaction_model->get_weekly_cow_txn($cid);
+        }
+        else
+        {
+            $response['error'] = TRUE;
+            $response['message'] = "Invalid method";
+        }
+    }
     /* society app webservice * End */
 }
