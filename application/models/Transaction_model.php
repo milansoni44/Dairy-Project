@@ -269,24 +269,64 @@ class Transaction_model extends CI_Model {
 		return FALSE;		
 	}
 	
-	function get_weekly_txn($cid)
+	function get_weekly_buff_txn($cid = NULL)
 	{
 		$date_end = date('Y-m-d');
 		$date_start = date('Y-m-d', strtotime('-7 days'));
 		
-		$q = $this->db->query("SELECT `t`.`society_id`, SUM(`t`.`weight`) AS `litre`, (SELECT CONCAT_WS('-',machine_name, machine_id) FROM machines WHERE `machines`.`id` = `t`.`deviceid`) AS machine,`t`.`type`, `s`.`name` AS `society_name`, `d`.`name` AS `dairy_name`, AVG(`t`.`fat`) as `fat`, AVG(t.clr) AS `clr`, AVG(`t`.`rate`) AS `rate`, SUM(`t`.`netamt`) AS netamt, `t`.`shift` FROM transactions t
-								LEFT JOIN `users` s ON s.id = t.society_id
-								LEFT JOIN `users` d ON d.id = t.dairy_id
-								WHERE t.cid = '$cid'
-								AND `t`.`date` BETWEEN '$date_start' AND '$date_end' GROUP BY `t`.`deviceid`, `t`.`society_id` ORDER BY `t`.`date` DESC");
+		$q = $this->db->query("SELECT 
+									`t`.`society_id`, 
+									SUM(`t`.`weight`) AS `litre`, 
+									(SELECT CONCAT_WS('-',machine_name, machine_id) 
+										FROM machines `m`
+										WHERE `m`.`id` = `t`.`deviceid`) AS machine,
+									`t`.`type`,
+									`s`.`name` AS `society_name`,
+									`d`.`name` AS `dairy_name`, 
+									AVG(`t`.`fat`) AS `fat`, 
+									AVG(t.clr) AS `clr`, 
+									AVG(`t`.`snf`) AS `snf`, 
+									AVG(`t`.`rate`) AS `rate`, 
+									SUM(`t`.`netamt`) AS `netamt`, 
+									`t`.`shift` 
+								FROM transactions t
+                                LEFT JOIN `users` s ON s.id = t.society_id
+                                LEFT JOIN `users` d ON d.id = t.dairy_id
+                                WHERE t.cid = '$cid'
+                                AND `t`.`date` 
+                                BETWEEN '$date_start' AND '$date_end'
+                                 AND `t`.`type` = 'B'
+                                GROUP BY `t`.`society_id`, `t`.`type`");
 		
-		/* echo $this->db->last_query();exit; */
+		 /*echo $this->db->last_query();exit;*/
 		if($q->num_rows() > 0)
 		{
 			return $q->result_array();
 		}
 		return FALSE;
 	}
+
+    function get_weekly_cow_txn($cid = NULL)
+    {
+        $date_end = date('Y-m-d');
+        $date_start = date('Y-m-d', strtotime('-7 days'));
+
+        $q = $this->db->query("SELECT `t`.`society_id`, SUM(`t`.`weight`) AS `litre`, (SELECT CONCAT_WS('-',machine_name, machine_id) FROM machines WHERE `machines`.`id` = `t`.`deviceid`) AS machine,`t`.`type`, `s`.`name` AS `society_name`, `d`.`name` AS `dairy_name`, AVG(`t`.`fat`) AS `fat`, AVG(t.clr) AS `clr`, AVG(`t`.`snf`) AS `snf` ,AVG(`t`.`rate`) AS `rate`, SUM(`t`.`netamt`) AS netamt, `t`.`shift` FROM transactions t
+                                LEFT JOIN `users` s ON s.id = t.society_id
+                                LEFT JOIN `users` d ON d.id = t.dairy_id
+                                WHERE t.cid = '$cid'
+                                AND `t`.`date` 
+                                BETWEEN '$date_start' AND '$date_end'
+                                 AND `t`.`type` = 'C'
+                                GROUP BY `t`.`society_id`, `t`.`type`");
+
+        /*echo $this->db->last_query();exit;*/
+        if($q->num_rows() > 0)
+        {
+            return $q->result_array();
+        }
+        return FALSE;
+    }
 	
 	function get_customRangeTxn($data = array())
 	{
