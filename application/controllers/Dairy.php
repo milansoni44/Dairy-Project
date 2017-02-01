@@ -73,11 +73,21 @@ class Dairy extends MY_Controller{
             );
 //            echo "<pre>";
 //            print_r($data);exit;
+			if ($this->dairy_model->update_dairy($data,$id) )
+			{
+				$this->session->set_flashdata("success","Dairy data inserted successfully.");
+			}
+			else
+			{
+				$this->session->set_flashdata("message","Dairy data has not been inserted.");
+			}
+			redirect("dairy",'refresh');
         }
-        if(($this->form_validation->run() == TRUE) && $this->dairy_model->add_dairy($data)){
-            $this->session->set_flashdata("success","Dairy data inserted successfully.");
-            redirect("dairy",'refresh');
-        }else{
+        // if(($this->form_validation->run() == TRUE) && $this->dairy_model->add_dairy($data)){
+            // $this->session->set_flashdata("success","Dairy data inserted successfully.");
+            // redirect("dairy",'refresh');
+        // }
+		else{
             $data['errors'] = $this->form_validation->error_array();
             $data['states'] = $this->dairy_model->get_states();
             $this->load->view("common/header", $this->data);
@@ -102,7 +112,7 @@ class Dairy extends MY_Controller{
             if (!$this->upload->do_upload('logo')){
                 $this->form_validation->set_message('image_upload', $this->upload->display_errors());
                 return FALSE;
-            }	
+            }
             else{
                 $this->upload_data['file'] =  $this->upload->data();
                 return $this->data['image_name'] = $this->upload_data['file']['file_name'];
@@ -132,12 +142,9 @@ class Dairy extends MY_Controller{
         $this->form_validation->set_rules("pincode","Pincode","trim|xss_clean");
         $this->form_validation->set_rules("state","State","trim|xss_clean");
         $this->form_validation->set_rules("city","City","trim|xss_clean");
+        $this->form_validation->set_rules('logo', 'Logo', 'callback_image_upload');
         
         if($this->form_validation->run() == TRUE){
-            $validity = $this->input->post("validity");
-//            $dd = explode("-", $validity);
-//            $start_date = date("Y-m-d", strtotime($dd[0]));
-//            $end_date = date("Y-m-d", strtotime($dd[1]));
             $data = array(
                 "name"=> ucfirst($this->input->post("name")),
                 "username"=>  $this->input->post("username"),
@@ -150,19 +157,30 @@ class Dairy extends MY_Controller{
                 "pincode"=>  $this->input->post("pincode"),
                 "state"=>  $this->input->post("state"),
                 "city"=>  $this->input->post("city"),
-//                "validity_start_date"=>$start_date,
-//                "validity_end_date"=>$end_date,
             );
             if($this->input->post("password") != ""){
                 $data["password"] = md5($this->input->post("password"));
             }
-//            echo "<pre>";
-//            print_r($data);exit;
+            if($this->data['image_name'] != 'default.jpg'){
+                $soc_data['photo'] = $this->data['image_name'];
+            }
+            /*echo "<pre>";
+            print_r($data);exit;*/
+			if ($this->dairy_model->update_dairy($data,$id) )
+			{
+				$this->session->set_flashdata("success","Dairy data updated successfully.");
+			}
+			else
+			{
+				$this->session->set_flashdata("message","Dairy data has not been updated.");
+			}
+			redirect("dairy",'refresh');
         }
-        if(($this->form_validation->run() == TRUE) && $this->dairy_model->update_dairy($data,$id)){
-            $this->session->set_flashdata("success","Dairy data updated successfully.");
-            redirect("dairy",'refresh');
-        }else{
+        // if(($this->form_validation->run() == TRUE) && $this->dairy_model->update_dairy($data,$id)){
+            // $this->session->set_flashdata("success","Dairy data updated successfully.");
+            // redirect("dairy",'refresh');
+        // }
+		else{
 //            $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
             $data['errors'] = $this->form_validation->error_array();
             $data['dairy'] = $this->dairy_model->get_dairy_by_id($id);

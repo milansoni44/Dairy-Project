@@ -65,6 +65,20 @@
             $(this).daterangepicker();
         });
     });
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $("#blah").show()
+                $('#blah')
+                    .attr('src', e.target.result)
+                    .width(100)
+                    .height(100);
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
 </script>
             <aside class="right-side">
                 <!-- Content Header (Page header) -->
@@ -89,7 +103,7 @@
                                 <div class="box-header">
                                     <h3 class="box-title">Update Dairy</h3>
                                 </div><!-- /.box-header -->
-                                <form role="form" class="form-horizontal" id="add_dairy_form" action="<?php echo base_url(); ?>index.php/dairy/edit/<?php echo $id; ?>" method="post">
+                                <form role="form" class="form-horizontal" id="add_dairy_form" action="<?php echo base_url(); ?>index.php/dairy/edit/<?php echo $id; ?>" method="post" enctype="multipart/form-data">
                                     <div class="box-body">
                                         <div class="form-group">
                                             <label class="control-label col-md-2" for="name">Name <span style="color:red;">*</span></label>
@@ -218,15 +232,16 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <?php 
-//                                            $val = date("m/d/Y", strtotime($dairy->validity_start_date))." - ".date("m/d/Y", strtotime($dairy->validity_end_date));
-                                        ?>
-<!--                                        <div class="form-group">
-                                            <label class="control-label col-md-2" for="validity">Validity</label>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-2" for="logo">Logo</label>
                                             <div class="col-md-4">
-                                                <input type="text" name="validity" id="validity" class="form-control validity" value="<?php echo $val; ?>"/>
+                                                <input type="file" name="logo" id="logo" class="form-control" onchange="readURL(this);"/>
+                                                <?php if(isset($errors['logo'])){
+                                                    echo "<label class='error'>".$errors['logo']."</label>";
+                                                } ?>
+                                                <img id="blah" src="<?php echo base_url(); ?>assets/uploads/<?php echo $dairy->photo; ?>" alt="Dairy Logo" height="100" width="100" />
                                             </div>
-                                        </div>-->
+                                        </div>
                                     </div>
                                     <input type="hidden" name="username_edit" id="username_edit" value="<?php echo $dairy->username; ?>" />
                                     <input type="hidden" name="email_edit" id="email_edit" value="<?php echo $dairy->email; ?>" />

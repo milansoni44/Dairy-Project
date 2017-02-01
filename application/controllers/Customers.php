@@ -149,8 +149,6 @@ class Customers extends MY_Controller {
                 "adhar_no" => $_POST['adhar_no'],
                 "mem_code" => $_POST['member_code'],
                 "type" => $_POST['type'],
-//                "society_id"=>$this->session->userdata("id"),
-//                "machine_id"=>$_POST['machine'],
                 "ac_no" => $_POST['ac_no'],
                 "bank_name" => $_POST['bank_name'],
                 "ifsc" => $_POST['ifsc'],

@@ -42,7 +42,7 @@
                                     <?php } ?>
                                 </div><!-- /.box-header -->
                                 <div class="box-body table-responsive">
-                                    <table id="example2" class="table table-bordered table-hover">
+                                    <table id="example2" class="table table-bordered">
                                         <thead>
                                             <tr>
                                                 <th>Machine ID</th>
@@ -50,6 +50,7 @@
                                                 <th>Machine Type</th>
                                                 <th>Validity</th>
                                                 <th>Society</th>
+                                                <th>Status</th>
                                                 <th>Actions</th>
                                             </tr>
                                         </thead>
@@ -58,12 +59,13 @@
                                                 if(!empty($allocated_machines)){
                                                     foreach($allocated_machines as $row){
                                             ?>
-                                            <tr>
+                                            <tr <?php echo ($row->status != '1')? 'style="background: red"': '' ?>>
                                                 <td><?php echo $row->machine_id; ?></td>
                                                 <td><?php echo $row->machine_name; ?></td>
                                                 <td><?php echo $row->machine_type; ?></td>
                                                 <td><?php echo $row->validity; ?></td>
                                                 <td><?php echo $row->name; ?></td>
+                                                <td><?php if($row->status == '1'){ ?> Activate<?php }else{ ?>Deactivate <?php } ?></td>
                                                 <td>
                                                     <a href="<?php echo base_url(); ?>index.php/machines/edit_allocate/<?php echo $row->id; ?>">Edit</a>
                                                     <a href="<?php echo base_url(); ?>index.php/machines/change_status/<?php echo $row->id; ?>" <?php if($row->status == '0'){ ?> onclick="return confirm('Are you sure you want to activate?');" <?php }else{ ?> onclick="return confirm('Are you sure you want to deactivate?');" <?php } ?>><?php if($row->status == '0'){ ?> Activate<?php }else{ ?>Deactivate <?php } ?></a>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="f4324b26-b502-4dc9-b279-b87b954a1559" name="dairysuite" url="http://ftp.letsenkindle.website">
+        <fileTransfer host="ftp.letsenkindle.website" port="21" rootFolder="/public_html/dairysuite.com/dairy">
+          <advancedOptions>
+            <advancedOptions compatibilityMode="true" dataProtectionLevel="Private" passiveMode="true" showHiddenFiles="true" />
+          </advancedOptions>
+          <option name="port" value="21" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

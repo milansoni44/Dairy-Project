@@ -116,7 +116,11 @@ LEFT JOIN customers c ON c.id = t.cid WHERE t.dairy_id = '$id'");
     }
 
     function get_customer_by_id($id = NULL) {
-        $q = $this->db->query("SELECT * FROM customers WHERE id = '$id'");
+        /*$q = $this->db->query("SELECT * FROM customers WHERE id = '$id'");*/
+        $q = $this->db->query("SELECT m.*,c.* FROM customers c
+                                LEFT JOIN customer_machine cm ON cm.cid = c.id
+                                LEFT JOIN machines m ON m.id = cm.machine_id
+                                WHERE cm.cid = '$id' GROUP BY m.id");
 //        echo $this->db->last_query();exit;
         if ($q->num_rows() > 0) {
             return $q->row();

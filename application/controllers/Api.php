@@ -631,7 +631,13 @@ WHERE `u`.`id`=( SELECT `ud`.`dairy_id` FROM `users` `ud` WHERE `ud`.`id`=`custo
 			// parameter may be exist
 			$cid = $this->input->post("cid");
             $buff_array = $this->transaction_model->get_weekly_buff_txn($cid);
+            if(!$buff_array){
+                $buff_array = array();
+            }
             $cow_array = $this->transaction_model->get_weekly_cow_txn($cid);
+            if(!$cow_array){
+                $cow_array = array();
+            }
             /*echo "<pre>";
 			print_r($transaction_buff);exit;*/
             if(!empty($buff_array) || !empty($cow_array))
@@ -665,14 +671,72 @@ WHERE `u`.`id`=( SELECT `ud`.`dairy_id` FROM `users` `ud` WHERE `ud`.`id`=`custo
         {
             // parameters
             $cid = $this->input->post("cid");
-            $buff_array = $this->transaction_model->get_weekly_buff_txn($cid);
-            $cow_array = $this->transaction_model->get_weekly_cow_txn($cid);
+            $buff_array = $this->transaction_model->get_monthly_buff_txn($cid);
+            if(!$buff_array){
+                $buff_array = array();
+            }
+            $cow_array = $this->transaction_model->get_monthly_cow_txn($cid);
+            if(!$cow_array){
+                $cow_array = array();
+            }
+            /*print_r($cow_array);exit;*/
+            if(!empty($buff_array) || !empty($cow_array))
+            {
+                $http_response_code = 200;
+                $response['error'] = FALSE;
+                $response['message'] = "Data found";
+                $response['data'] = array("cow"=>$cow_array, "buffalo"=> $buff_array);
+            }
+            else
+            {
+                $response['error'] = TRUE;
+                $response['message'] = "No transaction found";
+            }
         }
         else
         {
             $response['error'] = TRUE;
             $response['message'] = "Invalid method";
         }
+        http_response_code($http_response_code);
+        echo json_encode($response);
+    }
+
+    function yearly_txn_summary()
+    {
+        $http_response_code = 401;
+        if($this->input->server('REQUEST_METHOD') == 'POST')
+        {
+            $cid = $this->input->post("cid");
+            $buff_array = $this->transaction_model->get_yearly_buff_txn($cid);
+            if(!$buff_array){
+                $buff_array = array();
+            }
+            $cow_array = $this->transaction_model->get_yearly_cow_txn($cid);
+            if(!$cow_array){
+                $cow_array = array();
+            }
+            /*print_r($cow_array);exit;*/
+            if(!empty($buff_array) || !empty($cow_array))
+            {
+                $http_response_code = 200;
+                $response['error'] = FALSE;
+                $response['message'] = "Data found";
+                $response['data'] = array("cow"=>$cow_array, "buffalo"=> $buff_array);
+            }
+            else
+            {
+                $response['error'] = TRUE;
+                $response['message'] = "No transaction found";
+            }
+        }
+        else
+        {
+            $response['error'] = TRUE;
+            $response['message'] = "Invalid method";
+        }
+        http_response_code($http_response_code);
+        echo json_encode($response);
     }
     /* society app webservice * End */
 }

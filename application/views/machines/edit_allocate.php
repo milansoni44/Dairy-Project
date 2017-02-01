@@ -1,18 +1,35 @@
-<script type="text/javascript">
-    $(document).ready(function(){
-        
-    });
-</script>
+            <script type="text/javascript">
+                $(document).ready(function(){
+                    $("#add_dairy_form").validate({
+                        rules: {
+                            machine_name: {
+                                required: true,
+                            },
+                            society: {
+                                required: true,
+                            },
+                        },
+                        messages: {
+                            machine_name: {
+                                required: "Please enter a machine name",
+                            },
+                            society: {
+                                required: "Please select society",
+                            },
+                        }
+                    });
+                });
+            </script>
             <aside class="right-side">
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
                     <h1>
-                        Dairy Machine Mapping
-                        <small>Map Machines</small>
+                        Edit Dairy Machine Mapping
+                        <small>Edit Machine</small>
                     </h1>
                     <ol class="breadcrumb">
                         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-                        <li class="active">Map Machines</li>
+                        <li class="active">Edit Dairy Machine</li>
                     </ol>
                 </section>
 
@@ -24,40 +41,30 @@
                         <div class="col-xs-12">
                             <div class="box">
                                 <div class="box-header">
-                                    <h3 class="box-title">Map Dairy and Machines</h3>
-                                </div> 
+                                    <h3 class="box-title">Edit Dairy Machine</h3>
+                                </div>
+
                                 <form role="form" class="form-horizontal" id="add_dairy_form" action="<?php echo base_url(); ?>index.php/machines/edit_allocate/<?php echo $id; ?>" method="post">
                                     <div class="box-body">
                                         <div class="form-group">
-                                            <label class="control-label col-md-2" for="dairy">Dairy</label>
+                                            <label class="control-label col-md-2" for="machine_name"> Machine Name <span style="color: red;">*</span></label>
                                             <div class="col-md-4">
-                                                <select class="form-control" name="dairy" id="dairy">
-                                                    <option value="">Select Dairy</option>
-                                                    <?php 
-                                                        if(!empty($dairy)){
-                                                            foreach($dairy as $row){
-                                                    ?>
-                                                    <option value="<?php echo $row->id; ?>" <?php if($mapped_machine->dairy_id == $row->id){?>selected <?php } ?>><?php echo $row->name; ?></option>
-                                                    <?php
-                                                            }
-                                                        }
-                                                    ?>
-                                                </select>
+                                                <input type="text" name="machine_name" id="machine_name" class="form-control" value="<?php echo $mapped_machine->machine_name; ?>"/>
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="control-label col-md-2" for="machine">Machines</label>
+                                            <label class="control-label col-md-2" for="society">Society <span style="color:red;">*</span></label>
                                             <div class="col-md-4">
-                                                <select class="form-control" name="machine" id="machine">
-                                                    <option value="">Select Machines</option>
-                                                    <?php 
-                                                        if(!empty($machines)){
-                                                            foreach($machines as $row){
-                                                    ?>
-                                                    <option value="<?php echo $row->id; ?>" <?php if($mapped_machine->id == $row->id){?>selected <?php } ?>><?php echo $row->machine_id; ?></option>
+                                                <select class="form-control" name="society" id="society">
+                                                    <option value="">Select Society</option>
                                                     <?php
-                                                            }
+                                                    if(!empty($society)){
+                                                        foreach($society as $row){
+                                                            ?>
+                                                            <option value="<?php echo $row->id; ?>" <?php if($mapped_machine->society_id == $row->id){ ?>selected <?php } ?>><?php echo $row->name; ?></option>
+                                                            <?php
                                                         }
+                                                    }
                                                     ?>
                                                 </select>
                                             </div>

@@ -66,23 +66,33 @@ class Machines extends MY_Controller {
                     "machine_name" => $_POST['machine_name'][$i],
                     "machine_type" => $_POST['type'][$i],
                     "validity" => $_POST['validity'][$i],
-                    "dairy_id" => $_POST['dairy_id'][$i]
+                    "dairy_id" => $_POST['dairy_id'][$i],
+                    "start_validity_from" => $_POST['start_validity_from'][$i]
                 );
 				
 				$dup_res = $this->db->query(" SELECT COUNT(*) AS `total` FROM `machines` WHERE `machine_id` = '".$machine_data['machine_id']."'");
 				
 				if($dup_res->row('total') == 0)
 				{
+					if( $machine_data['start_validity_from'] == 1 )
+					{
+						// if machine validity starts from today
+						$machine_validity = $this->get_validity( $machine_data['validity'] );
+						$date = explode("-", $machine_validity);
+						$machine_data['from_date'] = date("Y-m-d", strtotime($date[0]));
+						$machine_data['to_date'] = date("Y-m-d", strtotime($date[1]));
+					}
+					
 					$result = $this->machine_model->add_machine($machine_data);
 					
 					if($result)
 					{
 						$notify_msg = $_POST['machine_name'][$i] . ' (' . $row . ') successfully allocated to {dairy_name}.';
-
+						
 						$this->db->query("INSERT INTO `notification` SET 
-												`message`='" . $notify_msg . "',
-												`for_whom`=1,
-												`dairy_id`='" . $_POST['dairy_id'][$i] . "'
+											`message`='" . htmlentities($notify_msg, ENT_QUOTES) . "',
+											`for_whom`=1,
+											`dairy_id`='" . $_POST['dairy_id'][$i] . "'
 										");
 						$added++;
 					}
@@ -124,13 +134,27 @@ class Machines extends MY_Controller {
         if (isset($_POST['submit'])) {
 //            echo "<pre>";
 //            print_r($_POST);exit;
+//            var_dump($_POST['validity']);
+            if($_POST['validity'] != ''){
+                $date_arr = explode('-', $_POST['validity']);
+//            print_r($date_arr);exit;
+                $from_date = date('Y-m-d', strtotime($date_arr[0]));
+                $to_date = date('Y-m-d', strtotime($date_arr[1]));
+            }else{
+                $from_date = NULL;
+                $to_date = NULL;
+            }
             $machine_data = array(
-                "machine_id" => $_POST['machine_id'],
-                "machine_name" => $_POST['machine_name'],
+//                "machine_id" => $_POST['machine_id'],
+                "machine_name" => htmlentities($_POST['machine_name'], ENT_QUOTES),
                 "machine_type" => $_POST['type'],
                 "dairy_id" => $_POST['dairy_id'],
-                "validity" => $_POST['validity'],
+                "from_date"=> $from_date,
+                "to_date"=> $to_date
             );
+
+            /*echo "<pre>";
+            print_r($machine_data);exit;*/
         }
 
         if (!empty($machine_data) && $this->machine_model->edit_machine($machine_data, $id)) {
@@ -212,14 +236,14 @@ class Machines extends MY_Controller {
      * @param type $id
      */
     function edit_allocate($id = NULL) {
-        if ($this->session->userdata("group") == "society" || $this->session->userdata("group") == "dairy") {
+        if ($this->session->userdata("group") == "admin" || $this->session->userdata("group") == "society") {
             $this->session->set_flashdata("message", "Access Denied");
             redirect("/", "refresh");
         }
         if (isset($_POST['submit'])) {
             $map_data = array(
-                "dairy_id" => $this->input->post("dairy"),
-//                "machine_id"=>$this->input->post("machine"),
+                "machine_name"=>htmlentities($_POST['machine_name'], ENT_QUOTES),
+                "society_id"=>$_POST['society'],
             );
 //            print_r($map_data);exit;
         }
@@ -228,8 +252,7 @@ class Machines extends MY_Controller {
             $this->session->set_flashdata("success", "Machine updated to dairy successfully.");
             redirect("machines/allocate", 'refresh');
         } else {
-            $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
-            $data['dairy'] = $this->dairy_model->get_dairy();
+            $data['society'] = $this->society_model->get_society();
             $data['machines'] = $this->machine_model->allocated_dairy_machine($id);
             $data['mapped_machine'] = $this->machine_model->get_dairyMachine_by_id($id);
             $data['id'] = $id;
@@ -242,32 +265,48 @@ class Machines extends MY_Controller {
     /**
      * add new machine to society
      */
-    function allocate_to_soc() {
+    function allocate_to_soc()
+	{
         if ($this->session->userdata("group") == "society" || $this->session->userdata("group") == "admin") {
             $this->session->set_flashdata("message", "Access Denied");
             redirect("/", "refresh");
         }
-        if (isset($_POST['submit'])) {
+        if (isset($_POST['submit']))
+		{
             // get machine validity
-            $validity = $this->machine_model->get_validity($this->input->post("machine"));
-            $machine_validity = $this->get_validity($validity);
-            $date = explode("-", $machine_validity);
-            $from_date = date("Y-m-d", strtotime($date[0]));
-            $to_date = date("Y-m-d", strtotime($date[1]));
-            $map_data = array(
-                "society_id" => $this->input->post("society"),
-                "machine_id" => $this->input->post("machine"),
-                "from_date" => $from_date,
-                "to_date" => $to_date,
-            );
+            $machine_info = $this->machine_model->get_machine_by_id($this->input->post("machine"));
+			
+			if( $machine_info->start_validity_from == 2 )
+			{
+				$validity = $this->machine_model->get_validity($this->input->post("machine"));
+				$machine_validity = $this->get_validity($validity);
+				$date = explode("-", $machine_validity);
+				$from_date = date("Y-m-d", strtotime($date[0]));
+				$to_date = date("Y-m-d", strtotime($date[1]));
+				$map_data = array(
+					"society_id" => $this->input->post("society"),
+					// "machine_id" => $this->input->post("machine"),
+					"from_date" => $from_date,
+					"to_date" => $to_date,
+				);
+			}
+			else
+			{
+				$map_data = array(
+					"society_id" => $this->input->post("society"),
+					// "machine_id" => $this->input->post("machine")
+				);
+			}
+			
+			
         }
 //        print_r($map_data);exit;
-        if (!empty($map_data) && $this->machine_model->map_society_machine($map_data)) {
+        if (!empty($map_data) && $this->machine_model->map_society_machine($map_data, $this->input->post("machine"))) {
 //            $cnt = $this->db->query("SELECT * FROM notification WHERE dairy_id = '".$map_data['society_id']."' AND is_read = '0'");
 //            $this->session->set_userdata('machine_notify', $cnt);
             $this->session->set_flashdata("success", "Machine added to society successfully.");
 
-            $machine_info = $this->machine_model->get_machine_by_id($map_data['machine_id']);
+            $machine_info = $this->machine_model->get_machine_by_id($this->input->post("machine"));
 
             $notify_msg = $machine_info->machine_id . ' successfully allocated to {society_name}.';
             $this->db->query("INSERT INTO `notification` SET 
@@ -283,6 +322,23 @@ class Machines extends MY_Controller {
             $this->load->view("common/header", $this->data);
             $this->load->view("machines/allocate_to_soc", $data);
             $this->load->view("common/footer");
+        }
+    }
+	
+	// calculate machine validity
+    function get_validity($string)
+	{
+//      $string = $this->input->post("validity");
+        $index = substr($string, -1); // returns "m or y"
+        $num = substr($string, 0, -1); // returns "numbers"
+        $date = date('Y-m-d');
+        if ($index == "m") {
+            $m = '+' . $num . ' months';
+            return $validity = (date('m/d/Y') . " - " . date('m/d/Y', strtotime($m, strtotime(date('Y-m-d')))));
+        } else if ($index == "y") {
+            // format 01/17/2017 - 01/17/2017
+            $y = '+' . $num . ' years';
+            return $validity = (date('m/d/Y') . " - " . date('m/d/Y', strtotime($y)));
         }
     }
 
@@ -316,27 +372,16 @@ class Machines extends MY_Controller {
             $this->load->view("common/footer");
         }
     }
-
-    // calculate machine validity
-    function get_validity($string) {
-//        $string = $this->input->post("validity");
-        $index = substr($string, -1); // returns "m or y"
-        $num = substr($string, 0, -1); // returns "numbers"
-        $date = date('Y-m-d');
-        if ($index == "m") {
-            $m = '+' . $num . ' months';
-            return $validity = (date('m/d/Y') . " - " . date('m/d/Y', strtotime($m, strtotime(date('Y-m-d')))));
-        } else if ($index == "y") {
-            // format 01/17/2017 - 01/17/2017
-            $y = '+' . $num . ' years';
-            return $validity = (date('m/d/Y') . " - " . date('m/d/Y', strtotime($y)));
-        }
-    }
     
     function change_status($id = NULL){
         if($this->machine_model->change_status($id)){
-            $this->session->set_flashdata("success", "Status changed successfully");
-            redirect("machines/allocate", "refresh");
+            if($this->session->userdata("group") == "admin"){
+                $this->session->set_flashdata("success", "Status changed successfully");
+                redirect("machines", "refresh");
+            }else{
+                $this->session->set_flashdata("success", "Status changed successfully");
+                redirect("machines/allocate", "refresh");
+            }
         }
     }
 

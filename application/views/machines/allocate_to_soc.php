@@ -12,9 +12,6 @@
         });
     });
 </script>
-<?php 
-    
-?>
             <aside class="right-side">
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
@@ -41,7 +38,7 @@
                                 <form role="form" class="form-horizontal" id="add_dairy_form" action="<?php echo base_url(); ?>index.php/machines/allocate_to_soc" method="post">
                                     <div class="box-body">
                                         <div class="form-group">
-                                            <label class="control-label col-md-2" for="society">Society</label>
+                                            <label class="control-label col-md-2" for="society">Society <span style="color:red;">*</span></label>
                                             <div class="col-md-4">
                                                 <select class="form-control" name="society" id="society">
                                                     <option value="">Select Society</option>
@@ -58,7 +55,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="control-label col-md-2" for="machine">Machines</label>
+                                            <label class="control-label col-md-2" for="machine">Machines <span style="color:red;">*</span></label>
                                             <div class="col-md-4">
                                                 <select class="form-control" name="machine" id="machine">
                                                     <option value="">Select Machines</option>

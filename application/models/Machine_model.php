@@ -17,12 +17,20 @@ class Machine_model extends CI_Model{
      */
     function add_machine($data = array())
 	{
+		$from_to_data_str = '';
+		if( isset($data['from_date']) && isset($data['to_date']) )
+		{
+		$from_to_data_str = ' `from_date`="'.$data['from_date'].'", `to_date`="'.$data['to_date'].'",';
+		}
+		
 		$result = $this->db->query(" INSERT INTO `machines` SET 
-											`machine_id`='".$data['machine_id']."',
-											`machine_name`='".$data['machine_name']."',
-											`machine_type`='".$data['machine_type']."',
-											`validity`='".$data['validity']."',
-											`dairy_id`='".$data['dairy_id']."'	");
+								`machine_id`='".htmlentities($data['machine_id'], ENT_QUOTES)."',
+								`machine_name`='".htmlentities($data['machine_name'], ENT_QUOTES)."',
+								`machine_type`='".$data['machine_type']."',
+								`validity`='".$data['validity']."',
+								".$from_to_data_str."
+								`start_validity_from`='".$data['start_validity_from']."',
+								`dairy_id`='".$data['dairy_id']."'	");
 		return $result ? TRUE : FALSE;
     }
     
@@ -92,7 +100,7 @@ class Machine_model extends CI_Model{
         $q = $this->db->query("SELECT m.*, u.name FROM machines m
 LEFT JOIN users u ON u.id = m.society_id
 WHERE m.dairy_id = '$id'");
-//        echo $this->db->last_query();exit;
+        /*echo $this->db->last_query();exit;*/
         if($q->num_rows() > 0){
             foreach($q->result() as $m){
                 $m1[] = $m;
@@ -118,9 +126,10 @@ WHERE m.dairy_id = '$id'");
         return FALSE;
     }
     
-    function map_society_machine($data = array()){
-        $this->db->where("id", $data['machine_id']);
-        if($this->db->update("machines", array("society_id"=>$data['society_id'], "from_date" => $data['from_date'], "to_date" => $data['to_date']))){
+    function map_society_machine($data = array(), $id = NULL)
+	{
+        $this->db->where("id", $id);
+        if($this->db->update("machines", $data)){
             return TRUE;
         }
         return FALSE;

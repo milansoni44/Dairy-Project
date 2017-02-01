@@ -8,17 +8,6 @@
 	<div class="form-group" style="border: 1px solid; padding: 10px 0; border-radius: 5px; display:none;" id="sample_machine_add">
 	   <label class="control-label col-md-2 machine_lable">Machine 1</label>
 	   <div class="col-md-2">
-		  <input name="machine_id[]" class="form-control machine_id" placeholder="Machine ID" type="text"><br>
-		  
-		  <select name="validity[]" class="form-control validity">
-			 <option value="">Select Validity</option>
-			 <option value="3m"> 3 months </option>
-			 <option value="6m"> 6 months </option>
-			 <option value="9m"> 9 months </option>
-			 <option value="1y"> 1 Year </option>
-		  </select>
-	   </div>
-	   <div class="col-md-2">
 			<input name="machine_name[]" class="form-control machine_name" placeholder="Machine Name" type="text">
 		   <select name="type[]" class="form-control type" style="margin-top:19px;">
 			  <option value="">Select Type</option>
@@ -28,13 +17,30 @@
 		   </select>
 	   </div>
 	   <div class="col-md-2">
+		  <input name="machine_id[]" class="form-control machine_id" placeholder="Machine ID" type="text"><br>
+		  <select name="validity[]" class="form-control validity">
+			 <option value="">Select Validity</option>
+			 <option value="3m"> 3 months </option>
+			 <option value="6m"> 6 months </option>
+			 <option value="9m"> 9 months </option>
+			 <option value="1y"> 1 Year </option>
+		  </select>
+	   </div>
+	   <div class="col-md-2">
 		   <select name="dairy_id[]" class="form-control dairy_id">
 			  <option value="">Select Dairy</option>
-		   <?php echo "<pre>"; print_r($dairy_info); echo "</pre>"; foreach( $dairy_info as $dairy ) { ?>
+		   <?php /* echo "<pre>"; print_r($dairy_info); echo "</pre>"; */ foreach( $dairy_info as $dairy ) { ?>
 			  <option value="<?php echo $dairy->id;?>">
 				<?php echo $dairy->name;?>
 			  </option>
 		   <?php } ?>
+		   </select>
+		   <br>
+		   
+		   <select name="start_validity_from[]" class="form-control start_validity_from">
+			  <option value="">Start Validity from</option>
+			  <option value="1">Today</option>
+			  <option value="2">When machine allocated to society</option>
 		   </select>
 	   </div>
 	   <div class="col-md-2">
@@ -161,6 +167,21 @@
 							{
 								$this.addClass("validation_error")
 								.attr("title", "Please select machine type");
+								valid = 0;
+							}
+							else
+							{
+								$this.removeClass("validation_error").removeAttr("title");
+							}
+						})
+						.end()
+						.find(".start_validity_from").each(function(index)
+						{
+							var $this = $(this);
+							if( $this.val() == "" )
+							{
+								$this.addClass("validation_error")
+								.attr("title", "Please select start validity from");
 								valid = 0;
 							}
 							else

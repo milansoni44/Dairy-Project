@@ -82,11 +82,20 @@ class Society extends MY_Controller
             );
 //            echo "<pre>";
 //            print_r($soc_data);exit;
+            if($this->society_model->add_society($soc_data))
+            {
+                $this->session->set_flashdata("success","Society data inserted successfully.");
+            }
+            else
+            {
+                $this->session->set_flashdata("success","Society data has not been inserted.");
+            }
+            redirect("society",'refresh');
         }
-        if(($this->form_validation->run() == TRUE) && $this->society_model->add_society($soc_data)){
+        /*if(($this->form_validation->run() == TRUE) && $this->society_model->add_society($soc_data)){
             $this->session->set_flashdata("success","Society data inserted successfully.");
             redirect("society",'refresh');
-        }else{
+        }*/else{
             $data['errors'] = $this->form_validation->error_array();
             $data['states'] = $this->dairy_model->get_states();
             $this->load->view("common/header", $this->data);
@@ -129,13 +138,22 @@ class Society extends MY_Controller
 //            redirect("/","refresh");
 //        }
         // validation for society
-        $this->form_validation->set_rules("name","Name","trim|required");
-        $this->form_validation->set_rules("username","Username","trim|required|callback_check_username");
-        $this->form_validation->set_rules("email","Email","trim|valid_email|callback_check_email");
-        $this->form_validation->set_rules("password","Password","trim");
-        $this->form_validation->set_rules("mobile","Mobile","trim|required");
-        
+        $this->form_validation->set_rules("name","Name","trim|required|xss_clean");
+        $this->form_validation->set_rules("username","Username","trim|required|xss_clean|callback_check_username");
+        $this->form_validation->set_rules("email","Email","trim|xss_clean|valid_email|callback_check_email");
+        $this->form_validation->set_rules("password","Password","trim|xss_clean");
+        $this->form_validation->set_rules("mobile","Mobile","trim|required|xss_clean");
+        $this->form_validation->set_rules("address","Address","trim|xss_clean");
+        $this->form_validation->set_rules("area","Area","trim|xss_clean");
+        $this->form_validation->set_rules("street","Street","trim|xss_clean");
+        $this->form_validation->set_rules("contact_person","Contact Person","trim|xss_clean");
+        $this->form_validation->set_rules("pincode","Pincode","trim|xss_clean");
+        $this->form_validation->set_rules("state","State","trim|xss_clean");
+        $this->form_validation->set_rules("city","City","trim|xss_clean");
+        $this->form_validation->set_rules('logo', 'Logo', 'callback_image_upload');
+
         if($this->form_validation->run() == TRUE){
+//            $img = ($this->data['image_name'] == 'default.jpg') ? '' : $soc_data[''];
             $soc_data = array(
                 "dairy_id"=> $this->session->userdata("id"),
                 "name"=> ucfirst($this->input->post("name")),
@@ -158,11 +176,21 @@ class Society extends MY_Controller
             if($this->input->post("password") != ""){
                 $data["password"] = md5($this->input->post("password"));
             }
+            if($this->data['image_name'] != 'default.jpg'){
+                $soc_data['photo'] = $this->data['image_name'];
+            }
+            if($this->society_model->edit_society($soc_data, $id))
+            {
+                $this->session->set_flashdata("success","Society data updated successfully.");
+            }else{
+                $this->session->set_flashdata("success","Society data has not been updated.");
+            }
+            redirect("society",'refresh');
         }
-        if(($this->form_validation->run() == TRUE) && $this->society_model->edit_society($soc_data, $id)){
+        /*if(($this->form_validation->run() == TRUE) && $this->society_model->edit_society($soc_data, $id)){
             $this->session->set_flashdata("success","Society data updated successfully.");
             redirect("society",'refresh');
-        }else{
+        }*/else{
             $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
             $data['id'] = $id;
             $data['errors'] = $this->form_validation->error_array();

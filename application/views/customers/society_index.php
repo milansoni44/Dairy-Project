@@ -1,6 +1,14 @@
             <script>
                 $(document).ready(function(){
                     $('#example2').DataTable();
+                    $("#form_milk_supplier").validate({
+                        rules: {
+                            society: "required",
+                        },
+                        messages: {
+                            society: "Please select society",
+                        }
+                    });
                 });
             </script>
             <aside class="right-side">
@@ -53,9 +61,9 @@
                                     <span class="pull-right"><a href="<?php echo base_url(); ?>index.php/customers/add" class="btn btn-primary" style="color: #fff;">Add Customers</a></span>
                                     <?php } ?>
                                 </div><!-- /.box-header -->
-                                <form class="form-horizontal" method="post" action="<?php echo base_url(); ?>index.php/customers/society_index">
+                                <form class="form-horizontal" method="post" id="form_milk_supplier" action="<?php echo base_url(); ?>index.php/customers/society_index">
                                     <div class="form-group">
-                                        <label class="control-label col-md-2" for="society">Society</label>
+                                        <label class="control-label col-md-2" for="society">Society <span style="color: red;">*</span></label>
                                         <div class="col-md-3">
                                             <select class="form-control" name="society" id="society">
                                                 <option value="">--Select Society--</option>
@@ -85,7 +93,7 @@
                                                 <th>Name</th>
                                                 <th>Mobile</th>
                                                 <th>Adhar No</th>
-                                                <th>Action</th>
+<!--                                                <th>Action</th>-->
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -98,7 +106,7 @@
                                                 <td><?php echo $row->customer_name; ?></td>
                                                 <td><?php echo $row->mobile; ?></td>
                                                 <td><?php echo $row->adhar_no; ?></td>
-                                                <td></td>
+<!--                                                <td></td>-->
                                             </tr>
                                             <?php
                                                     }

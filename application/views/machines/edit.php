@@ -1,9 +1,10 @@
             <script type="text/javascript">
                 $(document).ready(function(){
+                    $("#date_range").daterangepicker();
                     // put code here
                     $("#add_dairy_form").validate({
                         rules: {
-                            machine_id: "required",
+//                            machine_id: "required",
                             machine_name: { 
                                 required: true,
                             },
@@ -14,12 +15,12 @@
                             dairy_id: {
                                 required: true,
                             },
-                            validity: {
+                            /*validity: {
                                 required: true,
-                            }
+                            }*/
                         },
                         messages: {
-                            machine_id: "Please enter machine id",
+//                            machine_id: "Please enter machine id",
                             machine_name: {
                                 required: "Please enter a machine name",
                             },
@@ -30,9 +31,9 @@
                             dairy_id: {
                                 required: "Please select dairy"
                             },
-                            validity: {
+                            /*validity: {
                                 required: "Please select validity"
-                            }
+                            }*/
                         }
                     });
                 });
@@ -65,17 +66,17 @@
                                         <div class="form-group">
                                             <label class="control-label col-md-2" for="machine_id">Machine ID</label>
                                             <div class="col-md-4">
-                                                <input type="text" name="machine_id" id="machine_id" class="form-control" value="<?php echo $machine->machine_id; ?>" />
+                                                <input type="text" name="machine_id" id="machine_id" class="form-control" value="<?php echo $machine->machine_id; ?>" disabled />
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="control-label col-md-2" for="machine_name">Machine Name</label>
+                                            <label class="control-label col-md-2" for="machine_name">Machine Name <span style="color: red;">*</span></label>
                                             <div class="col-md-4">
                                                 <input type="text" name="machine_name" id="machine_name" class="form-control" value="<?php echo $machine->machine_name; ?>"/>
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="control-label col-md-2" for="machine_type">Machine Type</label>
+                                            <label class="control-label col-md-2" for="machine_type">Machine Type <span style="color: red;">*</span></label>
                                             <div class="col-md-4">
                                                 <select class="form-control" id="machine_type" name="type">
                                                     <option value="">--Select Type--</option>
@@ -86,7 +87,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="control-label col-md-2" for="dairy_id">Dairy</label>
+                                            <label class="control-label col-md-2" for="dairy_id">Dairy <span style="color: red;">*</span></label>
                                             <div class="col-md-4">
                                                 <select class="form-control" id="dairy_id" name="dairy_id">
                                                     <option value="">--Select Dairy--</option>
@@ -102,16 +103,23 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="form-group">
+                                        <!--<div class="form-group">
                                             <label class="control-label col-md-2" for="validity">Validity</label>
                                             <div class="col-md-4">
                                                 <select class="form-control" id="validity" name="validity" >
                                                     <option value="">--Select Validity--</option>
-                                                    <option value="3m" <?php if($machine->validity == "3m"){?>selected <?php } ?>> 3 Months</option>
-                                                    <option value="6m" <?php if($machine->validity == "6m"){?>selected <?php } ?>> 6 Months</option>
-                                                    <option value="9m" <?php if($machine->validity == "9m"){?>selected <?php } ?>> 9 Months</option>
-                                                    <option value="1y" <?php if($machine->validity == "1y"){?>selected <?php } ?>> 1 Year</option>
+                                                    <option value="3m" <?php /*if($machine->validity == "3m"){*/?>selected <?php /*} */?>> 3 Months</option>
+                                                    <option value="6m" <?php /*if($machine->validity == "6m"){*/?>selected <?php /*} */?>> 6 Months</option>
+                                                    <option value="9m" <?php /*if($machine->validity == "9m"){*/?>selected <?php /*} */?>> 9 Months</option>
+                                                    <option value="1y" <?php /*if($machine->validity == "1y"){*/?>selected <?php /*} */?>> 1 Year</option>
                                                 </select>
+                                            </div>
+                                        </div>-->
+                                        <?php if(!$machine->from_date){ $date_range = ''; }else{ $date_range = date('m/d/Y', strtotime($machine->from_date))." - ".date('m/d/Y', strtotime($machine->to_date)); } ?>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-2" for="date_range">Validity</label>
+                                            <div class="col-md-4">
+                                                <input type="text" name="validity" id="date_range" class="form-control" value="<?php echo $date_range; ?>" />
                                             </div>
                                         </div>
                                     </div>

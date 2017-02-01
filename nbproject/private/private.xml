@@ -3,10 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/wamp/www/dairysuite/application/views/society/add.php</file>
-            <file>file:/C:/wamp/www/dairysuite/application/views/dairy/add.php</file>
-            <file>file:/C:/wamp/www/dairysuite/application/controllers/Dairy.php</file>
-            <file>file:/C:/wamp/www/dairysuite/application/controllers/Society.php</file>
+            <file>file:/C:/wamp/www/dairysuite/application/views/machines/allocate_to_soc.php</file>
+            <file>file:/C:/wamp/www/dairysuite/application/views/customers/society_index.php</file>
         </group>
     </open-files>
 </project-private>
