@@ -51,18 +51,19 @@
                                                 </select>
                                             </div>
                                         </div>
-									<!--
+
 										<div class="form-group">
-                                            <label class="control-label col-md-2" for="type">Type <span style="color:red;">*</span></label>
+                                            <label class="control-label col-md-2" for="machine_type">Machine Type <span style="color:red;">*</span></label>
                                             <div class="col-md-4">
-												<select name="type" class="form-control" required>
+												<select name="machine_type" class="form-control" id="machine_type" required>
                                                     <option value="">Select type</option>
-						<option value="C" <?php //echo $type=='C' ? 'selected': '';?>>Cow</option>
-						<option value="B" <?php //echo $type=='B' ? 'selected': '';?>>Buffalo</option>
+						<option value="GPRS" <?php echo $machine_type=='GPRS' ? 'selected': '';?>>GPRS</option>
+						<option value="BLUETOOTH" <?php echo $machine_type=='BLUETOOTH' ? 'selected': '';?>>BLUETOOTH</option>
+						<option value="USB" <?php echo $machine_type=='USB' ? 'selected': '';?>>USB</option>
                                                 </select>
                                             </div>
                                         </div>
-									-->
+
 										
                                     </div>
                                     <div class="box-footer">

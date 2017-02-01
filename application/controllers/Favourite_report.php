@@ -72,16 +72,16 @@ class Favourite_report extends MY_Controller
 		{
 			$this->data['action'] = "edit";
 			$fav_report_info = $this->favourite_report_model->get_favourite_report($tmp['favourite_report_id']);
-			
-			$this->data['favourite_report_id']          = $fav_report_info['id']         ;
+
+			$this->data['favourite_report_id']          = $fav_report_info['id'];
 			$this->data['report_name']                  = $fav_report_info['report_name'];
-			$this->data['period']                       = $fav_report_info['period']     ;
-			$this->data['shift']                        = $fav_report_info['shift']      ;
-		//	$this->data['type']                         = $fav_report_info['type']       ;
-			$this->data['user_id']                      = $fav_report_info['user_id']    ;
+			$this->data['period']                       = $fav_report_info['period'];
+			$this->data['shift']                        = $fav_report_info['shift'];
+			$this->data['machine_type']                 = $fav_report_info['machine_type']       ;
+			$this->data['user_id']                      = $fav_report_info['user_id'];
 			$this->data['period_word']                  = $fav_report_info['period_word'];
-			$this->data['shift_word']                   = $fav_report_info['shift_word'] ;
-			$this->data['type_word']                    = $fav_report_info['type_word']  ;
+			$this->data['shift_word']                   = $fav_report_info['shift_word'];
+//			$this->data['type_word']                    = $fav_report_info['type_word'];
 		}
 		else
 		{
@@ -91,7 +91,7 @@ class Favourite_report extends MY_Controller
 			$this->data['report_name']                  = '';
 			$this->data['period']                       = '';
 			$this->data['shift']                        = '';
-		//	$this->data['type']                         = '';
+			$this->data['machine_type']                 = '';
 			$this->data['user_id']                      = '';
 			$this->data['period_word']                  = '';
 			$this->data['shift_word']                   = '';

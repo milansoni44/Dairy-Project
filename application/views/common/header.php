@@ -136,7 +136,7 @@
                             <ul class="dropdown-menu">
                                 <!-- User image -->
                                 <li class="user-header bg-light-blue">
-                                    <img src="<?php echo base_url(); ?>assets/img/avatar3.png" class="img-circle" alt="User Image" />
+                                    <img src="<?php echo base_url(); ?>assets/uploads/<?php echo $this->session->userdata("photo"); ?>" class="img-circle" alt="User Image" />
                                     <p>
                                         <?php echo ucfirst($this->session->userdata("username")); ?>
 <!--                                        <small>Member since Nov. 2017</small>-->
@@ -177,7 +177,7 @@
                     <!-- Sidebar user panel -->
                     <div class="user-panel">
                         <div class="pull-left image">
-                            <img src="<?php echo base_url(); ?>assets/img/avatar3.png" class="img-circle" alt="User Image" />
+                            <img src="<?php echo base_url(); ?>assets/uploads/<?php echo $this->session->userdata("photo"); ?>" class="img-circle" alt="User Image" />
                         </div>
                         <div class="pull-left info">
                             <p>Hello, <?php echo $this->session->userdata("username"); ?></p>

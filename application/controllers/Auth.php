@@ -71,7 +71,8 @@ class Auth extends CI_Controller{
                     "id"=> $user_data->id,
                     "group"=> $groups->name,
                     "machine_notify"=>$notification_num,
-                    "dairy"=>$dairy
+                    "dairy"=>$dairy,
+                    "photo"=> $user_data->photo
                 );
 //                echo "<pre>";
 //                print_r($set_user_data);exit;
