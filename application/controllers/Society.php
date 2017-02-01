@@ -174,7 +174,7 @@ class Society extends MY_Controller
                 "ifsc"=> $this->input->post("ifsc"),
             );
             if($this->input->post("password") != ""){
-                $data["password"] = md5($this->input->post("password"));
+                $soc_data["password"] = md5($this->input->post("password"));
             }
             if($this->data['image_name'] != 'default.jpg'){
                 $soc_data['photo'] = $this->data['image_name'];
