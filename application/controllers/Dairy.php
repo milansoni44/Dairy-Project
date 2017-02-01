@@ -103,12 +103,13 @@ class Dairy extends MY_Controller{
                  mkdir($upload_dir);
             }	
             $config['upload_path']   = $upload_dir;
-            $config['allowed_types'] = 'gif|jpg|png|jpeg';
+            $config['allowed_types'] = 'gif|jpg|png|jpeg|JPG|PNG|GIF|JPEG';
             $config['file_name']     = 'userimage_'.substr(md5(rand()),0,7);
             $config['overwrite']     = false;
             $config['max_size']	 = '5120';
 
             $this->upload->initialize($config);
+
             if (!$this->upload->do_upload('logo')){
                 $this->form_validation->set_message('image_upload', $this->upload->display_errors());
                 return FALSE;
@@ -162,7 +163,7 @@ class Dairy extends MY_Controller{
                 $data["password"] = md5($this->input->post("password"));
             }
             if($this->data['image_name'] != 'default.jpg'){
-                $soc_data['photo'] = $this->data['image_name'];
+                $data['photo'] = $this->data['image_name'];
             }
             /*echo "<pre>";
             print_r($data);exit;*/
