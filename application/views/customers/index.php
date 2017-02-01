@@ -1,6 +1,19 @@
             <script>
                 $(document).ready(function(){
                     $('#example2').DataTable();
+                    $("#download_customer").on("click", function(e){
+                        var machine;
+                        var $url;
+                        if($("#society_machine").val() == ""){
+                            alert("Please select machine");
+                            return false;
+                        }else{
+                            machine = $("#society_machine").val();
+                            $url = "<?php echo base_url(); ?>index.php/customers/export_customer/"+machine;
+                        }
+                        window.location = $url;
+                        return false;
+                    });
                 });
             </script>
             <aside class="right-side">
@@ -63,7 +76,7 @@
                                     <?php if($this->session->userdata("group") == "society") {?>
                                     <span class="pull-right"><a href="<?php echo base_url(); ?>index.php/customers/add" class="btn btn-primary" style="color: #fff;">Add Milk Supplier</a></span>
                                     <span class="pull-right"><a href="<?php echo base_url(); ?>index.php/customers/import" class="btn btn-primary" style="color: #fff;">Import Milk Suppliers</a></span>
-                                    <span class="pull-right"><a href="<?php echo base_url(); ?>index.php/customers/export_customer" class="btn btn-primary" style="color: #fff;">Download Milk Supplier</a></span>
+                                    <span class="pull-right"><a href="#" id="download_customer" class="btn btn-primary" style="color: #fff;">Download Milk Supplier</a></span>
                                     <?php } ?>
                                 </div><!-- /.box-header -->
                                 <form class="form-horizontal" action="<?php echo base_url(); ?>index.php/customers" method="post">
