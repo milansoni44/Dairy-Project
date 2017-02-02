@@ -6,6 +6,7 @@ class Favourite_report extends MY_Controller
         parent::__construct();
         $this->load->model("favourite_report_model");
         $this->load->model("notification_model");
+        $this->load->model("society_model");
         $this->load->helper("form");
         $this->load->library("auth_lib");
         $this->load->library("session");
@@ -81,7 +82,7 @@ class Favourite_report extends MY_Controller
 			$this->data['user_id']                      = $fav_report_info['user_id'];
 			$this->data['period_word']                  = $fav_report_info['period_word'];
 			$this->data['shift_word']                   = $fav_report_info['shift_word'];
-//			$this->data['type_word']                    = $fav_report_info['type_word'];
+			$this->data['society']                      = $fav_report_info['society_id'];
 		}
 		else
 		{
@@ -95,9 +96,10 @@ class Favourite_report extends MY_Controller
 			$this->data['user_id']                      = '';
 			$this->data['period_word']                  = '';
 			$this->data['shift_word']                   = '';
-			$this->data['type_word']                    = '';
+            $this->data['society']                      = '';
 		}
-		
+
+		$this->data['society_info'] = $this->society_model->get_society();
 		$this->load->view("common/header", $this->data);
 		$this->load->view("favourite_report/add", $this->data);
 		$this->load->view("common/footer");
