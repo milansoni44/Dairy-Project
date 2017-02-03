@@ -48,7 +48,6 @@ class Customers extends MY_Controller {
         }
 
         if ($this->input->post()) {
-//            $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
             $id = $this->input->post("society");
             $data['customers'] = $this->customer_model->get_society_customer($id);
             if ($this->session->userdata("group") == "dairy") {
@@ -58,7 +57,6 @@ class Customers extends MY_Controller {
             $this->load->view("customers/society_index", $data);
             $this->load->view("common/footer");
         } else {
-//            $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
             $data['customers'] = $this->customer_model->get_customer();
             if ($this->session->userdata("group") == "dairy") {
                 $data['society'] = $this->society_model->get_society();
@@ -92,10 +90,6 @@ class Customers extends MY_Controller {
                 $this->session->set_flashdata("message1", "This adhar number already exist");
                 redirect("customers", "refresh");
             }
-            // member code is not required
-//            if(!$this->customer_model->check_exist($_POST['member_code'],"mem_code")){
-//                $this->customer_model->update_expiry($_POST['member_code']);
-//            }
             $member_data = array(
                 "customer_name" => $_POST['member_name'],
                 "mobile" => $_POST['mobile'],
@@ -117,7 +111,6 @@ class Customers extends MY_Controller {
             $this->session->set_flashdata("success", "Member added successfully");
             redirect("customers", "refresh");
         } else {
-            //$data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
             $data['machine'] = $this->machine_model->allocated_soc_machine($this->session->userdata("id"));
             $this->load->view("common/header", $this->data);
             $this->load->view("customers/add", $data);
@@ -154,7 +147,6 @@ class Customers extends MY_Controller {
             $this->session->set_flashdata("success", "Member updated successfully");
             redirect("customers", "refresh");
         } else {
-            //$data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
             $data['machine'] = $this->machine_model->allocated_soc_machine($this->session->userdata("id"));
             $data['member'] = $this->customer_model->get_customer_by_id($id);
             $data['id'] = $id;
@@ -285,9 +277,7 @@ class Customers extends MY_Controller {
             $this->session->set_flashdata("message", $data_validate);
             redirect("customers", "refresh");
         } else {
-            //$data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
             $data['machine'] = $this->machine_model->allocated_soc_machine($this->session->userdata("id"));
-//            $data['tmp'] = $this->customer_model->get_tmp_data();
             $this->load->view("common/header", $this->data);
             $this->load->view("customers/import", $data);
             $this->load->view("common/footer");
@@ -295,7 +285,6 @@ class Customers extends MY_Controller {
     }
 
     function correct() {
-        //$data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
         $data['tmp'] = $this->customer_model->get_tmpData();
         $this->load->view("common/header", $this->data);
         $this->load->view("customers/correct", $data);
@@ -335,7 +324,6 @@ class Customers extends MY_Controller {
             $this->session->set_flashdata("success", "Member added successfully");
             redirect("customers", "refresh");
         } else {
-//            $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
             $data['machine'] = $this->machine_model->allocated_soc_machine($this->session->userdata("id"));
             $data['member'] = $this->customer_model->get_tmpCustomer_by_id($id);
             $data['id'] = $id;
@@ -427,7 +415,6 @@ class Customers extends MY_Controller {
             $this->session->set_flashdata("message", $data_validate);
             redirect("customers", "refresh");
         } else {
-//            $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
             $data['machine'] = $this->machine_model->allocated_soc_machine($this->session->userdata("id"));
             $data['tmp'] = $this->customer_model->get_tmp_data();
             $this->load->view("common/header", $this->data);

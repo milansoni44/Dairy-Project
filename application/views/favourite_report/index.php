@@ -69,8 +69,8 @@
                                                 <td><?php echo $report['machine_type']; ?></td>
                                                 <td>
 													<a href="<?php echo base_url(); ?>index.php/favourite_report/update/<?php echo $report['id']?>/">Edit</a>
-													
 													<a href="<?php echo base_url(); ?>index.php/favourite_report/delete/<?php echo $report['id']?>/" onclick="return confirm_delete()">Delete</a>
+                                                    <a href="<?php echo base_url(); ?>index.php/favourite_report/run/<?php echo $report['id']?>/" >Run</a>
 												</td>
                                             </tr>
                                             <?php

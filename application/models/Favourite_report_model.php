@@ -7,7 +7,7 @@ class Favourite_report_model extends CI_Model
 		$this->load->database();
 	}
 	
-	public function FavouriteReportAddUpdate( $data, $favourite_report_id=0 )
+	public function FavouriteReportAddUpdate( $data = array(), $favourite_report_id=0 )
 	{
 	    $id = $this->session->userdata("id");
         /*if($this->session->userdata("group") == "society"){

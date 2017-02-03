@@ -127,5 +127,28 @@ class Favourite_report extends MY_Controller
 			redirect("favourite_report",'location');
 		}
 	}
+
+	public function run( $id = NULL )
+    {
+        if($this->session->userdata("group") == "society")
+        {
+            $fav_report_info = $this->favourite_report_model->get_favourite_report($id);
+            /*Array
+            (
+                [id] => 11
+                [report_name] => Milan Society Report12
+                [machine_type] => BLUETOOTH
+                [period] => 1
+                [shift] => All
+                [society_id] => 14
+                [user_id] => 14
+                [period_word] => Last 7 Days
+                [shift_word] => All
+            )*/
+            /*print "<pre>";
+            print_r($fav_report_info);exit;*/
+
+        }
+    }
 }
 ?>

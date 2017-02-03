@@ -256,7 +256,7 @@ class Transactions extends MY_Controller {
     }
 
     function get_daily_transaction() {
-        $this->datatables->select("c.customer_name as customer_name,t.fat,t.clr,t.snf,t.weight,t.rate,t.netamt,t.date")
+        $this->datatables->select("CONCAT_WS(' ',c.customer_name, c.adhar_no),t.fat,t.clr,t.snf,t.weight,t.rate,t.netamt,t.date")
                 ->from("transactions t")
                 ->join("machines m", "m.machine_id = t.deviceid", "LEFT")
                 ->join("users s", "s.id = m.society_id", "LEFT")
@@ -279,7 +279,7 @@ class Transactions extends MY_Controller {
 
     function get_daily_Buff_transaction() {
 		$date = date('Y-m-d');
-        $this->datatables->select("c.customer_name as customer_name,t.fat,t.clr,t.snf,t.weight,t.rate,t.netamt,t.date")
+        $this->datatables->select("CONCAT_WS(' ',c.customer_name, c.adhar_no),t.fat,t.clr,t.snf,t.weight,t.rate,t.netamt,t.date")
                 ->from("transactions t")
                 ->join("machines m", "m.machine_id = t.deviceid", "LEFT")
                 ->join("users s", "s.id = m.society_id", "LEFT")
@@ -301,7 +301,7 @@ class Transactions extends MY_Controller {
 
     function get_daily_transaction_post($from = NULL, $to = NULL, $shift = NULL, $customer = NULL, $report_id = NULL) {
 		
-        $this->datatables->select("c.customer_name as customer_name,t.fat,t.clr,t.snf,t.weight,t.rate,t.netamt,t.date")
+        $this->datatables->select("CONCAT_WS(' ',c.customer_name, c.adhar_no),t.fat,t.clr,t.snf,t.weight,t.rate,t.netamt,t.date")
                 ->from("transactions t")
                 ->join("machines m", "m.machine_id = t.deviceid", "LEFT")
                 ->join("users s", "s.id = t.society_id", "LEFT")
@@ -319,7 +319,7 @@ class Transactions extends MY_Controller {
     }
 
     function get_daily_buff_transaction_post($from = NULL, $to = NULL, $shift = NULL, $customer = NULL) {
-        $this->datatables->select("c.customer_name as customer_name,t.fat,t.clr,t.snf,t.weight,t.rate,t.netamt,t.date")
+        $this->datatables->select("CONCAT_WS(' ',c.customer_name, c.adhar_no),t.fat,t.clr,t.snf,t.weight,t.rate,t.netamt,t.date")
                 ->from("transactions t")
                 ->join("machines m", "m.machine_id = t.deviceid", "LEFT")
 //        ->join("society_machine_map smm","smm.machine_id = m.id","LEFT")

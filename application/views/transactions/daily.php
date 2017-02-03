@@ -264,7 +264,7 @@
                                                     if(!empty($customers)){
                                                         foreach($customers as $row_cust){
                                                             ?>
-                                                            <option value="<?php echo $row_cust->id; ?>" <?php if($this->input->post("customer") == $row_cust->id){ ?>selected <?php } ?>><?php echo $row_cust->customer_name; ?></option>
+                                                            <option value="<?php echo $row_cust->id; ?>" <?php if($this->input->post("customer") == $row_cust->id){ ?>selected <?php } ?>><?php echo $row_cust->customer_name." - ". $row_cust->adhar_no; ?></option>
                                                             <?php
                                                         }
                                                     }
