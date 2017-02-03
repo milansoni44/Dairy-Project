@@ -14,8 +14,10 @@
 class MY_Controller extends CI_Controller{
     //put your code here
     public $data;
+    public $CI = NULL;
     public function __construct() {
         parent::__construct();
+        $this->CI = & get_instance();
         $this->load->library("session");
         $this->load->model("machine_model");
         $this->load->library("auth_lib");
@@ -46,4 +48,23 @@ class MY_Controller extends CI_Controller{
 
 		return $this->pagination->create_links();
 	}
+
+	public function dynamic_report_menu()
+    {
+        $id = $this->session->userdata("id");
+        $select_qry = " SELECT id, report_name FROM `favourite_report` ";
+        $where_all = " WHERE `user_id`=".$id;
+        $order_by = " ORDER BY id";
+        $limit = " LIMIT 5";
+
+       $select_qry .= $where_all.$order_by.$limit;
+
+        $result = $this->db->query( $select_qry );
+        /*echo $this->db->last_query();exit;*/
+        if( $result )
+        {
+            return $result->result_array();
+        }
+        return FALSE;
+    }
 }

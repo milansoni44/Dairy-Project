@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /**
  * Description of Customers
  *
- * @author Abhay Bhalala
+ * @author Abhay Bhalala & Milan Soni
  */
 class Favourite_report extends MY_Controller
 {
@@ -12,6 +12,7 @@ class Favourite_report extends MY_Controller
         $this->load->model("favourite_report_model");
         $this->load->model("notification_model");
         $this->load->model("society_model");
+        $this->load->model("transaction_model");
         $this->load->helper("form");
         $this->load->library("auth_lib");
         $this->load->library("session");
@@ -128,26 +129,120 @@ class Favourite_report extends MY_Controller
 		}
 	}
 
-	public function run( $id = NULL )
+    /**
+     * @param null $id
+     */
+    public function run($id = NULL)
     {
-        if($this->session->userdata("group") == "society")
-        {
-            $fav_report_info = $this->favourite_report_model->get_favourite_report($id);
-            /*Array
-            (
-                [id] => 11
-                [report_name] => Milan Society Report12
-                [machine_type] => BLUETOOTH
-                [period] => 1
-                [shift] => All
-                [society_id] => 14
-                [user_id] => 14
-                [period_word] => Last 7 Days
-                [shift_word] => All
-            )*/
-            /*print "<pre>";
-            print_r($fav_report_info);exit;*/
+        if(!$id){
+            show_404();
+        }
+        $fav_report_info = $this->favourite_report_model->get_favourite_report($id);
+        /*Array
+        (
+            [id] => 11
+            [report_name] => Milan Society Report12
+            [machine_type] => BLUETOOTH
+            [period] => 1
+            [shift] => All
+            [society_id] => 14
+            [user_id] => 14
+            [period_word] => Last 7 Days
+            [shift_word] => All
+        )*/
+        /*print "<pre>";
+        print_r($fav_report_info);exit;*/
+        if($this->session->userdata("group") == "society") {
+            $data['transactions_cow'] = $this->transaction_model->custom_transactions_cow($fav_report_info);
+            $data['transactions_buff'] = $this->transaction_model->custom_transactions_buff($fav_report_info);
+        }
 
+        if($this->session->userdata("group") == "dairy"){
+            $data['transactions_cow'] = $this->transaction_model->custom_transactions_cow_summary($fav_report_info);
+            $data['transactions_buff'] = $this->transaction_model->custom_transactions_buff_summary($fav_report_info);
+        }
+        $data['id'] = $fav_report_info['id'];
+        $this->load->view("common/header", $this->data);
+        $this->load->view("favourite_report/run", $data);
+        $this->load->view("common/footer", $this->data);
+    }
+
+    public function download_cow($id = NULL){
+        $transactions_cow = array();
+        /*$transactions_buff = array();*/
+        $fav_report_info = $this->favourite_report_model->get_favourite_report($id);
+        $file_name = $fav_report_info['report_name'];
+        if($this->session->userdata("group") == "society") {
+            $transactions_cow = $this->transaction_model->custom_transactions_cow($fav_report_info);
+        }else{
+            $transactions_cow = $this->transaction_model->custom_transactions_cow_summary($fav_report_info);
+        }
+
+
+        if(!empty($transactions_cow))
+        {
+            /*print "<pre>";
+            print_r($transactions_cow);exit;*/
+            foreach($transactions_cow as $cow){
+                $data_final[] = array_values($cow);
+            }
+
+            $fp = fopen('php://output', 'w');
+
+            if ($fp && $transactions_cow) {
+                header('Content-Type: text/csv');
+                header('Content-Disposition: attachment; filename="'.$file_name.'.csv"');
+                header('Pragma: no-cache');
+                header('Expires: 0');
+                fputcsv($fp, array("Customer","FAT","CLR","SNF","Litre","Rate/Ltr","Net Amount","Date","Shift"));
+                foreach($data_final as $rr){
+                    fputcsv($fp, $rr);
+                }
+                die;
+            }
+        }else{
+            $this->session->set_flashdata("message", "No Cow Data Found");
+            redirect("favourite_report/run/".$id, "refresh");
+        }
+    }
+
+    public function download_buff($id = NULL)
+    {
+        $transactions_buff = array();
+        /*$transactions_buff = array();*/
+        $fav_report_info = $this->favourite_report_model->get_favourite_report($id);
+        $file_name = $fav_report_info['report_name'];
+        if($this->session->userdata("group") == "society") {
+            $transactions_buff = $this->transaction_model->custom_transactions_buff($fav_report_info);
+        }else{
+            $transactions_buff = $this->transaction_model->custom_transactions_buff_summary($fav_report_info);
+        }
+
+
+        if(!empty($transactions_buff))
+        {
+            /*print "<pre>";
+            print_r($transactions_cow);exit;*/
+            foreach($transactions_buff as $buff){
+                $data_final[] = array_values($buff);
+            }
+
+            $fp = fopen('php://output', 'w');
+
+            if ($fp && $transactions_buff) {
+                header('Content-Type: text/csv');
+                header('Content-Disposition: attachment; filename="'.$file_name.'.csv"');
+                header('Pragma: no-cache');
+                header('Expires: 0');
+                fputcsv($fp, array("Customer","FAT","CLR","SNF","Litre","Rate/Ltr","Net Amount","Date","Shift"));
+                foreach($data_final as $rr){
+                    fputcsv($fp, $rr);
+                }
+                die;
+            }
+        }else{
+            $this->session->set_flashdata("message", "No Buffalo Data Found");
+            redirect("favourite_report/run/".$id, "refresh");
         }
     }
 }

@@ -49,7 +49,7 @@
             <a href="<?php echo base_url(); ?>" class="logo">
                 <!-- Add the class icon to your logo image or logo icon to add the margining -->
                 <?php if($this->session->userdata("group") == "dairy" || $this->session->userdata("group") == "admin"){ ?>
-                <?php echo ucfirst($this->session->userdata("username")); ?>
+                <?php echo ucfirst($this->session->userdata("name")); ?>
                 <?php }else{ 
                     echo $this->session->userdata("dairy"); 
                 }
@@ -278,7 +278,15 @@
                             </ul>
                         </li>
                         <?php } ?>
-						
+                        <?php  ?>
+                        <?php
+
+                            //$report_menu = $this->CI->dynamic_report_menu();
+                            /*print "<pre>";
+                            print_r($report_menu);
+                            print "</pre>";*/
+                        ?>
+                        <!-- changes on 03-02-2017 -->
 						<?php if($this->session->userdata("group") == "dairy" || $this->session->userdata("group") == "society"){ ?>
                         <li class="treeview">
                             <a href="#">
@@ -287,11 +295,11 @@
                                 <i class="fa fa-angle-left pull-right"></i>
                             </a>
                             <ul class="treeview-menu">
-                                <li>
-									<a href="<?php echo base_url(); ?>index.php/favourite_report/"> 	<span>List</span>
+                                <!--<li>
+									<a href="<?php /*echo base_url(); */?>index.php/favourite_report/"> 	<span>List</span>
 									</a>
-								</li>
-								<li>
+								</li>-->
+                                <li>
 									<a href="<?php echo base_url(); ?>index.php/favourite_report/add/"> 	<span>Add</span>
 									</a>
 								</li>
@@ -353,6 +361,20 @@
                             </ul>
                         </li>
                         <?php } ?>
+                        <span>Favourite Reports</span>
+                        <?php
+                        $report_menu = $this->CI->dynamic_report_menu();
+                        if(!empty($report_menu)){
+                            foreach($report_menu as $row_data){
+                                ?>
+                                <li>
+                                    <a href="<?php echo base_url(); ?>index.php/favourite_report/run/<?php echo $row_data['id']; ?>"> 	<span><?php echo ucfirst($row_data['report_name']); ?></span>
+                                    </a>
+                                </li>
+                                <?php
+                            }
+                        }
+                        ?>
                     </ul>
                 </section>
                 <!-- /.sidebar -->

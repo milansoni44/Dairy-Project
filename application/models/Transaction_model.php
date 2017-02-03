@@ -545,6 +545,159 @@ class Transaction_model extends CI_Model {
 						AND (`date` BETWEEN '".$data['start_date']."' AND '".$data['to_date']."')");
 		return $result ? $result->row('total') : FALSE;
 	}
+
+	function custom_transactions_cow($data = array())
+    {
+//        print "<pre>";
+//        print_r($data);exit;
+        /*Array
+        (
+            [id] => 6
+            [report_name] => society report
+            [period] => 2
+            [shift] => M
+            [machine_type] => GPRS
+            [society_id] => 14
+            [user_id] => 14
+            [period_word] => Last Month
+            [shift_word] => Morning
+        )*/
+        $q = $this->db->select("CONCAT_WS(' ',c.customer_name, c.adhar_no) AS customer,t.fat,t.clr,t.snf,t.weight,t.rate,t.netamt,t.date, t.shift")
+            ->from("transactions t")
+            ->join("machines m", "m.machine_id = t.deviceid", "LEFT")
+            ->join("users s", "s.id = m.society_id", "LEFT")
+            ->join("users d", "d.id = m.dairy_id", "LEFT")
+            ->join("customers c", "c.id = t.cid", "LEFT")
+            ->where("t.type", "C")
+            ->where("t.society_id", $data['society_id']);
+        if($data['period_word'] == "Last Month"){
+            $date = date("Y-m-d", strtotime("-1 months"));
+            $this->db->where("MONTH(t.date)", date('m', strtotime($date)));
+            $this->db->where("YEAR(t.date)", date('Y', strtotime($date)));
+        }else{
+            $date_end = date("Y-m-d");
+            $date_start = date("Y-m-d", strtotime("-7 Days"));
+            $this->db->where('t.date BETWEEN "'. date('Y-m-d', strtotime($date_start)). '" and "'. date('Y-m-d', strtotime($date_end)).'"');
+        }
+
+        if($data['shift'] == "M"){
+            $this->db->where("t.shift", "M");
+        }else if($data['shift'] == "E"){
+            $this->db->where("t.shift", "E");
+        }else{
+            // no code to display all shift
+        }
+        $this->db->order_by("t.date", "DESC");
+            $q = $this->db->get();
+        /*echo $this->db->last_query();exit;*/
+        if($q->num_rows() > 0){
+            /*foreach($q->result() as $row){
+                $row1[] = $row;
+            }
+            return $row1;*/
+            return $q->result_array();
+        }
+        return FALSE;
+    }
+
+    function custom_transactions_buff($data = array())
+    {
+        $q = $this->db->select("CONCAT_WS(' ',c.customer_name, c.adhar_no) AS customer,t.fat,t.clr,t.snf,t.weight,t.rate,t.netamt,t.date,t.shift")
+            ->from("transactions t")
+            ->join("machines m", "m.machine_id = t.deviceid", "LEFT")
+            ->join("users s", "s.id = m.society_id", "LEFT")
+            ->join("users d", "d.id = m.dairy_id", "LEFT")
+            ->join("customers c", "c.id = t.cid", "LEFT")
+            ->where("t.type", "B")
+            ->where("t.society_id", $data['society_id']);
+
+        // period condition
+        if($data['period_word'] = "Last Month"){
+            $date = date("Y-m-d", strtotime("-1 months"));
+            $this->db->where("MONTH(t.date)", date('m', strtotime($date)));
+            $this->db->where("YEAR(t.date)", date('Y', strtotime($date)));
+        }else{
+            $date_end = date("Y-m-d");
+            $date_start = date("Y-m-d", strtotime("-7 Days"));
+            $this->db->where('t.date BETWEEN "'. date('Y-m-d', strtotime($date_start)). '" and "'. date('Y-m-d', strtotime($date_end)).'"');
+        }
+        // shift condition
+        if($data['shift'] == "M"){
+            $this->db->where("t.shift", "M");
+        }else if($data['shift'] == "E"){
+            $this->db->where("t.shift", "E");
+        }else{
+            // no code to display all shift
+        }
+        $q = $this->db->get();
+        /*echo $this->db->last_query();exit;*/
+        if($q->num_rows() > 0){
+            /*foreach($q->result() as $row){
+                $row1[] = $row;
+            }
+            return $row1;*/
+            return $q->result_array();
+        }
+        return FALSE;
+    }
+
+    public function custom_transactions_cow_summary($data = array())
+    {
+        $where = " WHERE `t`.`type` = 'C' AND";
+        $sql = "SELECT `s`.`name` AS `society_name`,AVG(`t`.`fat`) AS fat,AVG(`t`.`clr`) AS clr,AVG(`t`.`snf`) AS snf,SUM(`t`.`weight`) AS weight,AVG(`t`.`rate`) AS rate,SUM(`t`.`netamt`) AS netamt,`t`.`shift` FROM `transactions` `t` LEFT JOIN `machines` `m` ON `m`.`machine_id` = `t`.`deviceid` LEFT JOIN `users` `s` ON `s`.`id` = `t`.`society_id` LEFT JOIN `users` `d` ON `d`.`id` = `t`.`dairy_id` LEFT JOIN `customers` `c` ON `c`.`id` = `t`.`cid`";
+
+        if($data['shift'] == "M" || $data['shift'] == "E"){
+            $where.= " `t`.`shift` = '".$data['shift']."' AND";
+        }else{
+            // no code for all shift
+        }
+
+        if($data['period'] == 1) {
+            // period 1 = Last 7 Days
+            $date_end = date("Y-m-d");
+            $date_start = date("Y-m-d", strtotime("-7 Days"));
+            $where.= " `t`.`date` BETWEEN '".$date_start."' AND '".$date_end."'";
+        }else{
+            $date = date("Y-m-d", strtotime("-1 months"));
+            $where.= " MONTH(`t`.`date`) = '".date('m', strtotime($date))."' AND YEAR(`t`.`date`) = '".date('Y', strtotime($date))."'";
+        }
+        $group_by = " GROUP BY `t`.`society_id`";
+        $new_sql = $sql.$where.$group_by;
+
+        $query = $this->db->query($new_sql);
+        /*echo $this->db->last_query();exit;*/
+
+        return ($query->num_rows() > 0) ? $query->result_array() : FALSE;
+    }
+
+    public function custom_transactions_buff_summary($data = array())
+    {
+        $where = " WHERE `t`.`type` = 'B' AND";
+        $sql = "SELECT `s`.`name` AS `society_name`,AVG(`t`.`fat`) AS fat,AVG(`t`.`clr`) AS clr,AVG(`t`.`snf`) AS snf,SUM(`t`.`weight`) AS weight,AVG(`t`.`rate`) AS rate,SUM(`t`.`netamt`) AS netamt,`t`.`shift` FROM `transactions` `t` LEFT JOIN `machines` `m` ON `m`.`machine_id` = `t`.`deviceid` LEFT JOIN `users` `s` ON `s`.`id` = `t`.`society_id` LEFT JOIN `users` `d` ON `d`.`id` = `t`.`dairy_id` LEFT JOIN `customers` `c` ON `c`.`id` = `t`.`cid`";
+
+        if($data['shift'] == "M" || $data['shift'] == "E"){
+            $where.= " `t`.`shift` = '".$data['shift']."' AND";
+        }else{
+            // no code for all shift
+        }
+
+        if($data['period'] == 1) {
+            // period 1 = Last 7 Days
+            $date_end = date("Y-m-d");
+            $date_start = date("Y-m-d", strtotime("-7 Days"));
+            $where.= " `t`.`date` BETWEEN '".$date_start."' AND '".$date_end."'";
+        }else{
+            $date = date("Y-m-d", strtotime("-1 months"));
+            $where.= " MONTH(`t`.`date`) = '".date('m', strtotime($date))."' AND YEAR(`t`.`date`) = '".date('Y', strtotime($date))."'";
+        }
+        $group_by = " GROUP BY `t`.`society_id`";
+        $new_sql = $sql.$where.$group_by;
+
+        $query = $this->db->query($new_sql);
+        /*echo $this->db->last_query();exit;*/
+
+        return ($query->num_rows() > 0) ? $query->result_array() : FALSE;
+    }
 }
 
 /** application/Models/Transaction_model.php */

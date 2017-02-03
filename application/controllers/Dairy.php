@@ -73,7 +73,7 @@ class Dairy extends MY_Controller{
             );
 //            echo "<pre>";
 //            print_r($data);exit;
-			if ($this->dairy_model->update_dairy($data,$id) )
+			if ($this->dairy_model->add_dairy($data) )
 			{
 				$this->session->set_flashdata("success","Dairy data inserted successfully.");
 			}
