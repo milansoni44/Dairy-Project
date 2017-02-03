@@ -1,5 +1,10 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
+/**
+ * Description of Customers
+ *
+ * @author Abhay Bhalala
+ */
 class Favourite_report extends MY_Controller
 {
 	public function __construct() {
