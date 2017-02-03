@@ -273,30 +273,30 @@
                                             </div>
                                         </div>
 
-                                        <div class="form-group">
-                                            <label class="control-label col-md-2" for="favourite">Favourite Report</label>
-                                            <div class="col-md-4">
+                                        <!--<div class="form-group">-->
+                                            <!--<label class="control-label col-md-2" for="favourite">Favourite Report</label>-->
+                                            <!--<div class="col-md-4">
                                                 <select class="form-control" name="favourite" id="favourite">
                                                     <option value="">Select Report</option>
                                                     <?php
-                                                        if(!empty($favourite_report)){
+/*                                                        if(!empty($favourite_report)){
                                                             foreach($favourite_report as $rw_fav){
-                                                    ?>
-                                                    <option value="<?php echo $rw_fav['id']; ?>"><?php echo $rw_fav['report_name']; ?></option>
+                                                    */?>
+                                                    <option value="<?php /*echo $rw_fav['id']; */?>"><?php /*echo $rw_fav['report_name']; */?></option>
                                                     <?php
-                                                            }
+/*                                                            }
                                                         }
-                                                    ?>
+                                                    */?>
                                                 </select>
-                                            </div>
-<script>
+                                            </div>-->
+<!--<script>
 $("#favourite").change(function(e)
 {
 	e.preventDefault();
 	$.ajax(
 	{
 		type   : "POST",cache: false,
-		url    : "<?php echo base_url().'/index.php/transactions/run_favourite_reports';?>",
+		url    : "<?php /*echo base_url().'/index.php/transactions/run_favourite_reports';*/?>",
 		data   : 'report_id='+$(this).val(),
 		success: function(data)
 		{
@@ -346,8 +346,8 @@ $("#favourite").change(function(e)
 		}
 	});
 });
-</script>
-                                        </div>
+</script>-->
+                                        <!--</div>-->
                                         <div>
                                             <input type="submit" name="submit" value="Submit" class="btn btn-primary" />
                                         </div>
