@@ -132,17 +132,6 @@ class Customers extends MY_Controller {
         }
 
         if (isset($_POST['submit'])) {
-            if (!$this->customer_model->check_exist($_POST['mobile'], "mobile", $id)) {
-                $this->session->set_flashdata("message", "This mobile already exist");
-                redirect("customers", "refresh");
-            }
-            if (!$this->customer_model->check_exist($_POST['adhar_no'], "adhar_no", $id)) {
-                $this->session->set_flashdata("message", "This adhar number already exist");
-                redirect("customers", "refresh");
-            }
-            if (!$this->customer_model->check_exist($_POST['member_code'], "mem_code", $id)) {
-                $this->customer_model->update_expiry($_POST['member_code']);
-            }
             $member_data = array(
                 "customer_name" => $_POST['member_name'],
                 "mobile" => $_POST['mobile'],
@@ -155,10 +144,13 @@ class Customers extends MY_Controller {
                 "ac_type" => $_POST['ac_type'],
                 "created_at" => date("Y-m-d"),
             );
-//            print_r($member_data);exit;
+
+            $machine_data = array( "machine_id" => $_POST['machine'], "society_id" => $this->session->userdata("id"), "cid" => $id);
+            /*print "<pre>";
+            print_r($machine_data);exit;*/
         }
 
-        if (!empty($member_data) && $this->customer_model->edit_customer($member_data, $id)) {
+        if (!empty($member_data) && $this->customer_model->edit_customer($member_data, $machine_data, $id)) {
             $this->session->set_flashdata("success", "Member updated successfully");
             redirect("customers", "refresh");
         } else {
@@ -470,7 +462,7 @@ class Customers extends MY_Controller {
                 die;
             }
         }else{
-            $this->session->set_flashdata("message1", "No customer found");
+            $this->session->set_flashdata("message", "No customer found");
             redirect("customers", "refresh");
         }
     }

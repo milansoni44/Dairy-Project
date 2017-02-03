@@ -51,9 +51,7 @@
                                                 <th>Report Name</th>
                                                 <th>Period</th>
                                                 <th>Shift</th>
-											<!--	
-                                                <th>Type</th>
-											-->
+                                                <th>Machine Type</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
@@ -68,9 +66,7 @@
                                                 <td><?php echo $report['report_name']; ?></td>
                                                 <td><?php echo $report['period_word']; ?></td>
                                                 <td><?php echo $report['shift_word']; ?></td>
-											<!--
-                                                <td><?php echo $report['type_word']; ?></td>
-											-->
+                                                <td><?php echo $report['machine_type']; ?></td>
                                                 <td>
 													<a href="<?php echo base_url(); ?>index.php/favourite_report/update/<?php echo $report['id']?>/">Edit</a>
 													

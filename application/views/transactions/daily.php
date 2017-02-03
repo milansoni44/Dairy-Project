@@ -256,23 +256,97 @@
                                                     <option value="E" <?php if($this->input->post("shift") == "E"){ ?>selected <?php } ?>>Evening</option>
                                                 </select>
                                             </div>
-                                        </div>
-                                        <div class="form-group">
                                             <label class="control-label col-sm-2" for="customer">Customer</label>
                                             <div class="col-md-4">
                                                 <select class="form-control" name="customer" id="customer">
                                                     <option value="">All Customers</option>
-                                                    <?php 
-                                                        if(!empty($customers)){
-                                                            foreach($customers as $row_cust){
+                                                    <?php
+                                                    if(!empty($customers)){
+                                                        foreach($customers as $row_cust){
+                                                            ?>
+                                                            <option value="<?php echo $row_cust->id; ?>" <?php if($this->input->post("customer") == $row_cust->id){ ?>selected <?php } ?>><?php echo $row_cust->customer_name; ?></option>
+                                                            <?php
+                                                        }
+                                                    }
                                                     ?>
-                                                    <option value="<?php echo $row_cust->id; ?>" <?php if($this->input->post("customer") == $row_cust->id){ ?>selected <?php } ?>><?php echo $row_cust->customer_name; ?></option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-2" for="favourite">Favourite Report</label>
+                                            <div class="col-md-4">
+                                                <select class="form-control" name="favourite" id="favourite">
+                                                    <option value="">Select Report</option>
+                                                    <?php
+                                                        if(!empty($favourite_report)){
+                                                            foreach($favourite_report as $rw_fav){
+                                                    ?>
+                                                    <option value="<?php echo $rw_fav['id']; ?>"><?php echo $rw_fav['report_name']; ?></option>
                                                     <?php
                                                             }
                                                         }
                                                     ?>
                                                 </select>
                                             </div>
+<script>
+$("#favourite").change(function(e)
+{
+	e.preventDefault();
+	$.ajax(
+	{
+		type   : "POST",cache: false,
+		url    : "<?php echo base_url().'/index.php/transactions/run_favourite_reports';?>",
+		data   : 'report_id='+$(this).val(),
+		success: function(data)
+		{
+			var transaction = JSON.parse(data);
+			var len = transaction.length;
+			var i=0;
+			var $fragment = $( document.createDocumentFragment() );
+			var total_fat = 0;
+			var total_clr = 0;
+			var total_snf = 0;
+			var total_litre = 0;
+			var total_netamt = 0;
+			for( ; i<len; i++ )
+			{
+				total_fat    += parseFloat(transaction[i].fat);
+				total_clr    += parseFloat(transaction[i].clr);
+				total_snf    += parseFloat(transaction[i].snf);
+				total_litre  += parseFloat(transaction[i].weight);
+				total_netamt += parseFloat(transaction[i].netamt);
+				
+				$fragment.append( 
+					$('<tr>').addClass( (i%2==0) ? "odd" : "even" )
+					.append( $('<td>').html( transaction[i].customer_name ) )
+					.append( $('<td>').html( transaction[i].fat ) )          
+					.append( $('<td>').html( transaction[i].clr ) )          
+					.append( $('<td>').html( transaction[i].snf ) )          
+					.append( $('<td>').html( transaction[i].weight ) )       
+					.append( $('<td>').html( transaction[i].rate ) )         
+					.append( $('<td>').html( transaction[i].netamt ) )       
+					.append( $('<td>').html( transaction[i].date ) )
+				);
+			}
+			
+			var avg_fat = total_fat / len;
+			var avg_clr = total_clr / len;
+			var avg_snf = total_snf / len;
+			//var $('<tr>').append(  );
+			$("#example2").find("tbody").html( $fragment )
+			.end()
+			.find("tfoot tr :nth-child(2)").html( "AVG Fat: "+ avg_fat)
+			.next().html( "AVG CLR: "+ avg_clr)
+			.next().html( "AVG SNF: "+ avg_snf)
+			.next().html( "Total: "+ total_litre)
+			.next()
+			.next().html( "Total: "+ total_netamt)
+			;
+		}
+	});
+});
+</script>
                                         </div>
                                         <div>
                                             <input type="submit" name="submit" value="Submit" class="btn btn-primary" />

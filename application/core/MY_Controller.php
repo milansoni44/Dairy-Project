@@ -32,4 +32,18 @@ class MY_Controller extends CI_Controller{
             $this->data['machine_count'] = $this->machine_model->totalCount();
         }
     }
+	
+	public function pagination($data = array())
+	{
+		$this->load->library('pagination');
+
+		$config['base_url'] = base_url().'index.php/'.$data['pagination_caller'];
+	//	$config['num_links'] = 2;
+		$config['total_rows'] = $data['total_records'];
+		$config['per_page'] = $data['limit'];
+
+		$this->pagination->initialize($config);
+
+		return $this->pagination->create_links();
+	}
 }

@@ -9,15 +9,17 @@ class Favourite_report_model extends CI_Model
 	
 	public function FavouriteReportAddUpdate( $data, $favourite_report_id=0 )
 	{
-		$id = $this->session->userdata("id");
+	    $id = $this->session->userdata("id");
+        /*if($this->session->userdata("group") == "society"){
+            $data['society'] = $this->session->userdata("id");
+        }*/
 		$insert_into = "INSERT INTO ";
 		$update = "UPDATE ";
 		$field_set = " `favourite_report` SET 
 						`report_name` = '".htmlentities($data['report_name'], ENT_QUOTES)."',
 					   `period` = '".$data['period']."',
 					   `shift` = '".$data['shift']."',
-					
-					   `user_id` = '". $id ."'";
+					   `user_id` = '". $id ."', `machine_type` = '".$data['machine_type']."', `society_id` = '".$data['society']."'";
 		$where_clouse = " WHERE `id`=".$favourite_report_id;
 		
 		$insert_qry = $insert_into.$field_set;
@@ -31,14 +33,14 @@ class Favourite_report_model extends CI_Model
 		$id = $this->session->userdata("id");
 		$select_qry = " SELECT *, 
 							(CASE `period` 
-							 WHEN 1 THEN 'Weekly' 
-							 WHEN 2 THEN 'Monthly' 
-							 WHEN 3 THEN 'Yearly' 
+							 WHEN 1 THEN 'Last 7 Days' 
+							 WHEN 2 THEN 'Last Month'
 							 END) AS `period_word`,
 							
-							(CASE `shift` 
+							(CASE `shift`  
 							 WHEN 'E' THEN 'Evening' 
-							 WHEN 'M' THEN 'Morning' 
+							 WHEN 'M' THEN 'Morning'
+							  Else 'All'
 							 END) AS `shift_word`
 						FROM `favourite_report` ";
 		$where_all = " WHERE `user_id`=".$id;

@@ -298,7 +298,7 @@
                             </ul>
                         </li>
                         <?php } ?>
-						
+
                         <?php if($this->session->userdata("group") == "dairy" || $this->session->userdata("group") == "society") { ?>
                         <li class="treeview">
                             <a href="#">
@@ -313,15 +313,20 @@
                                 <li><a href="<?php echo base_url(); ?>index.php/transactions/daily_txn">Milk Collection Summary</a></li>
                                 <?php }else if($this->session->userdata("group") == "dairy"){ ?>
                                 <li><a href="<?php echo base_url(); ?>index.php/transactions/daily_txn">Milk Collection</a></li>
-                                <?php }else{ ?>
-<!--                                <li><a href="<?php echo base_url(); ?>index.php/transactions/daily_admin">Transactions</a></li>-->
                                 <?php } ?>
-<!--                                <li><a href="<?php echo base_url(); ?>index.php/transactions/monthly">Monthly</a></li>-->
-<!--                                <li><a href="<?php echo base_url(); ?>index.php/transactions/customer">Customer Collection</a></li>-->
-<!--                                <li><a href="<?php echo base_url(); ?>index.php/transactions">Transactions</a></li>-->
                             </ul>
                         </li>
                         <?php } ?>
+                        <li class="treeview">
+                            <a href="#">
+                                <i class="fa fa-bar-chart-o"></i>
+                                <span>Reports</span>
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li><a href="<?php echo base_url(); ?>index.php/transactions/daily_report">Daily Txn</a></li>
+                            </ul>
+                        </li>
                         <?php if($this->session->userdata("group") == "dairy" || $this->session->userdata("group") == "society"){ ?>
                         <li class="treeview">
                             <a href="#">

@@ -25,8 +25,10 @@ class Society_model extends CI_Model
         }else if($this->session->userdata("group") == "dairy"){
             $q = $this->db->where("s.dairy_id",$this->session->userdata("id"))
             ->get();
+        }else{
+            $q = $this->db->get();
         }
-//        echo $this->db->last_query();exit;
+        /*echo $this->db->last_query();exit;*/
         if($q->num_rows() > 0){
             foreach($q->result() as $row){
                 $row1[] = $row;

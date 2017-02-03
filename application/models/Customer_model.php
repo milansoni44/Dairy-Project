@@ -21,7 +21,7 @@ class Customer_model extends CI_Model {
 LEFT JOIN customer_machine cs ON cs.cid = c.id");
         } else if ($this->session->userdata("group") == "society") {
             $id = $this->session->userdata("id");
-            $q = $this->db->query("SELECT c.*, us.name FROM customers c
+            $q = $this->db->query("SELECT DISTINCT(cs.society_id),c.*, us.name FROM customers c
 LEFT JOIN customer_machine cs ON cs.cid = c.id LEFT JOIN users us ON us.id = cs.society_id WHERE cs.society_id = '$id'");
         } else if ($this->session->userdata("group") == "dairy") {
             $id = $this->session->userdata("id");
@@ -30,7 +30,7 @@ LEFT JOIN customer_machine cs ON cs.cid = c.id
 LEFT JOIN users us ON us.id = cs.society_id
 WHERE cs.society_id IN (SELECT GROUP_CONCAT(s.id) AS sid FROM users d LEFT JOIN users s ON s.dairy_id = d.id WHERE d.id = '$id')");
         }
-//        echo $this->db->last_query();exit;
+        /*echo $this->db->last_query();exit;*/
         if ($q->num_rows() > 0) {
             foreach ($q->result() as $row) {
                 $row1[] = $row;
@@ -107,9 +107,21 @@ LEFT JOIN customers c ON c.id = t.cid WHERE t.dairy_id = '$id'");
         return FALSE;
     }
 
-    function edit_customer($data = array(), $id = NULL) {
+    function edit_customer($data = array(), $machine = array(), $id = NULL) {
         $this->db->where("id", $id);
         if ($this->db->update("customers", $data)) {
+            $this->db->where("cid", $machine['cid']);
+            $this->db->where("society_id", $machine['society_id']);
+            $this->db->where("machine_id", $machine['machine_id']);
+            $q1 = $this->db->get("customer_machine");
+            /*echo $this->db->last_query();exit;*/
+            if($q1->num_rows() > 0){
+                return TRUE;
+            }else{
+                $this->db->query("DELETE FROM customer_machine WHERE cid = '".$machine['cid']."' AND society_id = '".$machine['society_id']."' AND machine_id = '".$machine['machine_id']."'");
+                /*echo $this->db->last_query();exit;*/
+                $this->db->insert("customer_machine", $machine);
+            }
             return TRUE;
         }
         return FALSE;
@@ -117,7 +129,7 @@ LEFT JOIN customers c ON c.id = t.cid WHERE t.dairy_id = '$id'");
 
     function get_customer_by_id($id = NULL) {
         /*$q = $this->db->query("SELECT * FROM customers WHERE id = '$id'");*/
-        $q = $this->db->query("SELECT m.*,c.* FROM customers c
+        $q = $this->db->query("SELECT m.id as mid, m.machine_id as machine, c.* FROM customers c
                                 LEFT JOIN customer_machine cm ON cm.cid = c.id
                                 LEFT JOIN machines m ON m.id = cm.machine_id
                                 WHERE cm.cid = '$id' GROUP BY m.id");

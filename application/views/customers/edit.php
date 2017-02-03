@@ -67,7 +67,7 @@
                                                         if(!empty($machine)){
                                                             foreach($machine as $row_machine){
                                                     ?>
-                                                    <option value="<?php echo $row_machine->id ?>" <?php if($row_machine->id == $member->machine_id){ ?>selected <?php } ?>><?php echo $row_machine->machine_id; ?></option>
+                                                    <option value="<?php echo $row_machine->id ?>" <?php if($row_machine->id == $member->mid){ ?>selected <?php } ?>><?php echo $row_machine->machine_id; ?></option>
                                                     <?php 
                                                             }
                                                         }

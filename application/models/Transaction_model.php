@@ -10,15 +10,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Transaction_model extends CI_Model {
 
     //put your code here
-    function __construct() {
-        parent::__construct();
+    function __construct()
+	{
+		parent::__construct();
     }
     
-    function get_societies(){
+    function get_societies()
+	{
         $id = $this->session->userdata("id");
         $q = $this->db->query("SELECT id, name FROM users WHERE dairy_id = '$id'");
-        if($q->num_rows() > 0){
-            foreach($q->result() as $row){
+        if($q->num_rows() > 0)
+		{
+            foreach($q->result() as $row)
+			{
                 $row1[] = $row;
             }
             return $row1;
@@ -256,7 +260,7 @@ class Transaction_model extends CI_Model {
 		$date_end = date('Y-m-d');
 		$date_start = date('Y-m-d', strtotime('-7 days'));
 		
-		$q = $this->db->query("SELECT DATE_FORMAT(`t`.`date`, '%d-%M-%Y') AS `date`, `t`.`weight` AS `litre`, (SELECT CONCAT_WS('-',machine_name, machine_id) FROM machines WHERE `machines`.`id` = `t`.`deviceid`) AS machine,`t`.`type`, `s`.`name` AS `society_name`, `d`.`name` AS `dairy_name`, `t`.`fat`, t.clr, t.rate, t.netamt, `t`.`shift` FROM transactions t
+		$q = $this->db->query("SELECT DATE_FORMAT(`t`.`date`, '%d-%M-%Y') AS `date`, `t`.`weight` AS `litre`, (SELECT CONCAT_WS('-',machine_name, machine_id) FROM machines WHERE `machines`.`id` = `t`.`deviceid`) AS machine,`t`.`type`, `s`.`name` AS `society_name`, `d`.`name` AS `dairy_name`, `t`.`fat`, t.clr, t.rate, t.netamt, `t`.`shift`, `t`.`snf` FROM transactions t
 								LEFT JOIN `users` s ON s.id = t.society_id
 								LEFT JOIN `users` d ON d.id = t.dairy_id
 								WHERE t.cid = '$cid'
@@ -288,7 +292,8 @@ class Transaction_model extends CI_Model {
 									ROUND(AVG(`t`.`snf`), 2) AS `snf`, 
 									ROUND(AVG(`t`.`rate`), 2) AS `rate`, 
 									ROUND(SUM(`t`.`netamt`), 2) AS `netamt`, 
-									`t`.`shift` 
+									`t`.`shift`, 
+									`t`.`snf` 
 								FROM transactions t
                                 LEFT JOIN `users` s ON s.id = t.society_id
                                 LEFT JOIN `users` d ON d.id = t.dairy_id
@@ -325,7 +330,8 @@ class Transaction_model extends CI_Model {
 									ROUND(AVG(`t`.`snf`), 2) AS `snf`, 
 									ROUND(AVG(`t`.`rate`), 2) AS `rate`, 
 									ROUND(SUM(`t`.`netamt`), 2) AS `netamt`, 
-									`t`.`shift` 
+									`t`.`shift`, 
+									`t`.`snf`  
 								FROM transactions t
                                 LEFT JOIN `users` s ON s.id = t.society_id
                                 LEFT JOIN `users` d ON d.id = t.dairy_id
@@ -362,7 +368,8 @@ class Transaction_model extends CI_Model {
                                     ROUND(AVG(`t`.`snf`), 2) AS `snf`, 
                                     ROUND(AVG(`t`.`rate`), 2) AS `rate`, 
                                     ROUND(SUM(`t`.`netamt`), 2) AS `netamt`, 
-                                    `t`.`shift` 
+                                    `t`.`shift`, 
+									`t`.`snf`  
                                 FROM transactions t
                                 LEFT JOIN `users` s ON s.id = t.society_id
                                 LEFT JOIN `users` d ON d.id = t.dairy_id
@@ -398,7 +405,8 @@ class Transaction_model extends CI_Model {
                                     ROUND(AVG(`t`.`snf`), 2) AS `snf`, 
                                     ROUND(AVG(`t`.`rate`), 2) AS `rate`, 
                                     ROUND(SUM(`t`.`netamt`), 2) AS `netamt`, 
-                                    `t`.`shift` 
+                                    `t`.`shift`, 
+									`t`.`snf`  
                                 FROM transactions t
                                 LEFT JOIN `users` s ON s.id = t.society_id
                                 LEFT JOIN `users` d ON d.id = t.dairy_id
@@ -432,7 +440,8 @@ class Transaction_model extends CI_Model {
                                     ROUND(AVG(`t`.`snf`), 2) AS `snf`, 
                                     ROUND(AVG(`t`.`rate`), 2) AS `rate`, 
                                     ROUND(SUM(`t`.`netamt`), 2) AS `netamt`, 
-                                    `t`.`shift` 
+                                    `t`.`shift`, 
+									`t`.`snf`  
                                 FROM transactions t
                                 LEFT JOIN `users` s ON s.id = t.society_id
                                 LEFT JOIN `users` d ON d.id = t.dairy_id
@@ -465,7 +474,8 @@ class Transaction_model extends CI_Model {
                                     ROUND(AVG(`t`.`snf`), 2) AS `snf`, 
                                     ROUND(AVG(`t`.`rate`), 2) AS `rate`, 
                                     ROUND(SUM(`t`.`netamt`), 2) AS `netamt`, 
-                                    `t`.`shift` 
+                                    `t`.`shift`, 
+									`t`.`snf`  
                                 FROM transactions t
                                 LEFT JOIN `users` s ON s.id = t.society_id
                                 LEFT JOIN `users` d ON d.id = t.dairy_id
@@ -483,7 +493,7 @@ class Transaction_model extends CI_Model {
 	
 	function get_customRangeTxn($data = array())
 	{
-		$q = $this->db->query("SELECT DATE_FORMAT(`t`.`date`, '%d-%M-%Y') AS `date`, `t`.`weight` AS `litre`, (SELECT CONCAT_WS('-',machine_name, machine_id) FROM machines WHERE `machines`.`id` = `t`.`deviceid`) AS machine,`t`.`type`, `s`.`name` AS `society_name`, `d`.`name` AS `dairy_name`, `t`.`fat`, t.clr, t.rate, t.netamt, `t`.`shift` FROM transactions t
+		$q = $this->db->query("SELECT DATE_FORMAT(`t`.`date`, '%d-%M-%Y') AS `date`, `t`.`weight` AS `litre`, (SELECT CONCAT_WS('-',machine_name, machine_id) FROM machines WHERE `machines`.`id` = `t`.`deviceid`) AS machine,`t`.`type`, `s`.`name` AS `society_name`, `d`.`name` AS `dairy_name`, `t`.`fat`, t.clr, t.rate, t.netamt, `t`.`shift`, `t`.`snf` FROM transactions t
 							LEFT JOIN users s ON s.id = t.society_id
 							LEFT JOIN users d ON d.id = t.dairy_id
 							WHERE t.type = '".$data['type']."'
@@ -496,6 +506,44 @@ class Transaction_model extends CI_Model {
 			return $q->result_array();
 		}
 		return FALSE;
+	}
+	
+	public function transaction_report($data)
+	{
+		$start = isset($data['start']) ? $data['start'] : 0;
+		$limit = isset($data['limit']) ? $data['limit'] : 10;
+		$result = $this->db->query(" SELECT 
+							`c`.`customer_name` as `customer_name`, 
+							`t`.`fat`, 
+							`t`.`clr`, 
+							`t`.`snf`, 
+							`t`.`weight`, 
+							`t`.`rate`, 
+							`t`.`netamt`, 
+							`t`.`date` 
+						FROM `transactions` `t` 
+						LEFT JOIN `machines` `m` ON `m`.`machine_id` = `t`.`deviceid` 
+						LEFT JOIN `users` `s` ON `s`.`id` = `t`.`society_id` 
+						LEFT JOIN `users` `d` ON `d`.`id` = `t`.`dairy_id` 
+						LEFT JOIN `customers` `c` ON `c`.`id` = `t`.`cid` 
+						WHERE `t`.`type` = 'C' 
+						AND (`date` BETWEEN '".$data['start_date']."' AND '".$data['to_date']."')
+						LIMIT ".$start.", ".$limit);
+		return $result ? $result->result_array() : FALSE;
+	}
+	
+	public function transaction_report_count($data)
+	{
+		$result = $this->db->query(" SELECT 
+							COUNT(*) AS `total`
+						FROM `transactions` `t` 
+						LEFT JOIN `machines` `m` ON `m`.`machine_id` = `t`.`deviceid` 
+						LEFT JOIN `users` `s` ON `s`.`id` = `t`.`society_id` 
+						LEFT JOIN `users` `d` ON `d`.`id` = `t`.`dairy_id` 
+						LEFT JOIN `customers` `c` ON `c`.`id` = `t`.`cid` 
+						WHERE `t`.`type` = 'C' 
+						AND (`date` BETWEEN '".$data['start_date']."' AND '".$data['to_date']."')");
+		return $result ? $result->row('total') : FALSE;
 	}
 }
 
