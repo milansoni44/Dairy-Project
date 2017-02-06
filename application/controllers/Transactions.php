@@ -476,136 +476,136 @@ class Transactions extends MY_Controller {
     }
 
     // Favourite report module
-    public function daily_report()
-    {
-        // validation
-        $this->form_validation->set_rules("date", "Date", "trim|required|callback_check_future");
-        $this->form_validation->set_rules("to_date", "Date", "trim|required|callback_check_dates");
-        if ($this->form_validation->run() == TRUE)
-		{
-			
-        }
-		else
-		{
-            $this->data['errors'] = $this->form_validation->error_array();
-            $this->data['favourite_report'] = $this->favourite_report_model->get_favourite_report();
-            $this->data['customers'] = $this->customer_model->get_customer();
-        }
-		
-	//	$today_date = date('Y-m-d');
-	//	$last_7_date = date('Y-m-d', strtotime('-7 days'));
-		
-		$today_date = '2016-08-29';
-		$last_7_date = '2017-02-02';
-		
-		$page = $this->uri->segment(3,1);
-		$limit = 10;
-		
-		$data = array(
-			'start_date'	=> $today_date,
-			'to_date'	    => $last_7_date,
-			'start'		    => ($page - 1) * $limit,
-			'limit'		    => $limit
-		);
-		
-		$total_records = $this->transaction_model->transaction_report_count($data);
-		$result = $this->transaction_model->transaction_report($data);
-		
-	//	print "<pre>";print_r( $total_records );exit;
-		
-		/* pagination * start */
-		$param = array(
-			'pagination_caller'	=> strtolower(__CLASS__) .'/'. __FUNCTION__,
-			'total_records'	=> $total_records,
-			'limit'	=> $limit,
-		);
-		$this->data['pagination'] = $this->pagination($param);
-		/* pagination * end */
-		
-		$this->load->view("common/header", $this->data);
-		$this->load->view("transactions/daily_report", $this->data);
-		$this->load->view("common/footer");
-    }
+//    public function daily_report()
+//    {
+//        // validation
+//        $this->form_validation->set_rules("date", "Date", "trim|required|callback_check_future");
+//        $this->form_validation->set_rules("to_date", "Date", "trim|required|callback_check_dates");
+//        if ($this->form_validation->run() == TRUE)
+//		{
+//
+//        }
+//		else
+//		{
+//            $this->data['errors'] = $this->form_validation->error_array();
+//            $this->data['favourite_report'] = $this->favourite_report_model->get_favourite_report();
+//            $this->data['customers'] = $this->customer_model->get_customer();
+//        }
+//
+//	//	$today_date = date('Y-m-d');
+//	//	$last_7_date = date('Y-m-d', strtotime('-7 days'));
+//
+//		$today_date = '2016-08-29';
+//		$last_7_date = '2017-02-02';
+//
+//		$page = $this->uri->segment(3,1);
+//		$limit = 10;
+//
+//		$data = array(
+//			'start_date'	=> $today_date,
+//			'to_date'	    => $last_7_date,
+//			'start'		    => ($page - 1) * $limit,
+//			'limit'		    => $limit
+//		);
+//
+//		$total_records = $this->transaction_model->transaction_report_count($data);
+//		$result = $this->transaction_model->transaction_report($data);
+//
+//	//	print "<pre>";print_r( $total_records );exit;
+//
+//		/* pagination * start */
+//		$param = array(
+//			'pagination_caller'	=> strtolower(__CLASS__) .'/'. __FUNCTION__,
+//			'total_records'	=> $total_records,
+//			'limit'	=> $limit,
+//		);
+//		$this->data['pagination'] = $this->pagination($param);
+//		/* pagination * end */
+//
+//		$this->load->view("common/header", $this->data);
+//		$this->load->view("transactions/daily_report", $this->data);
+//		$this->load->view("common/footer");
+//    }
 	
-	public function run_favourite_reports()
-	{
-		if( $this->input->server("REQUEST_METHOD") === "POST" )
-		{
-			$this->load->model("favourite_report_model");
-			$report_id = $this->input->post('report_id');
-			$report_info = $this->favourite_report_model->get_favourite_report($report_id);
-			
-			/*
-			Array
-			(
-				[id] => 6
-				[report_name] => society report
-				[machine_type] => GPRS
-				[user_id] => 14
-				
-				[period] => 1
-				[shift] => M
-				[society_id] => 14
-				
-				[period_word] => Last 7 Days
-				[shift_word] => Morning
-			)
-			*/
-			
-			$filter_array = array();
-			
-		//	$last_7_date = date('Y-m-d', strtotime('-7 days'));
-			$today_date = date('Y-m-d');
-			
-			// last 7 days query
-			$start_date = date('Y-m-d', strtotime('-7 days'));
-			$end_date = $today_date;
-			
-			if( $report_info['period'] == 2 )
-			{
-				// last month query
-				$start_date = date('Y-m-d', strtotime('-1 month'));		// 2017-01-02
-				$end_date = $today_date;								// 2017-02-02
-			}
-			$filter_array[] = "(`t`.`date` BETWEEN '".$start_date."' AND '".$end_date."')";
-			
-			if( $report_info['shift'] != NULL && $report_info['shift'] != 'All' )
-			{
-				$filter_array[] = "`t`.`shift`='".$report_info['shift']."'";
-			}
-			
-			if( $report_info['society_id'] != NULL )
-			{
-				$filter_array[] = "`t`.`society_id`='".$report_info['society_id']."'";
-			}
-			
-			$filter_string = '1';
-			if( !empty($filter_array) )
-			{
-				$filter_string = implode(" AND ", $filter_array);
-			}
-			
-			$result = $this->db->query(" SELECT 
-							`c`.`customer_name` as `customer_name`, 
-							`t`.`fat`, 
-							`t`.`clr`, 
-							`t`.`snf`, 
-							`t`.`weight`, 
-							`t`.`rate`, 
-							`t`.`netamt`, 
-							`t`.`date` 
-						FROM `transactions` `t` 
-						LEFT JOIN `machines` `m` ON `m`.`machine_id` = `t`.`deviceid` 
-						LEFT JOIN `users` `s` ON `s`.`id` = `t`.`society_id` 
-						LEFT JOIN `users` `d` ON `d`.`id` = `t`.`dairy_id` 
-						LEFT JOIN `customers` `c` ON `c`.`id` = `t`.`cid` 
-						WHERE `t`.`type` = 'C' 
-						AND ".$filter_string);
-			
-			$transaction_info = $result->result_array();
-			echo json_encode( $transaction_info );
-		}
-	}
+//	public function run_favourite_reports()
+//	{
+//		if( $this->input->server("REQUEST_METHOD") === "POST" )
+//		{
+//			$this->load->model("favourite_report_model");
+//			$report_id = $this->input->post('report_id');
+//			$report_info = $this->favourite_report_model->get_favourite_report($report_id);
+//
+//			/*
+//			Array
+//			(
+//				[id] => 6
+//				[report_name] => society report
+//				[machine_type] => GPRS
+//				[user_id] => 14
+//
+//				[period] => 1
+//				[shift] => M
+//				[society_id] => 14
+//
+//				[period_word] => Last 7 Days
+//				[shift_word] => Morning
+//			)
+//			*/
+//
+//			$filter_array = array();
+//
+//		//	$last_7_date = date('Y-m-d', strtotime('-7 days'));
+//			$today_date = date('Y-m-d');
+//
+//			// last 7 days query
+//			$start_date = date('Y-m-d', strtotime('-7 days'));
+//			$end_date = $today_date;
+//
+//			if( $report_info['period'] == 2 )
+//			{
+//				// last month query
+//				$start_date = date('Y-m-d', strtotime('-1 month'));		// 2017-01-02
+//				$end_date = $today_date;								// 2017-02-02
+//			}
+//			$filter_array[] = "(`t`.`date` BETWEEN '".$start_date."' AND '".$end_date."')";
+//
+//			if( $report_info['shift'] != NULL && $report_info['shift'] != 'All' )
+//			{
+//				$filter_array[] = "`t`.`shift`='".$report_info['shift']."'";
+//			}
+//
+//			if( $report_info['society_id'] != NULL )
+//			{
+//				$filter_array[] = "`t`.`society_id`='".$report_info['society_id']."'";
+//			}
+//
+//			$filter_string = '1';
+//			if( !empty($filter_array) )
+//			{
+//				$filter_string = implode(" AND ", $filter_array);
+//			}
+//
+//			$result = $this->db->query(" SELECT
+//							`c`.`customer_name` as `customer_name`,
+//							`t`.`fat`,
+//							`t`.`clr`,
+//							`t`.`snf`,
+//							`t`.`weight`,
+//							`t`.`rate`,
+//							`t`.`netamt`,
+//							`t`.`date`
+//						FROM `transactions` `t`
+//						LEFT JOIN `machines` `m` ON `m`.`machine_id` = `t`.`deviceid`
+//						LEFT JOIN `users` `s` ON `s`.`id` = `t`.`society_id`
+//						LEFT JOIN `users` `d` ON `d`.`id` = `t`.`dairy_id`
+//						LEFT JOIN `customers` `c` ON `c`.`id` = `t`.`cid`
+//						WHERE `t`.`type` = 'C'
+//						AND ".$filter_string);
+//
+//			$transaction_info = $result->result_array();
+//			echo json_encode( $transaction_info );
+//		}
+//	}
 }
 
 /** application/controllers/Transactions.php */
