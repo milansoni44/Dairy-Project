@@ -107,6 +107,16 @@ LEFT JOIN customers c ON c.id = t.cid WHERE t.dairy_id = '$id'");
         return FALSE;
     }
 
+    function update_single($data = array(), $id = NULL)
+    {
+        $this->db->where("id", $id);
+        if($this->db->update("customers", $data))
+        {
+            return TRUE;
+        }
+        return FALSE;
+    }
+
     function edit_customer($data = array(), $machine = array(), $id = NULL) {
         $this->db->where("id", $id);
         if ($this->db->update("customers", $data)) {
@@ -184,7 +194,7 @@ LEFT JOIN customers c ON c.id = t.cid WHERE t.dairy_id = '$id'");
     function check_exist($col = NULL, $col_name = NULL, $id = NULL) {
         $soc_id = $this->session->userdata("id");
         $q = $this->db->query("SELECT * FROM customers c WHERE c.$col_name = '$col'");
-//        echo $this->db->last_query();exit;
+        /*echo $this->db->last_query();exit;*/
         if ($q->num_rows() > 0) {
             return $q->row()->id;
         }else{
