@@ -258,11 +258,12 @@ class Transactions extends MY_Controller {
     function get_daily_transaction() {
         $this->datatables->select("CONCAT_WS(' ',c.customer_name, c.adhar_no),t.fat,t.clr,t.snf,t.weight,t.rate,t.netamt,t.date")
                 ->from("transactions t")
-                ->join("machines m", "m.machine_id = t.deviceid", "LEFT")
+                ->join("machines m", "m.id = t.deviceid", "LEFT")
                 ->join("users s", "s.id = m.society_id", "LEFT")
                 ->join("users d", "d.id = m.dairy_id", "LEFT")
                 ->join("customers c", "c.id = t.cid", "LEFT")
                 ->where("t.type", "C")
+                ->where("m.status", 1)
                 ->where("t.date", date("Y-m-d"));
         if ($this->session->userdata("group") == "admin") {
             echo $this->datatables->generate();
@@ -281,11 +282,12 @@ class Transactions extends MY_Controller {
 		$date = date('Y-m-d');
         $this->datatables->select("CONCAT_WS(' ',c.customer_name, c.adhar_no),t.fat,t.clr,t.snf,t.weight,t.rate,t.netamt,t.date")
                 ->from("transactions t")
-                ->join("machines m", "m.machine_id = t.deviceid", "LEFT")
+                ->join("machines m", "m.id = t.deviceid", "LEFT")
                 ->join("users s", "s.id = m.society_id", "LEFT")
                 ->join("users d", "d.id = m.dairy_id", "LEFT")
                 ->join("customers c", "c.id = t.cid", "LEFT")
                 ->where("t.type", "B")
+                ->where("m.status", 1)
 				->where("t.date", $date);
                 // ->where('t.date1 BETWEEN "' . date('Y-m-d') . '" AND "' . date('Y-m-d') . '"');
         /* if ($this->session->userdata("group") == "dairy") {
@@ -303,11 +305,12 @@ class Transactions extends MY_Controller {
 		
         $this->datatables->select("CONCAT_WS(' ',c.customer_name, c.adhar_no),t.fat,t.clr,t.snf,t.weight,t.rate,t.netamt,t.date")
                 ->from("transactions t")
-                ->join("machines m", "m.machine_id = t.deviceid", "LEFT")
+                ->join("machines m", "m.id = t.deviceid", "LEFT")
                 ->join("users s", "s.id = t.society_id", "LEFT")
                 ->join("users d", "d.id = t.dairy_id", "LEFT")
                 ->join("customers c", "c.id = t.cid", "LEFT")
                 ->where("t.type", "C")
+                ->where("m.status", 1)
                 ->where('date BETWEEN "' . date('Y-m-d', strtotime($from)) . '" and "' . date('Y-m-d', strtotime($to)) . '"');
         if ($customer != "") {
             $this->datatables->where("t.cid", $customer);
@@ -321,13 +324,12 @@ class Transactions extends MY_Controller {
     function get_daily_buff_transaction_post($from = NULL, $to = NULL, $shift = NULL, $customer = NULL) {
         $this->datatables->select("CONCAT_WS(' ',c.customer_name, c.adhar_no),t.fat,t.clr,t.snf,t.weight,t.rate,t.netamt,t.date")
                 ->from("transactions t")
-                ->join("machines m", "m.machine_id = t.deviceid", "LEFT")
-//        ->join("society_machine_map smm","smm.machine_id = m.id","LEFT")
+                ->join("machines m", "m.id = t.deviceid", "LEFT")
                 ->join("users s", "s.id = t.society_id", "LEFT")
-//        ->join("dairy_machine_map dmm","dmm.machine_id = m.id","LEFT")
                 ->join("users d", "d.id = t.dairy_id", "LEFT")
                 ->join("customers c", "c.id = t.cid", "LEFT")
                 ->where("t.type", "B")
+                ->where("m.status", 1)
                 ->where('date BETWEEN "' . date('Y-m-d', strtotime($from)) . '" and "' . date('Y-m-d', strtotime($to)) . '"');
         if ($customer != "") {
             $this->datatables->where("t.cid", $customer);
@@ -363,7 +365,8 @@ class Transactions extends MY_Controller {
         $this->datatables->select("s.name, ROUND(AVG(t.fat), 2) as fat, ROUND(AVG(t.clr), 2) as clr, ROUND(AVG(t.snf), 2) as snf, ROUND(AVG(t.weight), 2) as weight, ROUND(SUM(t.netamt), 2) as netamt")
                 ->from("transactions t")
                 ->join("users s", "s.id = t.society_id", "LEFT")
-                ->join("users d", "d.id = t.dairy_id", "LEFT");
+                ->join("users d", "d.id = t.dairy_id", "LEFT")
+                ->join("machines m", "m.id = t.deviceid", "LEFT");
         if(!$id){
             $date = explode('|', $date_range);
             $this->db->where('t.date BETWEEN "'. date('Y-m-d', strtotime($date[0])). '" and "'. date('Y-m-d', strtotime($date[1])).'"');
@@ -372,6 +375,7 @@ class Transactions extends MY_Controller {
         }else{
             $this->datatables->where("t.society_id", $id);
         }
+        $this->datatables->where("m.status", 1);
         echo $this->datatables->generate();
     }
 
