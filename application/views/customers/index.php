@@ -22,6 +22,27 @@
                         window.location = $url;
                         return false;
                     });
+
+                    $(document).on("click", '#getUser', function(e){
+                        e.preventDefault();
+
+                        var uid = $(this).data('id'); // get id of clicked row
+                        $("#dynamic-content").html(''); // leave this div blank
+                        $("#modal-loader").show();
+
+                        $.ajax({
+                            url: "<?php echo base_url(); ?>index.php/customers/view",
+                            type: 'POST',
+                            data: { id: uid },
+                            dataType: 'html',
+                            success: function(data){
+                                console.log(data);
+                                $('#dynamic-content').html(''); // blank before load.
+                                $('#dynamic-content').html(data); // load here
+                                $('#modal-loader').hide(); // hide loader
+                            }
+                        });
+                    });
                 });
             </script>
             <aside class="right-side">
@@ -138,7 +159,7 @@
                                                 <td><?php echo $row->ac_no; ?></td>
                                                 <td>
                                                     <a href="<?php echo base_url(); ?>index.php/customers/edit/<?php echo $row->id; ?>">Edit</a>
-<!--                                                    <a href="<?php echo base_url(); ?>index.php/customers/delete/<?php echo $row->id; ?>">Delete</a>-->
+                                                    <button data-toggle="modal" data-target="#view-modal" data-id="<?php echo $row->id; ?>" id="getUser" class="btn btn-sm btn-info"><i class="glyphicon glyphicon-eye-open"></i> View</button>
                                                 </td>
                                             </tr>
                                             <?php
@@ -153,3 +174,31 @@
                     </div><!-- /.row -->
                 </section><!-- /.content -->
             </aside><!-- /.right-side -->
+            <div id="view-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <h4 class="modal-title">
+                                <i class="glyphicon glyphicon-user"></i> Milk Supplier Profile
+                            </h4>
+                        </div>
+
+                        <div class="modal-body">
+                            <div id="modal-loader" style="display: none; text-align: center;">
+                                <!-- ajax loader -->
+                                <img src="ajax-loader.gif">
+                            </div>
+
+                            <!-- mysql data will be load here -->
+                            <div id="dynamic-content"></div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>

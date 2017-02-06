@@ -274,6 +274,17 @@ LEFT JOIN customers c ON c.id = t.cid WHERE t.dairy_id = '$id'");
 		}
 		return FALSE;
 	}
+
+	function view_customer( $id = NULL )
+    {
+        $q = $this->db->query("SELECT c.*, GROUP_CONCAT(DISTINCT(s.name)) AS society, GROUP_CONCAT(DISTINCT(m.machine_id)) AS machines FROM customers c
+                                LEFT JOIN customer_machine cm ON cm.cid = c.id
+                                LEFT JOIN users s ON s.id = cm.society_id
+                                LEFT JOIN machines m ON m.id = cm.machine_id
+                                WHERE c.id = '$id'");
+        /*echo $this->db->last_query();exit;*/
+        return ($q->num_rows() > 0) ? $q->row() : FALSE;
+    }
 }
 
 /** application/Models/Customer_model.php */

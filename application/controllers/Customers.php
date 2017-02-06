@@ -419,6 +419,65 @@ class Customers extends MY_Controller {
             redirect("customers", "refresh");
         }
     }
+
+    function view()
+    {
+        $cid = $this->input->post("id");
+        $customer = $this->customer_model->view_customer($cid);
+        /*print "<pre>";
+        print_r($customer);exit;*/
+        echo $html = '<div class="row">
+                    <div class="col-md-12">
+                        <table class="table table-striped table-bordered">
+                            <tbody>
+                                <tr>
+                                    <td>Member Code</td>
+                                    <td>'.$customer->mem_code.'</td>
+                                </tr>
+                                <tr>
+                                    <td>Customer Name</td>
+                                    <td>'.$customer->customer_name.'</td>
+                                </tr>
+                                <tr>
+                                    <td>Mobile</td>
+                                    <td>'.$customer->mobile.'</td>
+                                </tr>
+                                <tr>
+                                    <td>Adhar No</td>
+                                    <td>'.$customer->adhar_no.'</td>
+                                </tr>
+                                <tr>
+                                    <td>Type</td>
+                                    <td>'.$customer->type.'</td>
+                                </tr>
+                                <tr>
+                                    <td>A/c No</td>
+                                    <td>'.$customer->ac_no.'</td>
+                                </tr>
+                                <tr>
+                                    <td>Bank Name</td>
+                                    <td>'.$customer->bank_name.'</td>
+                                </tr>
+                                <tr>
+                                    <td>IFSC</td>
+                                    <td>'.$customer->ifsc.'</td>
+                                </tr>
+                                <tr>
+                                    <td>A/c Type</td>
+                                    <td>'.$customer->ac_type.'</td>
+                                </tr>
+                                <tr>
+                                    <td>Society</td>
+                                    <td>'.$customer->society.'</td>
+                                </tr>
+                                <tr>
+                                    <td>Machines</td>
+                                    <td>'.$customer->machines.'</td>
+                                </tr>';
+        /*$this->load->view("common/header", $this->data);
+        $this->load->view('customers/view');
+        $this->load->view("common/footer");*/
+    }
 }
 
 /** application/controllers/Customer.php */
