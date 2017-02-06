@@ -548,20 +548,6 @@ class Transaction_model extends CI_Model {
 
 	function custom_transactions_cow($data = array())
     {
-//        print "<pre>";
-//        print_r($data);exit;
-        /*Array
-        (
-            [id] => 6
-            [report_name] => society report
-            [period] => 2
-            [shift] => M
-            [machine_type] => GPRS
-            [society_id] => 14
-            [user_id] => 14
-            [period_word] => Last Month
-            [shift_word] => Morning
-        )*/
         $q = $this->db->select("CONCAT_WS(' ',c.customer_name, c.adhar_no) AS customer,t.fat,t.clr,t.snf,t.weight,t.rate,t.netamt,t.date, t.shift")
             ->from("transactions t")
             ->join("machines m", "m.id = t.deviceid", "LEFT")
@@ -592,10 +578,6 @@ class Transaction_model extends CI_Model {
             $q = $this->db->get();
         /*echo $this->db->last_query();exit;*/
         if($q->num_rows() > 0){
-            /*foreach($q->result() as $row){
-                $row1[] = $row;
-            }
-            return $row1;*/
             return $q->result_array();
         }
         return FALSE;
@@ -634,10 +616,6 @@ class Transaction_model extends CI_Model {
         $q = $this->db->get();
         /*echo $this->db->last_query();exit;*/
         if($q->num_rows() > 0){
-            /*foreach($q->result() as $row){
-                $row1[] = $row;
-            }
-            return $row1;*/
             return $q->result_array();
         }
         return FALSE;
@@ -660,6 +638,7 @@ class Transaction_model extends CI_Model {
             $date_start = date("Y-m-d", strtotime("-7 Days"));
             $where.= " `t`.`date` BETWEEN '".$date_start."' AND '".$date_end."'";
         }else{
+            // period 2 = Last Month
             $date = date("Y-m-d", strtotime("-1 months"));
             $where.= " MONTH(`t`.`date`) = '".date('m', strtotime($date))."' AND YEAR(`t`.`date`) = '".date('Y', strtotime($date))."'";
         }
