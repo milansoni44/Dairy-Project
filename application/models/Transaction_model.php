@@ -623,7 +623,7 @@ class Transaction_model extends CI_Model {
 
     public function custom_transactions_cow_summary($data = array())
     {
-        $where = " WHERE `t`.`type` = 'C' AND `m`.`status` = 1 AND";
+        $where = " WHERE `t`.`type` = 'C' AND `m`.`status` = 1 AND (CURDATE() BETWEEN `m`.`from_date` AND `m`.`to_date`) AND";
         $sql = "SELECT `s`.`name` AS `society_name`,AVG(`t`.`fat`) AS fat,AVG(`t`.`clr`) AS clr,AVG(`t`.`snf`) AS snf,SUM(`t`.`weight`) AS weight,AVG(`t`.`rate`) AS rate,SUM(`t`.`netamt`) AS netamt,`t`.`shift` FROM `transactions` `t` LEFT JOIN `machines` `m` ON `m`.`id` = `t`.`deviceid` LEFT JOIN `users` `s` ON `s`.`id` = `t`.`society_id` LEFT JOIN `users` `d` ON `d`.`id` = `t`.`dairy_id` LEFT JOIN `customers` `c` ON `c`.`id` = `t`.`cid`";
 
         if($data['shift'] == "M" || $data['shift'] == "E"){
@@ -653,7 +653,7 @@ class Transaction_model extends CI_Model {
 
     public function custom_transactions_buff_summary($data = array())
     {
-        $where = " WHERE `t`.`type` = 'B' AND `m`.`status` = 1 AND";
+        $where = " WHERE `t`.`type` = 'B' AND `m`.`status` = 1 AND (CURDATE() BETWEEN `m`.`from_date` AND `m`.`to_date`) AND";
         $sql = "SELECT `s`.`name` AS `society_name`,AVG(`t`.`fat`) AS fat,AVG(`t`.`clr`) AS clr,AVG(`t`.`snf`) AS snf,SUM(`t`.`weight`) AS weight,AVG(`t`.`rate`) AS rate,SUM(`t`.`netamt`) AS netamt,`t`.`shift` FROM `transactions` `t` LEFT JOIN `machines` `m` ON `m`.`id` = `t`.`deviceid` LEFT JOIN `users` `s` ON `s`.`id` = `t`.`society_id` LEFT JOIN `users` `d` ON `d`.`id` = `t`.`dairy_id` LEFT JOIN `customers` `c` ON `c`.`id` = `t`.`cid`";
 
         if($data['shift'] == "M" || $data['shift'] == "E"){
