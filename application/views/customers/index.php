@@ -159,7 +159,8 @@
                                                 <td><?php echo $row->ac_no; ?></td>
                                                 <td>
                                                     <a href="<?php echo base_url(); ?>index.php/customers/edit/<?php echo $row->id; ?>">Edit</a>
-                                                    <button data-toggle="modal" data-target="#view-modal" data-id="<?php echo $row->id; ?>" id="getUser" class="btn btn-sm btn-info"><i class="glyphicon glyphicon-eye-open"></i> View</button>
+                                                    <!--<button data-toggle="modal" data-target="#view-modal" data-id="<?php /*echo $row->id; */?>" id="getUser" class="btn btn-sm btn-info"><i class="glyphicon glyphicon-eye-open"></i> View</button>-->
+                                                    <a data-toggle="modal" data-target="#view-modal" data-id="<?php echo $row->id; ?>" id="getUser" href="#">View</a>
                                                 </td>
                                             </tr>
                                             <?php
