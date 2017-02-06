@@ -149,7 +149,7 @@ class Transactions extends MY_Controller {
                             continue;
                         }else{
                             $this->session->set_flashdata("message", "Invalid transaction file.");
-                            redirect("transactions/import_txn", "refresh");
+                            redirect("transactions/import", "refresh");
                         }
                     }
                 }
@@ -264,6 +264,7 @@ class Transactions extends MY_Controller {
                 ->join("customers c", "c.id = t.cid", "LEFT")
                 ->where("t.type", "C")
                 ->where("m.status", 1)
+                ->where("CURDATE() BETWEEN m.from_date AND m.to_date")
                 ->where("t.date", date("Y-m-d"));
         if ($this->session->userdata("group") == "admin") {
             echo $this->datatables->generate();
@@ -288,6 +289,7 @@ class Transactions extends MY_Controller {
                 ->join("customers c", "c.id = t.cid", "LEFT")
                 ->where("t.type", "B")
                 ->where("m.status", 1)
+                ->where("CURDATE() BETWEEN m.from_date AND m.to_date")
 				->where("t.date", $date);
                 // ->where('t.date1 BETWEEN "' . date('Y-m-d') . '" AND "' . date('Y-m-d') . '"');
         /* if ($this->session->userdata("group") == "dairy") {
@@ -311,6 +313,7 @@ class Transactions extends MY_Controller {
                 ->join("customers c", "c.id = t.cid", "LEFT")
                 ->where("t.type", "C")
                 ->where("m.status", 1)
+                ->where("CURDATE() BETWEEN m.from_date AND m.to_date")
                 ->where('date BETWEEN "' . date('Y-m-d', strtotime($from)) . '" and "' . date('Y-m-d', strtotime($to)) . '"');
         if ($customer != "") {
             $this->datatables->where("t.cid", $customer);
@@ -330,6 +333,7 @@ class Transactions extends MY_Controller {
                 ->join("customers c", "c.id = t.cid", "LEFT")
                 ->where("t.type", "B")
                 ->where("m.status", 1)
+                ->where("CURDATE() BETWEEN m.from_date AND m.to_date")
                 ->where('date BETWEEN "' . date('Y-m-d', strtotime($from)) . '" and "' . date('Y-m-d', strtotime($to)) . '"');
         if ($customer != "") {
             $this->datatables->where("t.cid", $customer);
@@ -375,7 +379,8 @@ class Transactions extends MY_Controller {
         }else{
             $this->datatables->where("t.society_id", $id);
         }
-        $this->datatables->where("m.status", 1);
+        $this->datatables->where("m.status", 1)
+        ->where("CURDATE() BETWEEN m.from_date AND m.to_date");
         echo $this->datatables->generate();
     }
 
@@ -409,6 +414,7 @@ class Transactions extends MY_Controller {
         } else {
             $this->datatables->where("t.date", date("Y-m-d"));
         }
+        $this->datatables->where("CURDATE() BETWEEN m.from_date AND m.to_date");
         $this->datatables->group_by("t.dairy_id");
         echo $this->datatables->generate();
     }
