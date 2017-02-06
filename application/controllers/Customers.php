@@ -184,11 +184,12 @@ class Customers extends MY_Controller {
                     for ($c = 0; $c < $num; $c++) {
                         $col[$c] = $data[$c];
                     }
-                    $col1 = $col[0];
-                    $col2 = $col[1];
-                    $col3 = $col[2];
-                    $col4 = $col[3];
-                    $col5 = $col[4];
+
+                    $col1 = $col[0]; // mem code
+                    $col2 = $col[1];  // customer name
+                    $col3 = $col[2];  // customer mobile
+                    $col4 = $col[3];  // customer adhar
+                    $col5 = $col[4];  // type C | B
 //                    echo $col3;exit;
                     //check blank fields
                     if ($col1 == "" || $col2 == "" || $col3 == "" || $col4 == "" || $col4 == "") {
@@ -208,6 +209,19 @@ class Customers extends MY_Controller {
                         );
                         $this->customer_model->add_customer($customer_data, $machine_id);
                     }else{
+                        $exist_cust = $this->customer_model->get_customer_by_id($cid);
+                        // check blank fields
+                        if($exist_cust->mem_code == "" && $col1 != ""){
+                            $cust_data = array( "mem_code"=> $col1 );
+                            $this->customer_model->update_single($cust_data, $cid);
+                        } else if($exist_cust->customer_name == "" && $col2 != ""){
+                            $cust_data = array( "customer_name"=> $col2 );
+                            $this->customer_model->update_single($cust_data, $cid);
+                        } else if($exist_cust->mobile == "" && $col3 != ""){
+                            $cust_data = array( "mobile"=> $col3 );
+                            $this->customer_model->update_single($cust_data, $cid);
+                        }
+
                         if($this->customer_model->check_exist_customer_machine($cid, $machine_id)){
                             $data_validate[] = array("Error" => "Customer already exist", "Line" => $i);
                             $i++;
@@ -223,54 +237,6 @@ class Customers extends MY_Controller {
                             continue;
                         }
                     }
-                    // code change on 24-01-2017 due to customer_machine
-                    /*if ($col1 == "" || $col2 == "" || $col3 == "" || $col4 == "" || $col4 == "") {
-                        $data_validate[] = array("Error" => "Please fill all the fileds", "Line" => $i);
-                        $i++;
-                        continue;
-                    } else if ($this->customer_model->check_exist($col3, "mobile") === FALSE && $this->customer_model->check_exist($col4, "adhar_no") === FALSE) {
-                        $data_validate[] = array("Error" => "Adhar no: $col3 and Adhar: $col4 fields already exist", "Line" => $i);
-                        $i++;
-                        continue;
-                    } else if ($this->customer_model->check_exist($col3, "mobile") === FALSE && $this->customer_model->check_exist($col4, "adhar_no")) {
-                        $data_validate[] = array("Error" => "Adhar: $col3 field already exist", "Line" => $i);
-                        $i++;
-                        continue;
-                    } else if ($this->customer_model->check_exist($col3, "mobile") && $this->customer_model->check_exist($col4, "adhar_no") === FALSE) {
-                        $data_validate[] = array("Error" => "Mobile: $col4 field already exist", "Line" => $i);
-                        $i++;
-                        continue;
-                    } else if (!$this->customer_model->check_exist($col1, "mem_code")) {            // check if same member code then update expiry of previous member
-                        if ($this->customer_model->update_expiry($col1)) {      // update expiry
-                            $customer_data = array(
-                                "customer_name" => $col[1],
-                                "mem_code" => $col[0],
-                                "mobile" => $col[2],
-                                "adhar_no" => $col[3],
-                                "type" => $col[4],
-//                                "society_id"=>$this->session->userdata("id"),
-//                                "machine_id"=>$_POST['machine'],
-                                "created_at" => date("Y-m-d"),
-                            );
-                            $this->customer_model->add_customer($customer_data, $machine_id);
-                        }
-                        $i++;
-                        continue;
-                    } else {
-                        $customer_data = array(
-                            "customer_name" => $col[1],
-                            "mem_code" => $col[0],
-                            "mobile" => $col[2],
-                            "adhar_no" => $col[3],
-                            "type" => $col[4],
-//                            "society_id"=>$this->session->userdata("id"),
-//                            "machine_id"=>$_POST['machine'],
-                            "created_at" => date("Y-m-d"),
-                        );
-                        $this->customer_model->add_customer($customer_data, $machine_id);
-                        $i++;
-                        continue;
-                    }*/
                 }
             }
 //            exit;
