@@ -1,5 +1,13 @@
             <script>
                 $(document).ready(function(){
+                    $("#customer_machine").validate({
+                        rules: {
+                            society_machine: "required",
+                        },
+                        messages: {
+                            society_machine: "Please select machine",
+                        }
+                    });
                     $('#example2').DataTable();
                     $("#download_customer").on("click", function(e){
                         var machine;
@@ -79,9 +87,9 @@
                                     <span class="pull-right"><a href="#" id="download_customer" class="btn btn-primary" style="color: #fff;">Download Milk Supplier</a></span>
                                     <?php } ?>
                                 </div><!-- /.box-header -->
-                                <form class="form-horizontal" action="<?php echo base_url(); ?>index.php/customers" method="post">
+                                <form class="form-horizontal" action="<?php echo base_url(); ?>index.php/customers" method="post" id="customer_machine">
                                     <div class="form-group">
-                                        <label class="control-label col-md-2" for="society_machine">Machines</label>
+                                        <label class="control-label col-md-2" for="society_machine">Machines <span style="color: red;">*</span></label>
                                         <div class="col-md-4">
                                             <select class="form-control" name="society_machine" id="society_machine">
                                                 <option value="">--Select Machine--</option>

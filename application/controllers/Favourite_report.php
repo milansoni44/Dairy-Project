@@ -44,7 +44,7 @@ class Favourite_report extends MY_Controller
 			{
 				$this->session->set_flashdata("success","An error in inserting favourite report.");
 			}
-			redirect("favourite_report",'location');
+			redirect("/",'location');
 		}
 	}
 	
@@ -64,7 +64,7 @@ class Favourite_report extends MY_Controller
 			{
 				$this->session->set_flashdata("success","An error in updating favourite report.");
 			}
-			redirect("favourite_report",'location');
+			redirect("/",'location');
 		}
 		else if( $favourite_report_id )
 		{
@@ -125,7 +125,7 @@ class Favourite_report extends MY_Controller
 			{
 				$this->session->set_flashdata("success","An error in deleting favourite report.");
 			}
-			redirect("favourite_report",'location');
+			redirect("/",'location');
 		}
 	}
 
