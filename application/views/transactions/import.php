@@ -54,7 +54,7 @@
                                 <form role="form" class="form-horizontal" id="add_dairy_form" action="<?php echo base_url(); ?>index.php/transactions/import_txn" method="post" enctype="multipart/form-data">
                                     <div class="box-body">
                                         <div class="form-group">
-                                            <label class="control-label col-sm-2" for="txn">Upload Csv</label>
+                                            <label class="control-label col-sm-2" for="txn">Upload Csv <span style="color: red;">*</span></label>
                                             <div class="col-md-4">
                                                 <input type="file" name="transaction" id="txn" class="form-control" />
                                             </div>
