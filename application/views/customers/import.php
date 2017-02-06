@@ -54,7 +54,7 @@
                                 <form role="form" class="form-horizontal" id="add_dairy_form" action="<?php echo base_url(); ?>index.php/customers/import" method="post" enctype="multipart/form-data">
                                     <div class="box-body">
                                         <div class="form-group">
-                                            <label class="control-label col-sm-2" for="machine">Machine</label>
+                                            <label class="control-label col-sm-2" for="machine">Machine <span style="color: red;">*</span></label>
                                             <div class="col-md-4">
                                                 <select class="form-control" id="machine" name="machine" >
                                                     <option value="">Select Machine</option>
@@ -71,7 +71,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="control-label col-sm-2">Upload Csv</label>
+                                            <label class="control-label col-sm-2">Upload Csv <span style="color: red;">*</span></label>
                                             <div class="col-md-4">
                                                 <input type="file" name="import_member" id="import_member" class="form-control"/>
                                             </div>
