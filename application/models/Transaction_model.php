@@ -38,6 +38,16 @@ class Transaction_model extends CI_Model {
         return FALSE;
     }
 
+    function get_transaction_by_id($id = NULL)
+    {
+        $q = $this->db->query("SELECT t.*,m.machine_id, s.name  AS society_name, d.name AS dairy_name, c.customer_name FROM transactions t
+                                LEFT JOIN machines m ON m.id = t.deviceid
+                                LEFT JOIN users s ON s.id = t.society_id
+                                LEFT JOIN users d ON d.id = t.dairy_id
+                                LEFT JOIN customers c ON c.id = t.cid WHERE t.id = '$id'");
+        return ($q->num_rows() > 0) ? $q->row() : FALSE;
+    }
+
     function get_society_id($machine_id = NULL) {
         $machine_id = trim($machine_id, '"');
         $q = $this->db->query("SELECT society_id FROM machines WHERE machine_id = '$machine_id'");
