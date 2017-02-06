@@ -564,11 +564,12 @@ class Transaction_model extends CI_Model {
         )*/
         $q = $this->db->select("CONCAT_WS(' ',c.customer_name, c.adhar_no) AS customer,t.fat,t.clr,t.snf,t.weight,t.rate,t.netamt,t.date, t.shift")
             ->from("transactions t")
-            ->join("machines m", "m.machine_id = t.deviceid", "LEFT")
+            ->join("machines m", "m.id = t.deviceid", "LEFT")
             ->join("users s", "s.id = m.society_id", "LEFT")
             ->join("users d", "d.id = m.dairy_id", "LEFT")
             ->join("customers c", "c.id = t.cid", "LEFT")
             ->where("t.type", "C")
+            ->where("m.status", 1)
             ->where("t.society_id", $data['society_id']);
         if($data['period_word'] == "Last Month"){
             $date = date("Y-m-d", strtotime("-1 months"));
@@ -604,11 +605,12 @@ class Transaction_model extends CI_Model {
     {
         $q = $this->db->select("CONCAT_WS(' ',c.customer_name, c.adhar_no) AS customer,t.fat,t.clr,t.snf,t.weight,t.rate,t.netamt,t.date,t.shift")
             ->from("transactions t")
-            ->join("machines m", "m.machine_id = t.deviceid", "LEFT")
+            ->join("machines m", "m.id = t.deviceid", "LEFT")
             ->join("users s", "s.id = m.society_id", "LEFT")
             ->join("users d", "d.id = m.dairy_id", "LEFT")
             ->join("customers c", "c.id = t.cid", "LEFT")
             ->where("t.type", "B")
+            ->where("m.status", 1)
             ->where("t.society_id", $data['society_id']);
 
         // period condition
@@ -643,8 +645,8 @@ class Transaction_model extends CI_Model {
 
     public function custom_transactions_cow_summary($data = array())
     {
-        $where = " WHERE `t`.`type` = 'C' AND";
-        $sql = "SELECT `s`.`name` AS `society_name`,AVG(`t`.`fat`) AS fat,AVG(`t`.`clr`) AS clr,AVG(`t`.`snf`) AS snf,SUM(`t`.`weight`) AS weight,AVG(`t`.`rate`) AS rate,SUM(`t`.`netamt`) AS netamt,`t`.`shift` FROM `transactions` `t` LEFT JOIN `machines` `m` ON `m`.`machine_id` = `t`.`deviceid` LEFT JOIN `users` `s` ON `s`.`id` = `t`.`society_id` LEFT JOIN `users` `d` ON `d`.`id` = `t`.`dairy_id` LEFT JOIN `customers` `c` ON `c`.`id` = `t`.`cid`";
+        $where = " WHERE `t`.`type` = 'C' AND `m`.`status` = 1 AND";
+        $sql = "SELECT `s`.`name` AS `society_name`,AVG(`t`.`fat`) AS fat,AVG(`t`.`clr`) AS clr,AVG(`t`.`snf`) AS snf,SUM(`t`.`weight`) AS weight,AVG(`t`.`rate`) AS rate,SUM(`t`.`netamt`) AS netamt,`t`.`shift` FROM `transactions` `t` LEFT JOIN `machines` `m` ON `m`.`id` = `t`.`deviceid` LEFT JOIN `users` `s` ON `s`.`id` = `t`.`society_id` LEFT JOIN `users` `d` ON `d`.`id` = `t`.`dairy_id` LEFT JOIN `customers` `c` ON `c`.`id` = `t`.`cid`";
 
         if($data['shift'] == "M" || $data['shift'] == "E"){
             $where.= " `t`.`shift` = '".$data['shift']."' AND";
@@ -672,8 +674,8 @@ class Transaction_model extends CI_Model {
 
     public function custom_transactions_buff_summary($data = array())
     {
-        $where = " WHERE `t`.`type` = 'B' AND";
-        $sql = "SELECT `s`.`name` AS `society_name`,AVG(`t`.`fat`) AS fat,AVG(`t`.`clr`) AS clr,AVG(`t`.`snf`) AS snf,SUM(`t`.`weight`) AS weight,AVG(`t`.`rate`) AS rate,SUM(`t`.`netamt`) AS netamt,`t`.`shift` FROM `transactions` `t` LEFT JOIN `machines` `m` ON `m`.`machine_id` = `t`.`deviceid` LEFT JOIN `users` `s` ON `s`.`id` = `t`.`society_id` LEFT JOIN `users` `d` ON `d`.`id` = `t`.`dairy_id` LEFT JOIN `customers` `c` ON `c`.`id` = `t`.`cid`";
+        $where = " WHERE `t`.`type` = 'B' AND `m`.`status` = 1 AND";
+        $sql = "SELECT `s`.`name` AS `society_name`,AVG(`t`.`fat`) AS fat,AVG(`t`.`clr`) AS clr,AVG(`t`.`snf`) AS snf,SUM(`t`.`weight`) AS weight,AVG(`t`.`rate`) AS rate,SUM(`t`.`netamt`) AS netamt,`t`.`shift` FROM `transactions` `t` LEFT JOIN `machines` `m` ON `m`.`id` = `t`.`deviceid` LEFT JOIN `users` `s` ON `s`.`id` = `t`.`society_id` LEFT JOIN `users` `d` ON `d`.`id` = `t`.`dairy_id` LEFT JOIN `customers` `c` ON `c`.`id` = `t`.`cid`";
 
         if($data['shift'] == "M" || $data['shift'] == "E"){
             $where.= " `t`.`shift` = '".$data['shift']."' AND";
