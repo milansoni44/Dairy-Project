@@ -194,7 +194,11 @@ class Favourite_report extends MY_Controller
                 header('Content-Disposition: attachment; filename="'.$file_name.'.csv"');
                 header('Pragma: no-cache');
                 header('Expires: 0');
-                fputcsv($fp, array("Customer","FAT","CLR","SNF","Litre","Rate/Ltr","Net Amount","Date","Shift"));
+                if($this->session->userdata("group") == "society") {
+                    fputcsv($fp, array("Customer", "FAT", "CLR", "SNF", "Litre", "Rate/Ltr", "Net Amount", "Date", "Shift"));
+                }else{
+                    fputcsv($fp, array("Customer", "FAT", "CLR", "SNF", "Litre", "Rate/Ltr", "Net Amount", "Shift"));
+                }
                 foreach($data_final as $rr){
                     fputcsv($fp, $rr);
                 }
@@ -234,7 +238,11 @@ class Favourite_report extends MY_Controller
                 header('Content-Disposition: attachment; filename="'.$file_name.'.csv"');
                 header('Pragma: no-cache');
                 header('Expires: 0');
-                fputcsv($fp, array("Customer","FAT","CLR","SNF","Litre","Rate/Ltr","Net Amount","Date","Shift"));
+                if($this->session->userdata("group") == "society") {
+                    fputcsv($fp, array("Customer", "FAT", "CLR", "SNF", "Litre", "Rate/Ltr", "Net Amount", "Date", "Shift"));
+                }else{
+                    fputcsv($fp, array("Customer", "FAT", "CLR", "SNF", "Litre", "Rate/Ltr", "Net Amount", "Shift"));
+                }
                 foreach($data_final as $rr){
                     fputcsv($fp, $rr);
                 }

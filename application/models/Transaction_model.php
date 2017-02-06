@@ -636,7 +636,7 @@ class Transaction_model extends CI_Model {
             // period 1 = Last 7 Days
             $date_end = date("Y-m-d");
             $date_start = date("Y-m-d", strtotime("-7 Days"));
-            $where.= " `t`.`date` BETWEEN '".$date_start."' AND '".$date_end."'";
+            $where.= " (`t`.`date` BETWEEN '".$date_start."' AND '".$date_end."')";
         }else{
             // period 2 = Last Month
             $date = date("Y-m-d", strtotime("-1 months"));
@@ -666,7 +666,7 @@ class Transaction_model extends CI_Model {
             // period 1 = Last 7 Days
             $date_end = date("Y-m-d");
             $date_start = date("Y-m-d", strtotime("-7 Days"));
-            $where.= " `t`.`date` BETWEEN '".$date_start."' AND '".$date_end."'";
+            $where.= " (`t`.`date` BETWEEN '".$date_start."' AND '".$date_end."')";
         }else{
             $date = date("Y-m-d", strtotime("-1 months"));
             $where.= " MONTH(`t`.`date`) = '".date('m', strtotime($date))."' AND YEAR(`t`.`date`) = '".date('Y', strtotime($date))."'";
