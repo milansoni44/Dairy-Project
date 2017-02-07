@@ -566,7 +566,7 @@ class Transaction_model extends CI_Model {
             ->join("customers c", "c.id = t.cid", "LEFT")
             ->where("t.type", "C")
             ->where("m.status", 1)
-            ->where("t.society_id", $data['society_id']);
+            ->where("t.society_id", $this->session->userdata("id"));
         if($data['period_word'] == "Last Month"){
             $date = date("Y-m-d", strtotime("-1 months"));
             $this->db->where("MONTH(t.date)", date('m', strtotime($date)));
@@ -595,6 +595,8 @@ class Transaction_model extends CI_Model {
 
     function custom_transactions_buff($data = array())
     {
+        /*print "<pre>";
+        print_r($data);exit;*/
         $q = $this->db->select("CONCAT_WS(' ',c.customer_name, c.adhar_no) AS customer,t.fat,t.clr,t.snf,t.weight,t.rate,t.netamt,t.date,t.shift")
             ->from("transactions t")
             ->join("machines m", "m.id = t.deviceid", "LEFT")
@@ -603,10 +605,10 @@ class Transaction_model extends CI_Model {
             ->join("customers c", "c.id = t.cid", "LEFT")
             ->where("t.type", "B")
             ->where("m.status", 1)
-            ->where("t.society_id", $data['society_id']);
+            ->where("t.society_id", $this->session->userdata("id"));
 
         // period condition
-        if($data['period_word'] = "Last Month"){
+        if($data['period_word'] == "Last Month"){
             $date = date("Y-m-d", strtotime("-1 months"));
             $this->db->where("MONTH(t.date)", date('m', strtotime($date)));
             $this->db->where("YEAR(t.date)", date('Y', strtotime($date)));
@@ -633,6 +635,21 @@ class Transaction_model extends CI_Model {
 
     public function custom_transactions_cow_summary($data = array())
     {
+        /*print "<pre>";
+        print_r($data);exit;*/
+        /*Array
+        (
+            [id] => 1
+            [report_name] => Silicon Dairy Report
+            [period] => 1
+            [shift] => All
+            [machine_type] => USB
+            [society_id] => 21,22 // TODO check multiple society transaction group by society
+            [user_id] => 19
+            [period_word] => Last 7 Days
+            [shift_word] => All
+        )*/
+        $m_soc = explode(",", $data['society_id']);
         $where = " WHERE `t`.`type` = 'C' AND `m`.`status` = 1 AND (CURDATE() BETWEEN `m`.`from_date` AND `m`.`to_date`) AND";
         $sql = "SELECT `s`.`name` AS `society_name`,AVG(`t`.`fat`) AS fat,AVG(`t`.`clr`) AS clr,AVG(`t`.`snf`) AS snf,SUM(`t`.`weight`) AS weight,AVG(`t`.`rate`) AS rate,SUM(`t`.`netamt`) AS netamt,`t`.`shift` FROM `transactions` `t` LEFT JOIN `machines` `m` ON `m`.`id` = `t`.`deviceid` LEFT JOIN `users` `s` ON `s`.`id` = `t`.`society_id` LEFT JOIN `users` `d` ON `d`.`id` = `t`.`dairy_id` LEFT JOIN `customers` `c` ON `c`.`id` = `t`.`cid`";
 
@@ -646,11 +663,28 @@ class Transaction_model extends CI_Model {
             // period 1 = Last 7 Days
             $date_end = date("Y-m-d");
             $date_start = date("Y-m-d", strtotime("-7 Days"));
-            $where.= " (`t`.`date` BETWEEN '".$date_start."' AND '".$date_end."')";
+            $where.= " (`t`.`date` BETWEEN '".$date_start."' AND '".$date_end."') AND";
         }else{
             // period 2 = Last Month
             $date = date("Y-m-d", strtotime("-1 months"));
-            $where.= " MONTH(`t`.`date`) = '".date('m', strtotime($date))."' AND YEAR(`t`.`date`) = '".date('Y', strtotime($date))."'";
+            $where.= " MONTH(`t`.`date`) = '".date('m', strtotime($date))."' AND YEAR(`t`.`date`) = '".date('Y', strtotime($date))."' AND";
+        }
+        /*$cnt = count($m_soc);
+        $i = 1;
+        foreach($m_soc as $row){
+            if($i > $cnt) {
+                $where .= " `t`.`society_id` = '$row' AND";
+            }else{
+                $where .= " `t`.`society_id` = '$row'";
+            }
+        }*/
+        $in_arr = array();
+        foreach($m_soc as $row){
+            array_push($in_arr, $row);
+        }
+        if(!empty($in_arr)){
+            $soc_ids = implode(',', $in_arr);
+            $where .= " `t`.`society_id` IN ($soc_ids)";
         }
         $group_by = " GROUP BY `t`.`society_id`";
         $new_sql = $sql.$where.$group_by;
@@ -672,15 +706,26 @@ class Transaction_model extends CI_Model {
             // no code for all shift
         }
 
+        $m_soc = explode(",", $data['society_id']);
         if($data['period'] == 1) {
             // period 1 = Last 7 Days
             $date_end = date("Y-m-d");
             $date_start = date("Y-m-d", strtotime("-7 Days"));
-            $where.= " (`t`.`date` BETWEEN '".$date_start."' AND '".$date_end."')";
+            $where.= " (`t`.`date` BETWEEN '".$date_start."' AND '".$date_end."') AND";
         }else{
             $date = date("Y-m-d", strtotime("-1 months"));
-            $where.= " MONTH(`t`.`date`) = '".date('m', strtotime($date))."' AND YEAR(`t`.`date`) = '".date('Y', strtotime($date))."'";
+            $where.= " MONTH(`t`.`date`) = '".date('m', strtotime($date))."' AND YEAR(`t`.`date`) = '".date('Y', strtotime($date))."' AND";
         }
+
+        $in_arr = array();
+        foreach($m_soc as $row){
+            array_push($in_arr, $row);
+        }
+        if(!empty($in_arr)){
+            $soc_ids = implode(',', $in_arr);
+            $where .= " `t`.`society_id` IN ($soc_ids)";
+        }
+
         $group_by = " GROUP BY `t`.`society_id`";
         $new_sql = $sql.$where.$group_by;
 

@@ -13,13 +13,15 @@ class Favourite_report_model extends CI_Model
         /*if($this->session->userdata("group") == "society"){
             $data['society'] = $this->session->userdata("id");
         }*/
+
+        $soc_str = $data['society'] == NULL ? "`society_id` = NULL" : "`society_id` = '".$data['society']."'";
 		$insert_into = "INSERT INTO ";
 		$update = "UPDATE ";
 		$field_set = " `favourite_report` SET 
 						`report_name` = '".htmlentities($data['report_name'], ENT_QUOTES)."',
 					   `period` = '".$data['period']."',
 					   `shift` = '".$data['shift']."',
-					   `user_id` = '". $id ."', `machine_type` = '".$data['machine_type']."', `society_id` = '".$data['society']."'";
+					   `user_id` = '". $id ."', `machine_type` = '".$data['machine_type']."', ".$soc_str;
 		$where_clouse = " WHERE `id`=".$favourite_report_id;
 		
 		$insert_qry = $insert_into.$field_set;

@@ -40,10 +40,11 @@ class Favourite_report extends MY_Controller
 		        "period"=>$this->input->post("period"),
 		        "shift"=>$this->input->post("shift"),
 		        "machine_type"=>$this->input->post("machine_type"),
-		        "society"=>implode(",", $this->input->post("society")),
+		        "society"=>($this->session->userdata("group") == "dairy") ? implode(",", $this->input->post("society")) : NULL,
 		        "favourite_report_id"=>$this->input->post("favourite_report_id"),
             );
-
+            /*print "<pre>";
+            var_dump($data);exit;*/
 			$result = $this->favourite_report_model->FavouriteReportAddUpdate( $data );
             if( $result )
 			{
@@ -147,20 +148,20 @@ class Favourite_report extends MY_Controller
             show_404();
         }
         $fav_report_info = $this->favourite_report_model->get_favourite_report($id);
+        /*print "<pre>";
+        print_r($fav_report_info);exit;*/
         /*Array
         (
-            [id] => 11
-            [report_name] => Milan Society Report12
-            [machine_type] => BLUETOOTH
+            [id] => 1
+            [report_name] => Silicon Dairy Report
             [period] => 1
             [shift] => All
-            [society_id] => 14
-            [user_id] => 14
+            [machine_type] => USB
+            [society_id] => 21,22
+            [user_id] => 19
             [period_word] => Last 7 Days
             [shift_word] => All
         )*/
-        /*print "<pre>";
-        print_r($fav_report_info);exit;*/
         if($this->session->userdata("group") == "society") {
             $data['transactions_cow'] = $this->transaction_model->custom_transactions_cow($fav_report_info);
             $data['transactions_buff'] = $this->transaction_model->custom_transactions_buff($fav_report_info);
