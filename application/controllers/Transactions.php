@@ -256,7 +256,8 @@ class Transactions extends MY_Controller {
     }
 
     function get_daily_transaction() {
-        $this->datatables->select("CONCAT_WS(' ',c.customer_name, c.adhar_no),t.fat,t.clr,t.snf,t.weight,t.rate,t.netamt,t.date")
+        $this->datatables->select("t.id, CONCAT_WS(' ',c.customer_name, c.adhar_no),t.fat,t.clr,t.snf,t.weight,t.rate,t.netamt,t.date")
+                ->unset_column('t.id')
                 ->from("transactions t")
                 ->join("machines m", "m.id = t.deviceid", "LEFT")
                 ->join("users s", "s.id = m.society_id", "LEFT")
@@ -275,13 +276,15 @@ class Transactions extends MY_Controller {
         } else {
             $id = $this->session->userdata("id");
             $this->db->where("t.society_id", $id);
+            $this->datatables->add_column('Action','<a data-toggle="modal" data-target="#view-modal" data-id="$1" id="getUser" href="#">View</a>', 't.id');
             echo $this->datatables->generate();
         }
     }
 
     function get_daily_Buff_transaction() {
 		$date = date('Y-m-d');
-        $this->datatables->select("CONCAT_WS(' ',c.customer_name, c.adhar_no),t.fat,t.clr,t.snf,t.weight,t.rate,t.netamt,t.date")
+        $this->datatables->select("t.id, CONCAT_WS(' ',c.customer_name, c.adhar_no),t.fat,t.clr,t.snf,t.weight,t.rate,t.netamt,t.date")
+                ->unset_column('t.id')
                 ->from("transactions t")
                 ->join("machines m", "m.id = t.deviceid", "LEFT")
                 ->join("users s", "s.id = m.society_id", "LEFT")
@@ -299,6 +302,7 @@ class Transactions extends MY_Controller {
         } else { */
             $id = $this->session->userdata("id");
             $this->db->where("t.society_id", $id);
+        $this->datatables->add_column('Action','<a data-toggle="modal" data-target="#view-modal" data-id="$1" id="getUser" href="#">View</a>', 't.id');
             echo $this->datatables->generate();
         /* } */
     }
@@ -491,7 +495,7 @@ class Transactions extends MY_Controller {
         $tid = $this->input->post("id");
         $transaction_info = $this->transaction_model->get_transaction_by_id($tid);
         /*print "<pre>";
-        print_r($transaction_info);*/
+        print_r($transaction_info);exit;*/
 
         echo $html = '<div class="row">
                             <div class="col-md-12">
