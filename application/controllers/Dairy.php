@@ -103,7 +103,8 @@ class Dairy extends MY_Controller{
                  mkdir($upload_dir);
             }	
             $config['upload_path']   = $upload_dir;
-            $config['allowed_types'] = 'gif|jpg|png|jpeg|JPG|PNG|GIF|JPEG';
+            /*$config['allowed_types'] = 'gif|jpg|png|jpeg|JPG|PNG|GIF|JPEG';*/
+            $config['allowed_types'] = '*';
             $config['file_name']     = 'userimage_'.substr(md5(rand()),0,7);
             $config['overwrite']     = false;
             $config['max_size']	 = '5120';
