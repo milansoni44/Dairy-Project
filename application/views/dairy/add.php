@@ -215,7 +215,7 @@
                                         <div class="form-group">
                                             <label class="control-label col-md-2" for="logo">Logo</label>
                                             <div class="col-md-4">
-                                                <input type="file" name="logo" id="logo" class="form-control" onchange="readURL(this);"/>
+                                                <input type="file" name="logo" id="logo" class="form-control" onchange="readURL(this);" accept="image/*"/>
                                                 <?php if(isset($errors['logo'])){
                                                     echo "<label class='error'>".$errors['logo']."</label>";
                                                 } ?>
