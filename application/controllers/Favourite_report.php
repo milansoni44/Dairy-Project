@@ -35,8 +35,17 @@ class Favourite_report extends MY_Controller
 	{
 		if( $this->input->server("REQUEST_METHOD") === "POST" )
 		{
-			$result = $this->favourite_report_model->FavouriteReportAddUpdate( $this->input->post() );
-			if( $result )
+		    $data = array(
+		        "report_name"=>$this->input->post("report_name"),
+		        "period"=>$this->input->post("period"),
+		        "shift"=>$this->input->post("shift"),
+		        "machine_type"=>$this->input->post("machine_type"),
+		        "society"=>implode(",", $this->input->post("society")),
+		        "favourite_report_id"=>$this->input->post("favourite_report_id"),
+            );
+
+			$result = $this->favourite_report_model->FavouriteReportAddUpdate( $data );
+            if( $result )
 			{
 				$this->session->set_flashdata("success","A Favourite report has been inserted successfully.");
 			}

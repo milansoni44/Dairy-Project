@@ -86,7 +86,7 @@
                                 <label class="control-label col-md-2" for="society">Society <span
                                         style="color: red;">*</span></label>
                                 <div class="col-md-4">
-                                    <select class="form-control" name="society" id="society" required multiple>
+                                    <select class="form-control" name="society[]" id="society" required multiple>
                                         <option value="">Select Society</option>
                                         <?php
                                         if (!empty($society_info)) {
