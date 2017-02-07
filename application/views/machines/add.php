@@ -76,7 +76,7 @@
 									<div class="form-group">
 										<label class="control-label col-md-2" style="text-align:right;">Number</label>
 										<div class="col-md-4">
-											<input type="number" name="num" class="form-control" id="num"/> 
+											<input type="number" name="num" class="form-control" id="num" autocomplete="off"/>
 										</div>
 										<button class="btn btn-primary" id="add_row">Add Row</button>
 									</div>
