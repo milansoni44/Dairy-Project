@@ -4,6 +4,24 @@
             format: 'yyyy-mm-dd',
             autoclose: true
         });
+        $("#daily_txn_form").validate({
+            rules: {
+                society:{
+                    required: true,
+                },
+                date_range: {
+                    required: true,
+                }
+            },
+            messages: {
+                society:{
+                    required: "Please select society",
+                },
+                date_range: {
+                    required: "Please select date range",
+                }
+            }
+        });
         $("#date_range").daterangepicker();
         var oTable = $('#example2').dataTable({
             "processing": true,
@@ -101,10 +119,10 @@
                         <span class="pull-right" id="total_litre" style="font-weight: bold;"></span>
                     </div><!-- /.box-header -->
                     <?php if($this->session->userdata("group") == "dairy"){ ?>
-                    <form action="<?php echo base_url(); ?>index.php/transactions/daily_txn" method="post" class="form-horizontal">
+                    <form action="<?php echo base_url(); ?>index.php/transactions/daily_txn" method="post" class="form-horizontal" id="daily_txn_form">
                         <div class="box-body">
                             <div class="form-group">
-                                <label class="control-label col-md-2" for="society">Society</label>
+                                <label class="control-label col-md-2" for="society">Society <span style="color: red;">*</span></label>
                                 <div class="col-md-3">
                                     <select class="form-control" name="society" id="society">
                                         <option value="">--Select Society--</option>
@@ -119,9 +137,9 @@
                                         ?>
                                     </select>
                                 </div>
-                                <label class="control-label col-md-1" for="date_range">Date</label>
+                                <label class="control-label col-md-1" for="date_range">Date <span style="color: red;">*</span></label>
                                 <div class="col-md-3">
-                                   <input type="text" name="date_range" class="form-control" id="date_range" />
+                                   <input type="text" name="date_range" class="form-control" id="date_range" value="<?php if(isset($_POST['date_range'])){ echo $_POST['date_range']; } ?>"/>
                                 </div>
                                 <div class="col-md-2">
                                    <input type="submit" name="submit" value="Submit" id="submit" class="btn btn-primary" />

@@ -734,6 +734,49 @@ class Transaction_model extends CI_Model {
 
         return ($query->num_rows() > 0) ? $query->result_array() : FALSE;
     }
+	
+	function get_society_summary($shift = NULL)
+	{
+		$id = $this->session->userdata("id");
+		$date = date('Y-m-d');
+		$q = $this->db->query("SELECT ROUND(SUM(weight), 2) AS litre, `type` FROM transactions
+								WHERE society_id = '$id'
+								AND `date` = '$date'
+								AND `shift` = '$shift'
+								GROUP BY `type`");
+								
+								// TODO change date from static date to current date
+								
+		if($q->num_rows() > 0)
+		{
+			return $q->result_array();
+		}
+		return FALSE;
+	}
+	
+	function get_monthly_milk_collection($shift = NULL, $type = NULL)
+	{
+		$id = $this->session->userdata("id");
+		$date = date('m');
+		for($i = 1; $i<= date('t'); $i++)
+		{
+			$date = date('Y-m').'-'.$i;
+			$date_arr[] = array($i);
+		//	$data[] = array("date"=>$date, "litre"=>"","type"=>"");
+			$sql_cow = "SELECT ROUND(SUM(weight), 2) AS litre FROM transactions
+					WHERE `date` = '$date'
+					AND society_id = '$id'
+					AND `shift` = '$shift' AND `type` = '$type'";
+					
+			$q = $this->db->query($sql_cow);
+			
+			if($q->num_rows() > 0)
+			{
+				$data[] = (float) $q->row()->litre;
+			}
+		}
+		return $data;
+	}
 }
 
 /** application/Models/Transaction_model.php */
