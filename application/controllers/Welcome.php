@@ -68,9 +68,14 @@ class Welcome extends MY_Controller {
 		}
 		$morning_cow_month = $this->transaction_model->get_monthly_milk_collection('M', 'C');
 		$morning_buff_month = $this->transaction_model->get_monthly_milk_collection('M', 'B');
+
+        $eve_cow_month = $this->transaction_model->get_monthly_milk_collection('E', 'C');
+        $eve_buff_month = $this->transaction_model->get_monthly_milk_collection('E', 'B');
 		
 		$data['monthly_cow_summary'] = $morning_cow_month;
 		$data['monthly_buff_summary'] = $morning_buff_month;
+        $data['monthly_cow_summary_eve'] = $eve_cow_month;
+		$data['monthly_buff_summary_eve'] = $eve_buff_month;
 		$data['month_dates'] = $date_arr;
 		/* End Monthly milk collection date wise */
         $this->load->view('common/header', $this->data);
