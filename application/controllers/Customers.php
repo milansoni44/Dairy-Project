@@ -214,10 +214,13 @@ class Customers extends MY_Controller {
                         if($exist_cust->mem_code == "" && $col1 != ""){
                             $cust_data = array( "mem_code"=> $col1 );
                             $this->customer_model->update_single($cust_data, $cid);
-                        } else if($exist_cust->customer_name == "" && $col2 != ""){
+                        }
+                        if($exist_cust->customer_name == "" && $col2 != ""){
                             $cust_data = array( "customer_name"=> $col2 );
                             $this->customer_model->update_single($cust_data, $cid);
-                        } else if($exist_cust->mobile == "" && $col3 != ""){
+                        }
+
+                        if($exist_cust->mobile == "" && $col3 != ""){
                             $cust_data = array( "mobile"=> $col3 );
                             $this->customer_model->update_single($cust_data, $cid);
                         }
