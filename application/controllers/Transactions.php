@@ -256,7 +256,7 @@ class Transactions extends MY_Controller {
     }
 
     function get_daily_transaction() {
-        $this->datatables->select("t.id, CONCAT_WS(' ',c.customer_name, c.adhar_no),t.fat,t.clr,t.snf,t.weight,t.rate,t.netamt,t.date")
+        $this->datatables->select("t.id, CONCAT(c.customer_name, '(', c.adhar_no, ')'),t.fat,t.clr,t.snf,t.weight,t.rate,t.netamt,t.date")
                 ->unset_column('t.id')
                 ->from("transactions t")
                 ->join("machines m", "m.id = t.deviceid", "LEFT")
@@ -283,7 +283,7 @@ class Transactions extends MY_Controller {
 
     function get_daily_Buff_transaction() {
 		$date = date('Y-m-d');
-        $this->datatables->select("t.id, CONCAT_WS(' ',c.customer_name, c.adhar_no),t.fat,t.clr,t.snf,t.weight,t.rate,t.netamt,t.date")
+        $this->datatables->select("t.id, CONCAT(c.customer_name, '(', c.adhar_no, ')'),t.fat,t.clr,t.snf,t.weight,t.rate,t.netamt,t.date")
                 ->unset_column('t.id')
                 ->from("transactions t")
                 ->join("machines m", "m.id = t.deviceid", "LEFT")
@@ -309,7 +309,7 @@ class Transactions extends MY_Controller {
 
     function get_daily_transaction_post($from = NULL, $to = NULL, $shift = NULL, $customer = NULL, $report_id = NULL) {
 		
-        $this->datatables->select("t.id,CONCAT_WS(' ',c.customer_name, c.adhar_no),t.fat,t.clr,t.snf,t.weight,t.rate,t.netamt,t.date")
+        $this->datatables->select("t.id,CONCAT(c.customer_name, '(', c.adhar_no, ')'),t.fat,t.clr,t.snf,t.weight,t.rate,t.netamt,t.date")
                 ->unset_column('t.id')
                 ->from("transactions t")
                 ->join("machines m", "m.id = t.deviceid", "LEFT")
@@ -331,7 +331,7 @@ class Transactions extends MY_Controller {
     }
 
     function get_daily_buff_transaction_post($from = NULL, $to = NULL, $shift = NULL, $customer = NULL) {
-        $this->datatables->select("t.id, CONCAT_WS(' ',c.customer_name, c.adhar_no),t.fat,t.clr,t.snf,t.weight,t.rate,t.netamt,t.date")
+        $this->datatables->select("t.id, CONCAT(' ',c.customer_name, '(', c.adhar_no,')'),t.fat,t.clr,t.snf,t.weight,t.rate,t.netamt,t.date")
                 ->unset_column('t.id')
                 ->from("transactions t")
                 ->join("machines m", "m.id = t.deviceid", "LEFT")
