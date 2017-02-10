@@ -211,7 +211,7 @@ class Customers extends MY_Controller {
                     }else{
                         $exist_cust = $this->customer_model->get_customer_by_id($cid);
                         // check blank fields
-                        if($exist_cust->mem_code == "" && $col1 != ""){
+                        if($col1 != ""){
                             $cust_data = array( "mem_code"=> $col1 );
                             $this->customer_model->update_single($cust_data, $cid);
                         }
