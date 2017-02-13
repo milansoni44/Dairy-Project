@@ -143,8 +143,17 @@ LEFT JOIN customers c ON c.id = t.cid WHERE t.dairy_id = '$id'");
                                 LEFT JOIN customer_machine cm ON cm.cid = c.id
                                 LEFT JOIN machines m ON m.id = cm.machine_id
                                 WHERE cm.cid = '$id' GROUP BY m.id");
-//        echo $this->db->last_query();exit;
+        /*echo $this->db->last_query();exit;*/
         if ($q->num_rows() > 0) {
+            return $q->row();
+        }
+        return FALSE;
+    }
+
+    // for api
+    function get_customer_api_id($cid = NULL){
+        $q = $this->db->get_where("customers", array("id"=>$cid));
+        if($q->num_rows() > 0){
             return $q->row();
         }
         return FALSE;
@@ -174,10 +183,12 @@ LEFT JOIN customers c ON c.id = t.cid WHERE t.dairy_id = '$id'");
         return FALSE;
     }
     
-    function check_exist_customer_machine($cid = NULL, $machine = NULL){
-        $id = $this->session->userdata("id");
+    function check_exist_customer_machine($cid = NULL, $machine = NULL, $id = NULL){
+        if(!$id) {
+            $id = $this->session->userdata("id");
+        }
         $q = $this->db->query("SELECT * FROM customer_machine WHERE machine_id = '$machine' AND cid = '$cid' AND society_id = '$id'");
-//        echo $this->db->last_query();exit;
+        /*echo $this->db->last_query();exit;*/
         if($q->num_rows() > 0){
             return TRUE;
         }

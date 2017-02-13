@@ -738,5 +738,134 @@ WHERE `u`.`id`=( SELECT `ud`.`dairy_id` FROM `users` `ud` WHERE `ud`.`id`=`custo
         http_response_code($http_response_code);
         echo json_encode($response);
     }
+
+    public function import_customer_json()
+    {
+        $http_response_code = 401;
+        if($this->input->server('REQUEST_METHOD') == 'POST')
+        {
+            /*
+             * society_id
+             * customers        json string
+             * machine_id
+            */
+            $society_id = $this->input->post("society_id");
+            $data = json_decode($this->input->post("customer_json"))->Customer;
+            $machine_id = $this->input->post("machine_id");
+            if(!empty($data))
+            {
+                $i = 2;
+                foreach($data as $row)
+                {
+                    $col1 = $row->member_code;  // member code
+                    $col2 = $row->name;  // customer name
+                    $col3 = $row->mobile_number;  // customer mobile
+                    $col4 = $row->aadhar;  // customer aadhar
+                    $col5 = $row->type;  // customer type COW | BUFFALO
+                    if ($col1 == "" || $col2 == "" || $col3 == "" || $col4 == "" || $col4 == "") {
+                        $data_validate[] = array("Error" => "Please fill all the fileds", "Line" => $i);
+                        $i++;
+                        continue;
+                    }
+                    $cid = $this->customer_model->check_exist($col4, "adhar_no");
+                    if ($cid === FALSE) {
+                        $customer_data = array(
+                            "customer_name" => $col2,
+                            "mem_code" => $col1,
+                            "mobile" => $col3,
+                            "adhar_no" => $col4,
+                            "type" => $col5,
+                            "created_at" => date("Y-m-d"),
+                        );
+                        $this->customer_model->add_customer($customer_data, $machine_id, $society_id);
+                        $http_response_code = 200;
+                        $response['error'] = FALSE;
+                        $response['message'] = "Customer import successfully.";
+                    }else{
+                        $data_validate = array();
+                        $exist_cust = $this->customer_model->get_customer_api_id($cid);
+                        // check blank fields
+                        if($col1 != ""){
+                            $cust_data = array( "mem_code"=> $col1 );
+                            $this->customer_model->update_single($cust_data, $cid);
+                            $http_response_code = 200;
+                            $response['error'] = FALSE;
+                            $response['message'] = "Customer member code updated successfully on line $i";
+                        }
+
+                        if($exist_cust->customer_name == "" && $col2 != ""){
+                            $cust_data = array( "customer_name"=> $col2 );
+                            $this->customer_model->update_single($cust_data, $cid);
+                            $http_response_code = 200;
+                            $response['error'] = FALSE;
+                            $response['message'] = "Customer name updated successfully on line $i";
+                        }
+
+                        if($exist_cust->mobile == "" && $col3 != ""){
+                            $cust_data = array( "mobile"=> $col3 );
+                            $this->customer_model->update_single($cust_data, $cid);
+                            $http_response_code = 200;
+                            $response['error'] = FALSE;
+                            $response['message'] = "Customer mobile updated successfully on line $i";
+                        }
+                        if($this->customer_model->check_exist_customer_machine($cid, $machine_id, $society_id)){
+                            $data_validate = array("Error" => "Customer already exist", "Line" => $i);
+                            $http_response_code = 401;
+                            $response['exist'][] = $data_validate;
+                            $response['error'] = TRUE;
+                            $response['message'] = "Customer already exist";
+                            $i++;
+                            continue;
+                        }else{
+                            $cust_machine = array(
+                                "cid"=>$cid,
+                                "machine_id"=>$machine_id,
+                                "society_id"=>$society_id
+                            );
+                            $this->customer_model->insert_customer_machine($cust_machine);
+                            $http_response_code = 200;
+                            $response['error'] = FALSE;
+                            $response['message'] = "Customer successfully imported";
+                            $i++;
+                            continue;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                $response['error'] = TRUE;
+                $response['message'] = "Please try again letter";
+            }
+        }
+        else
+        {
+            $response['error'] = TRUE;
+            $response['message'] = "Invalid method";
+        }
+        http_response_code($http_response_code);
+        echo json_encode($response);
+    }
+
+    public function customer_list()
+    {
+        $http_response_code = 401;
+        if($this->input->server('REQUEST_METHOD') == 'POST')
+        {
+            /*
+             * society_id
+             * machine_id
+             * */
+            $society = $this->input->post("society_id");
+            $machine = $this->input->post("machine_id");
+        }
+        else
+        {
+            $response['error'] = TRUE;
+            $response['message'] = "Invalid method";
+        }
+        http_response_code($http_response_code);
+        echo json_encode($response);
+    }
     /* society app webservice * End */
 }
