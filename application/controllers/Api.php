@@ -891,7 +891,20 @@ WHERE `u`.`id`=( SELECT `ud`.`dairy_id` FROM `users` `ud` WHERE `ud`.`id`=`custo
              * machine_id
              * */
             $society = $this->input->post("society_id");
-            $machine = $this->input->post("machine_id");
+            /*$machine = $this->input->post("machine_id");*/
+            $customers = $this->customer_model->get_society_customer($society);
+            if(!empty($customers))
+            {
+                foreach($customers as $row)
+                {
+                    $data[] = (array) $row;
+                }
+                $response['error'] = FALSE;
+                $response['data'] = $data;
+            }else{
+                $response['error'] = TRUE;
+                $response['message'] = "No customers found";
+            }
         }
         else
         {

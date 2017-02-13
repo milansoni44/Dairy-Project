@@ -160,12 +160,11 @@ LEFT JOIN customers c ON c.id = t.cid WHERE t.dairy_id = '$id'");
     }
 
     function get_society_customer($soc_id = NULL) {
-//        $q = $this->db->query("SELECT customers.*, users.name FROM customers LEFT JOIN users ON users.id = customers.society_id WHERE users.id = '$soc_id'");
-        $q = $this->db->query("SELECT * FROM customers c
+        $q = $this->db->query("SELECT c.* FROM customers c
                                 LEFT JOIN customer_machine cm ON cm.cid = c.id
                                 LEFT JOIN users u ON u.id = cm.cid
                                 WHERE cm.society_id = '$soc_id'");
-//        echo $this->db->last_query();exit;
+        /*echo $this->db->last_query();exit;*/
         if ($q->num_rows() > 0) {
             foreach ($q->result() as $row) {
                 $row1[] = $row;
