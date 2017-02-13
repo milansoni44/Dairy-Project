@@ -18,6 +18,7 @@ class Api extends CI_Controller {
         parent::__construct();
         $this->load->model("auth_model");
         $this->load->model("society_model");
+        $this->load->model("machine_model");
         $this->load->model("dairy_model");
         $this->load->model("transaction_model");
         $this->load->model("customer_model");
@@ -729,6 +730,39 @@ WHERE `u`.`id`=( SELECT `ud`.`dairy_id` FROM `users` `ud` WHERE `ud`.`id`=`custo
                 $response['error'] = TRUE;
                 $response['message'] = "No transaction found";
             }
+        }
+        else
+        {
+            $response['error'] = TRUE;
+            $response['message'] = "Invalid method";
+        }
+        http_response_code($http_response_code);
+        echo json_encode($response);
+    }
+
+    /**
+     *  get machine by society_id
+     */
+    public function get_society_machine()
+    {
+        $http_response_code = 401;
+        if($this->input->server('REQUEST_METHOD') == 'POST')
+        {
+            /*
+             * society_id
+            */
+            $society_id = $this->input->post("society_id");
+            $machines = $this->machine_model->allocated_soc_machine($society_id);
+            if(!empty($machines))
+            {
+                foreach($machines as $row)
+                {
+                    $data['machines'][] = array('machine_id'=>$row->machine_id, 'id'=>$row->id);
+                }
+            }
+            $http_response_code = 200;
+            $response['error'] = FALSE;
+            $response['data'] = $data;
         }
         else
         {
