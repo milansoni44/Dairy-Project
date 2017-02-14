@@ -295,6 +295,22 @@ LEFT JOIN customers c ON c.id = t.cid WHERE t.dairy_id = '$id'");
         /*echo $this->db->last_query();exit;*/
         return ($q->num_rows() > 0) ? $q->row() : FALSE;
     }
+
+    function search_customer($str = NULL)
+    {
+        $q = $this->db->query("SELECT `customers`.* FROM `customers`
+                                LEFT JOIN `customer_machine` ON `customer_machine`.`cid` = `customers`.`id`
+                                WHERE `customer_machine`.`society_id` = 21
+                                AND `customers`.`customer_name` LIKE '%$str%'
+                                OR `customers`.`mobile` LIKE '%$str%'
+                                OR `customers`.`adhar_no` LIKE '%$str%'");
+        /*echo $this->db->last_query();exit;*/
+        if($q->num_rows() > 0)
+        {
+            return $q->result_array();
+        }
+        return FALSE;
+    }
 }
 
 /** application/Models/Customer_model.php */

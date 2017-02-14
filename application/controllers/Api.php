@@ -899,8 +899,40 @@ WHERE `u`.`id`=( SELECT `ud`.`dairy_id` FROM `users` `ud` WHERE `ud`.`id`=`custo
                 {
                     $data[] = (array) $row;
                 }
+                $http_response_code = 200;
                 $response['error'] = FALSE;
                 $response['data'] = $data;
+            }else{
+                $response['error'] = TRUE;
+                $response['message'] = "No customers found";
+            }
+        }
+        else
+        {
+            $response['error'] = TRUE;
+            $response['message'] = "Invalid method";
+        }
+        http_response_code($http_response_code);
+        echo json_encode($response);
+    }
+
+    function  customer_filter()
+    {
+        $http_response_code = 401;
+        if($this->input->server('REQUEST_METHOD') == 'POST')
+        {
+            /**
+             * search string
+             * society_id
+             */
+            $string = $this->input->post("search");
+            $society = $this->input->post("society_id");
+            $customers = $this->customer_model->search_customer($string, $society);
+            if(!empty($customers))
+            {
+                $http_response_code = 200;
+                $response['message'] = "Customer found";
+                $response['data'] = $customers;
             }else{
                 $response['error'] = TRUE;
                 $response['message'] = "No customers found";
