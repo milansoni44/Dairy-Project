@@ -66,11 +66,13 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </a>
-                <?php 
- //                   echo "<pre>"; 
-//                    print_r($notifications);
-//                    echo "</pre>";
-                ?>
+                <span style="position: absolute; line-height: 50px; left: 40%; font-size: 20px; font-weight: 500;">
+                    <?php if($this->session->userdata("group") == "dairy" || $this->session->userdata("group") == "society"){ ?>
+                        <?php echo ucfirst($this->session->userdata("name")); ?>
+                    <?php
+                    }
+                    ?>
+                </span>
                 <div class="navbar-right">
                     <ul class="nav navbar-nav">
                         <!-- Messages: style can be found in dropdown.less-->
