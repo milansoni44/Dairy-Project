@@ -844,7 +844,7 @@ WHERE `u`.`id`=( SELECT `ud`.`dairy_id` FROM `users` `ud` WHERE `ud`.`id`=`custo
                         }
                         if($this->customer_model->check_exist_customer_machine($cid, $machine_id, $society_id)){
                             $data_validate = array("Error" => "Customer already exist", "Line" => $i);
-                            $http_response_code = 401;
+                            $http_response_code = 200;
                             $response['exist'][] = $data_validate;
                             $response['error'] = TRUE;
                             $response['message'] = "Customer already exist";
