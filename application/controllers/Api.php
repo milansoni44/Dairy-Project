@@ -391,7 +391,7 @@ WHERE `u`.`id`=( SELECT `ud`.`dairy_id` FROM `users` `ud` WHERE `ud`.`id`=`custo
             $i = 0;
             foreach ($data as $row) {
                 // for temporary purpose
-                $stat = $this->transaction_model->exist_machine("IDF000001");
+                $stat = $this->transaction_model->exist_machine($data[13]);
                 if ($stat === FALSE) {
                     http_response_code(400);
                     $response['error'] = TRUE;
@@ -400,9 +400,9 @@ WHERE `u`.`id`=( SELECT `ud`.`dairy_id` FROM `users` `ud` WHERE `ud`.`id`=`custo
                     exit;
                 }
 
-                $society = $this->transaction_model->get_society_id("IDF000001")->society_id;
-                $dairy = $this->transaction_model->get_dairy_id("IDF000001")->dairy_id;
-                $machine_id = $this->transaction_model->get_machine_id("IDF000001")->mid;
+                $society = $this->transaction_model->get_society_id($data[13])->society_id;
+                $dairy = $this->transaction_model->get_dairy_id($data[13])->dairy_id;
+                $machine_id = $this->transaction_model->get_machine_id($data[13])->mid;
 
                 if ($row->aadhar == "") {
 //                    $this->session->set_flashdata("message","Line:$i Adhar no required");
