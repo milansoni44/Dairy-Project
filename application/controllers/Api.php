@@ -403,7 +403,14 @@ WHERE `u`.`id`=( SELECT `ud`.`dairy_id` FROM `users` `ud` WHERE `ud`.`id`=`custo
                 $society = $this->transaction_model->get_society_id($data[13])->society_id;
                 $dairy = $this->transaction_model->get_dairy_id($data[13])->dairy_id;
                 $machine_id = $this->transaction_model->get_machine_id($data[13])->mid;
-
+                $valid_society_machine = $this->transaction_model->check_mapped_society_machine($machine_id, $society);
+                if($valid_society_machine === FALSE){
+                    http_response_code(400);
+                    $response['error'] = TRUE;
+                    $response['message'] = "Machine is not allocate to society";
+                    echo json_encode($response);
+                    exit;
+                }
                 if ($row->aadhar == "") {
 //                    $this->session->set_flashdata("message","Line:$i Adhar no required");
                     $validation_error[] = array("message" => "Line:$i Adhar no required");
