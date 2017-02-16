@@ -311,6 +311,16 @@ LEFT JOIN customers c ON c.id = t.cid WHERE t.dairy_id = '$id'");
         }
         return FALSE;
     }
+
+    function get_customer_id($api_key = NULL)
+    {
+        $q = $this->db->get_where("customers", array("token"=>$api_key));
+        if($q->num_rows() > 0)
+        {
+            return $q->row()->id;
+        }
+        return FALSE;
+    }
 }
 
 /** application/Models/Customer_model.php */

@@ -78,6 +78,7 @@ class Society extends MY_Controller
                 "bank_name"=> $this->input->post("bank_name"),
                 "acc_type"=> $this->input->post("acc_type"),
                 "ifsc"=> $this->input->post("ifsc"),
+                'token'=>md5($this->input->post("username").$this->session->userdata("id")),
                 "photo"=>$img
             );
 //            echo "<pre>";

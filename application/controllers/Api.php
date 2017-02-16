@@ -24,6 +24,10 @@ class Api extends CI_Controller {
         $this->load->database();
     }
 
+    /**
+     * Header authentication for society
+     * @return mixed
+     */
     public function check_header_authentication_for_society()
     {
         $headers = getallheaders();
@@ -31,6 +35,27 @@ class Api extends CI_Controller {
         {
             $api_key = $headers['Authorization'];
             $id = $this->society_model->get_society_id($api_key);
+            return $id;
+        }else{
+            $response['error'] = TRUE;
+            $response['message'] = "Api key is missing";
+            http_response_code(401);
+            echo json_encode($response);
+            exit;
+        }
+    }
+
+    /**
+     * Header authentication for customers
+     * @return mixed
+     */
+    public function check_header_authentication_for_customer()
+    {
+        $headers = getallheaders();
+        if(isset($headers['Authorization']))
+        {
+            $api_key = $headers['Authorization'];
+            $id = $this->customer_model->get_customer_id($api_key);
             return $id;
         }else{
             $response['error'] = TRUE;
