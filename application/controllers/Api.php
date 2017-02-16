@@ -13,7 +13,6 @@
  */
 class Api extends CI_Controller {
 
-    //put your code here
     function __construct() {
         parent::__construct();
         $this->load->model("auth_model");
@@ -25,7 +24,7 @@ class Api extends CI_Controller {
         $this->load->database();
     }
 
-    public function check_header_authentication()
+    public function check_header_authentication_for_society()
     {
         $headers = getallheaders();
         if(isset($headers['Authorization']))
@@ -289,7 +288,7 @@ WHERE `u`.`id`=( SELECT `ud`.`dairy_id` FROM `users` `ud` WHERE `ud`.`id`=`custo
 
         if ($this->input->server("REQUEST_METHOD") === "POST") {
             /*$society_id = $this->input->post('society_id');*/
-            $society_id = $this->check_header_authentication();
+            $society_id = $this->check_header_authentication_for_society();
 
             if ($society_id && $society_id != '') {
                 $result = $this->db->query("SELECT * FROM `customers` WHERE `id` IN (
@@ -341,7 +340,7 @@ WHERE `u`.`id`=( SELECT `ud`.`dairy_id` FROM `users` `ud` WHERE `ud`.`id`=`custo
 
         if ($this->input->server("REQUEST_METHOD") === "POST") {
             /*$society_id = $this->input->post('society_id');*/
-            $society_id = $this->check_header_authentication();
+            $society_id = $this->check_header_authentication_for_society();
             $date = $this->input->post('date') ? date('Y-m-d', strtotime($this->input->post('date'))) : date('Y-m-d');
             $shift = $this->input->post('shift');
 
@@ -409,7 +408,6 @@ WHERE `u`.`id`=( SELECT `ud`.`dairy_id` FROM `users` `ud` WHERE `ud`.`id`=`custo
 //            print_r($data);exit;
             $i = 0;
             foreach ($data as $row) {
-                // for temporary purpose
                 $stat = $this->transaction_model->exist_machine($data[13]);
                 if ($stat === FALSE) {
                     http_response_code(400);
@@ -511,7 +509,7 @@ WHERE `u`.`id`=( SELECT `ud`.`dairy_id` FROM `users` `ud` WHERE `ud`.`id`=`custo
         $response = array();
         if ($this->input->server('REQUEST_METHOD') == 'POST') {
             /*$sid = $this->input->post("sid");*/
-            $sid = $this->check_header_authentication();
+            $sid = $this->check_header_authentication_for_society();
             if ($txn_list = $this->transaction_model->get_txn_list($sid)) {
                 $response['error'] = FALSE;
                 $response['message'] = "Data loaded successfully";
@@ -536,7 +534,7 @@ WHERE `u`.`id`=( SELECT `ud`.`dairy_id` FROM `users` `ud` WHERE `ud`.`id`=`custo
         $response = array();
         if ($this->input->post()) {
             /*$sid = $this->input->post("sid");*/
-            $sid = $this->check_header_authentication();
+            $sid = $this->check_header_authentication_for_society();
             $str = $this->input->post("search");
             if ($txn_list = $this->transaction_model->search_txn($sid, $str)) {
                 $response['error'] = FALSE;
@@ -780,7 +778,7 @@ WHERE `u`.`id`=( SELECT `ud`.`dairy_id` FROM `users` `ud` WHERE `ud`.`id`=`custo
              * society_id
             */
             /*$society_id = $this->input->post("society_id");*/
-            $society_id = $this->check_header_authentication();
+            $society_id = $this->check_header_authentication_for_society();
             $machines = $this->machine_model->allocated_soc_machine($society_id);
             if(!empty($machines))
             {
@@ -812,7 +810,7 @@ WHERE `u`.`id`=( SELECT `ud`.`dairy_id` FROM `users` `ud` WHERE `ud`.`id`=`custo
              * customers        json string
              * machine_id
             */
-            $society_id = $this->check_header_authentication();
+            $society_id = $this->check_header_authentication_for_society();
             /*$society_id = $this->input->post("society_id");*/
             $data = json_decode($this->input->post("customer_json"))->Customer;
             $machine_id = $this->input->post("machine_id");
@@ -920,7 +918,7 @@ WHERE `u`.`id`=( SELECT `ud`.`dairy_id` FROM `users` `ud` WHERE `ud`.`id`=`custo
              * society_id
              * machine_id
              * */
-            $society = $this->check_header_authentication();
+            $society = $this->check_header_authentication_for_society();
             /*$society = $this->input->post("society_id");*/
             /*$machine = $this->input->post("machine_id");*/
             $customers = $this->customer_model->get_society_customer($society);
@@ -956,7 +954,7 @@ WHERE `u`.`id`=( SELECT `ud`.`dairy_id` FROM `users` `ud` WHERE `ud`.`id`=`custo
              * search string
              * society_id
              */
-            $society = $this->check_header_authentication();
+            $society = $this->check_header_authentication_for_society();
             $string = $this->input->post("search");
             /*$society = $this->input->post("society_id");*/
             $customers = $this->customer_model->search_customer($string, $society);
