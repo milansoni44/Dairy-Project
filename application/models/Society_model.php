@@ -91,6 +91,16 @@ class Society_model extends CI_Model
         }
         return FALSE;
     }
+
+    public function get_society_id($api_key = NULL)
+    {
+        $q = $this->db->get_where("users", array("token"=>$api_key));
+        if($q->num_rows() > 0)
+        {
+            return $q->row()->id;
+        }
+        return FALSE;
+    }
 }
 
 /** application/Models/Society_model.php */
