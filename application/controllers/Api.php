@@ -529,6 +529,49 @@ WHERE `u`.`id`=( SELECT `ud`.`dairy_id` FROM `users` `ud` WHERE `ud`.`id`=`custo
         echo json_encode($response);
     }
 
+    function society_weekly_transaction()
+    {
+        $http_response_code = 401;
+        $society_arr = array();
+        $response = array();
+        $data['cow'] = array();
+        $data['buffalo'] = array();
+        $data['society'] = array();
+        if ($this->input->server('REQUEST_METHOD') == 'GET') {
+            /*$cid = $this->input->post("cid");*/
+            $sid = $this->check_header_authentication_for_society();
+
+            $buff_array = $this->transaction_model->get_buff_soc_weekly_transaction($sid);
+
+            if (!$buff_array) {
+                $buff_array = array();
+            }
+            $cow_array = $this->transaction_model->get_cow_soc_weekly_transaction($sid);
+            if (!$cow_array) {
+                $cow_array = array();
+            }
+            /*echo "<pre>";
+			print_r($transaction_buff);exit;*/
+            if (!empty($buff_array) || !empty($cow_array)) {
+                $http_response_code = 200;
+                $response['error'] = FALSE;
+                $response['message'] = "Data found";
+                $response['data'] = array("cow" => $cow_array, "buffalo" => $buff_array);
+            } else {
+                $response['error'] = TRUE;
+                $response['message'] = "No transaction found";
+            }
+
+
+        } else {
+            $response['error'] = TRUE;
+            $response['message'] = "Invalid method";
+        }
+
+        http_response_code($http_response_code);
+        echo json_encode($response);
+    }
+
     public function societyTransactionSummary()
     {
         /*
