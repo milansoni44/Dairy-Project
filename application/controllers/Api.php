@@ -11,9 +11,11 @@
  *
  * @author Milan & Abhay
  */
-class Api extends CI_Controller {
+class Api extends CI_Controller
+{
 
-    function __construct() {
+    function __construct()
+    {
         parent::__construct();
         $this->load->model("auth_model");
         $this->load->model("society_model");
@@ -31,12 +33,11 @@ class Api extends CI_Controller {
     public function check_header_authentication_for_society()
     {
         $headers = getallheaders();
-        if(isset($headers['Authorization']))
-        {
+        if (isset($headers['Authorization'])) {
             $api_key = $headers['Authorization'];
             $id = $this->society_model->get_society_id($api_key);
             return $id;
-        }else{
+        } else {
             $response['error'] = TRUE;
             $response['message'] = "Api key is missing";
             http_response_code(401);
@@ -52,12 +53,11 @@ class Api extends CI_Controller {
     public function check_header_authentication_for_customer()
     {
         $headers = getallheaders();
-        if(isset($headers['Authorization']))
-        {
+        if (isset($headers['Authorization'])) {
             $api_key = $headers['Authorization'];
             $id = $this->customer_model->get_customer_id($api_key);
             return $id;
-        }else{
+        } else {
             $response['error'] = TRUE;
             $response['message'] = "Api key is missing";
             http_response_code(401);
@@ -66,87 +66,15 @@ class Api extends CI_Controller {
         }
     }
 
-    function society_login() {
-        $response = array();
-        if ($this->input->post()) {
-            $array = array(
-                "username" => $this->input->post("username"),
-                "password" => md5($this->input->post("password")),
-            );
-            $data = $this->auth_model->check_login($array);
-            if ($data) {
-                if ($this->auth_model->check_userType($data->id) == "society") {
-                    $dairy = $this->auth_model->get_dairy($data->id);
-                    $response['error'] = FALSE;
-                    $response['dairy'] = $dairy->name;
-                    $response['data'] = $data;
-
-                    http_response_code(200);
-                    echo json_encode($response);
-                } else {
-                    $response['error'] = TRUE;
-                    $response['message'] = "Username or password is invalid";
-                    http_response_code(401);
-                    echo json_encode($response);
-                }
-            } else {
-                $response['error'] = TRUE;
-                $response['message'] = "Username or password is invalid";
-                http_response_code(401);
-                echo json_encode($response);
-            }
-        } else {
-            $response['error'] = TRUE;
-            $response['message'] = "Please try again letter";
-            http_response_code(401);
-            echo json_encode($response);
-        }
-    }
-
-    function login() {
-        $response = array();
-        if ($this->input->post()) {
-            $array = array(
-                "username" => $this->input->post("username"),
-                "password" => md5($this->input->post("password")),
-            );
-            $data = $this->auth_model->check_login($array);
-            if ($data) {
-                if ($this->auth_model->check_userType($data->id) == "society") {
-                    $dairy = $this->auth_model->get_dairy($data->id);
-                    $response['error'] = FALSE;
-                    $response['dairy'] = $dairy->name;
-                    $response['data'] = $data;
-
-                    ;
-                    echo json_encode($response);
-                } else {
-                    $response['error'] = TRUE;
-                    $response['message'] = "Username or password is invalid";
-                    http_response_code(401);
-                    echo json_encode($response);
-                }
-            } else {
-                $response['error'] = TRUE;
-                $response['message'] = "Username or password is invalid";
-                http_response_code(401);
-                echo json_encode($response);
-            }
-        } else {
-            $response['error'] = TRUE;
-            $response['message'] = "Please try again letter";
-            http_response_code(401);
-            echo json_encode($response);
-        }
-    }
-
     /* customer login by otp * Start */
 
-    public function generateOTP() {
+    public function generateOTP()
+    {
         return substr(str_shuffle("123456789"), 0, 4);
     }
 
-    public function custoerOtpLogin() {
+    public function custoerOtpLogin()
+    {
         /*
           param = mobile
 
@@ -167,7 +95,7 @@ class Api extends CI_Controller {
                 $result = $this->db->query(" SELECT `id` FROM `customers` WHERE `mobile`=" . $mobile);
 
                 if ($result->row('id')) {
-                    $otp = (int) $this->generateOTP();
+                    $otp = (int)$this->generateOTP();
                     $customer_id = $result->row('id');
                     $result2 = $this->db->query(" UPDATE `customers` SET `otp`=" . $otp . " WHERE `id`=" . $customer_id);
 
@@ -220,7 +148,8 @@ class Api extends CI_Controller {
         echo json_encode($response);
     }
 
-    public function customerLoginOtpSubmit() {
+    public function customerLoginOtpSubmit()
+    {
         /*
           param = customer_id, otp
 
@@ -289,13 +218,266 @@ WHERE `u`.`id`=( SELECT `ud`.`dairy_id` FROM `users` `ud` WHERE `ud`.`id`=`custo
         echo json_encode($response);
     }
 
-    /* customer login by otp * end */
+    function customer_weekly_transaction()
+    {
+        $http_response_code = 401;
+        $society_arr = array();
+        $response = array();
+        $data['cow'] = array();
+        $data['buffalo'] = array();
+        $data['society'] = array();
+        if ($this->input->server('REQUEST_METHOD') == 'POST') {
+            $cid = $this->input->post("cid");
+            $sid = $this->input->post("society_id");
+            $society_list = $this->customer_model->get_customer_society($cid);
+            if (!empty($society_list)) {
+                foreach ($society_list as $rw_soc) {
+                    $data['society'][] = $rw_soc;
+                }
+            }
+            $transaction = $this->transaction_model->get_weekly_transaction($cid, $sid);
+            if (!empty($transaction)) {
+                foreach ($transaction as $rw_txn) {
+                    if ($rw_txn['type'] == 'B') {
+                        $data['buffalo'][] = $rw_txn;
+                    } else {
+                        $data['cow'][] = $rw_txn;
+                    }
+                }
+                $http_response_code = 200;
+                $response['error'] = FALSE;
+                $response['message'] = "Transaction Found";
+                $response['data'] = $data;
+            } else {
+                $response['error'] = TRUE;
+                $response['message'] = "No transaction found";
+            }
 
+        } else {
+            $response['error'] = TRUE;
+            $response['message'] = "Invalid method";
+        }
+
+        http_response_code($http_response_code);
+        echo json_encode($response);
+    }
+
+    function customer_range_transaction()
+    {
+        $http_response_code = 401;
+        if ($this->input->server('REQUEST_METHOD') == 'POST') {
+            $society = $this->input->post("society_id");
+            $from_date = date('Y-m-d', strtotime(str_replace('/', '-', $this->input->post("from_date"))));
+            $to_date = date('Y-m-d', strtotime(str_replace('/', '-', $this->input->post("to_date"))));
+            $cid = $this->input->post("cid");
+            $type = $this->input->post("type");
+
+            $data_arr = array(
+                "society" => $society,
+                "from_date" => $from_date,
+                "to_date" => $to_date,
+                "cid" => $cid,
+                "type" => $type
+            );
+            $transaction = $this->transaction_model->get_customRangeTxn($data_arr);
+            if (!empty($transaction)) {
+                $http_response_code = 200;
+                $response['error'] = FALSE;
+                $response['message'] = "data found";
+                $response['data'] = $transaction;
+            } else {
+                $response['error'] = TRUE;
+                $response['message'] = "No data found";
+            }
+        } else {
+            $response['error'] = TRUE;
+            $response['message'] = "Invalid method";
+        }
+        http_response_code($http_response_code);
+        echo json_encode($response);
+    }
+
+    function weekly_txn_summary()
+    {
+        $http_response_code = 401;
+        $cow_array = array();
+        $buff_array = array();
+        if ($this->input->server('REQUEST_METHOD') == 'POST') {
+            // parameter may be exist
+            $cid = $this->input->post("cid");
+            $buff_array = $this->transaction_model->get_weekly_buff_txn($cid);
+            if (!$buff_array) {
+                $buff_array = array();
+            }
+            $cow_array = $this->transaction_model->get_weekly_cow_txn($cid);
+            if (!$cow_array) {
+                $cow_array = array();
+            }
+            /*echo "<pre>";
+			print_r($transaction_buff);exit;*/
+            if (!empty($buff_array) || !empty($cow_array)) {
+                $http_response_code = 200;
+                $response['error'] = FALSE;
+                $response['message'] = "Data found";
+                $response['data'] = array("cow" => $cow_array, "buffalo" => $buff_array);
+            } else {
+                $response['error'] = TRUE;
+                $response['message'] = "No transaction found";
+            }
+        } else {
+            $response['error'] = TRUE;
+            $response['message'] = "Invalid method";
+        }
+        http_response_code($http_response_code);
+        echo json_encode($response);
+    }
+
+    function monthly_txn_summary()
+    {
+        $http_response_code = 401;
+        $cow_array = array();
+        $buff_array = array();
+        if ($this->input->server('REQUEST_METHOD') == 'POST') {
+            // parameters
+            $cid = $this->input->post("cid");
+            $buff_array = $this->transaction_model->get_monthly_buff_txn($cid);
+            if (!$buff_array) {
+                $buff_array = array();
+            }
+            $cow_array = $this->transaction_model->get_monthly_cow_txn($cid);
+            if (!$cow_array) {
+                $cow_array = array();
+            }
+            /*print_r($cow_array);exit;*/
+            if (!empty($buff_array) || !empty($cow_array)) {
+                $http_response_code = 200;
+                $response['error'] = FALSE;
+                $response['message'] = "Data found";
+                $response['data'] = array("cow" => $cow_array, "buffalo" => $buff_array);
+            } else {
+                $response['error'] = TRUE;
+                $response['message'] = "No transaction found";
+            }
+        } else {
+            $response['error'] = TRUE;
+            $response['message'] = "Invalid method";
+        }
+        http_response_code($http_response_code);
+        echo json_encode($response);
+    }
+
+    function yearly_txn_summary()
+    {
+        $http_response_code = 401;
+        if ($this->input->server('REQUEST_METHOD') == 'POST') {
+            $cid = $this->input->post("cid");
+            $buff_array = $this->transaction_model->get_yearly_buff_txn($cid);
+            if (!$buff_array) {
+                $buff_array = array();
+            }
+            $cow_array = $this->transaction_model->get_yearly_cow_txn($cid);
+            if (!$cow_array) {
+                $cow_array = array();
+            }
+            /*print_r($cow_array);exit;*/
+            if (!empty($buff_array) || !empty($cow_array)) {
+                $http_response_code = 200;
+                $response['error'] = FALSE;
+                $response['message'] = "Data found";
+                $response['data'] = array("cow" => $cow_array, "buffalo" => $buff_array);
+            } else {
+                $response['error'] = TRUE;
+                $response['message'] = "No transaction found";
+            }
+        } else {
+            $response['error'] = TRUE;
+            $response['message'] = "Invalid method";
+        }
+        http_response_code($http_response_code);
+        echo json_encode($response);
+    }
+
+    /* customer login by otp * end */
 
 
     /* society app webservice * Start */
 
-    public function societyCustomerList() {
+    function society_login()
+    {
+        $response = array();
+        if ($this->input->post()) {
+            $array = array(
+                "username" => $this->input->post("username"),
+                "password" => md5($this->input->post("password")),
+            );
+            $data = $this->auth_model->check_login($array);
+            if ($data) {
+                if ($this->auth_model->check_userType($data->id) == "society") {
+                    $dairy = $this->auth_model->get_dairy($data->id);
+                    $response['error'] = FALSE;
+                    $response['dairy'] = $dairy->name;
+                    $response['data'] = $data;
+
+                    http_response_code(200);
+                    echo json_encode($response);
+                } else {
+                    $response['error'] = TRUE;
+                    $response['message'] = "Username or password is invalid";
+                    http_response_code(401);
+                    echo json_encode($response);
+                }
+            } else {
+                $response['error'] = TRUE;
+                $response['message'] = "Username or password is invalid";
+                http_response_code(401);
+                echo json_encode($response);
+            }
+        } else {
+            $response['error'] = TRUE;
+            $response['message'] = "Please try again letter";
+            http_response_code(401);
+            echo json_encode($response);
+        }
+    }
+
+    function login()
+    {
+        $response = array();
+        if ($this->input->post()) {
+            $array = array(
+                "username" => $this->input->post("username"),
+                "password" => md5($this->input->post("password")),
+            );
+            $data = $this->auth_model->check_login($array);
+            if ($data) {
+                if ($this->auth_model->check_userType($data->id) == "society") {
+                    $dairy = $this->auth_model->get_dairy($data->id);
+                    $response['error'] = FALSE;
+                    $response['dairy'] = $dairy->name;
+                    $response['data'] = $data;;
+                    echo json_encode($response);
+                } else {
+                    $response['error'] = TRUE;
+                    $response['message'] = "Username or password is invalid";
+                    http_response_code(401);
+                    echo json_encode($response);
+                }
+            } else {
+                $response['error'] = TRUE;
+                $response['message'] = "Username or password is invalid";
+                http_response_code(401);
+                echo json_encode($response);
+            }
+        } else {
+            $response['error'] = TRUE;
+            $response['message'] = "Please try again letter";
+            http_response_code(401);
+            echo json_encode($response);
+        }
+    }
+
+    public function societyCustomerList()
+    {
         /*
           param = society_id
 
@@ -347,7 +529,8 @@ WHERE `u`.`id`=( SELECT `ud`.`dairy_id` FROM `users` `ud` WHERE `ud`.`id`=`custo
         echo json_encode($response);
     }
 
-    public function societyTransactionSummary() {
+    public function societyTransactionSummary()
+    {
         /*
           param = society_id=11, date = Y-m-d, shift= E|M
 
@@ -398,7 +581,7 @@ WHERE `u`.`id`=( SELECT `ud`.`dairy_id` FROM `users` `ud` WHERE `ud`.`id`=`custo
                     $response = array(
                         'error' => FALSE,
                         'data' => array(
-                            'date_shift' => date("d-M-Y", strtotime($date)) . " ( " . ($shift == "E" ? "Evening" : "Morning" ) . " )",
+                            'date_shift' => date("d-M-Y", strtotime($date)) . " ( " . ($shift == "E" ? "Evening" : "Morning") . " )",
                             'cow' => $result_cow->row_array(),
                             'buf' => $result_buf->row_array()
                         )
@@ -425,10 +608,11 @@ WHERE `u`.`id`=( SELECT `ud`.`dairy_id` FROM `users` `ud` WHERE `ud`.`id`=`custo
         echo json_encode($response);
     }
 
-    function import_json() {
+    function import_json()
+    {
         $response = array();
         $validation_error = array();
-        if($this->input->server('REQUEST_METHOD') == 'POST') {
+        if ($this->input->server('REQUEST_METHOD') == 'POST') {
             $data = json_decode($this->input->post("society_json"))->transaction;
 //            print_r($data);exit;
             $i = 0;
@@ -446,7 +630,7 @@ WHERE `u`.`id`=( SELECT `ud`.`dairy_id` FROM `users` `ud` WHERE `ud`.`id`=`custo
                 $dairy = $this->transaction_model->get_dairy_id($data[13])->dairy_id;
                 $machine_id = $this->transaction_model->get_machine_id($data[13])->mid;
                 $valid_society_machine = $this->transaction_model->check_mapped_society_machine($machine_id, $society);
-                if($valid_society_machine === FALSE){
+                if ($valid_society_machine === FALSE) {
                     http_response_code(400);
                     $response['error'] = TRUE;
                     $response['message'] = "Machine is not allocate to society";
@@ -464,7 +648,8 @@ WHERE `u`.`id`=( SELECT `ud`.`dairy_id` FROM `users` `ud` WHERE `ud`.`id`=`custo
                     $customer_data = array(
                         "adhar_no" => $row->aadhar,
                     );
-                    $cid = $this->customer_model->add_customer($customer_data, /* $row->deviceid */ $machine_id, $society);
+                    $cid = $this->customer_model->add_customer($customer_data, /* $row->deviceid */
+                        $machine_id, $society);
 //                    echo  = $this->db->insert_id();exit;
                     $date = str_replace('/', '-', $row->date);
                     $transaction_single = array(
@@ -530,7 +715,8 @@ WHERE `u`.`id`=( SELECT `ud`.`dairy_id` FROM `users` `ud` WHERE `ud`.`id`=`custo
         }
     }
 
-    function list_transaction() {
+    function list_transaction()
+    {
         $response = array();
         if ($this->input->server('REQUEST_METHOD') == 'POST') {
             /*$sid = $this->input->post("sid");*/
@@ -555,7 +741,8 @@ WHERE `u`.`id`=( SELECT `ud`.`dairy_id` FROM `users` `ud` WHERE `ud`.`id`=`custo
         }
     }
 
-    function search_txn() {
+    function search_txn()
+    {
         $response = array();
         if ($this->input->post()) {
             /*$sid = $this->input->post("sid");*/
@@ -581,243 +768,28 @@ WHERE `u`.`id`=( SELECT `ud`.`dairy_id` FROM `users` `ud` WHERE `ud`.`id`=`custo
         }
     }
 
-    function customer_weekly_transaction() 
-    {
-		$http_response_code = 401;
-		$society_arr = array();
-		$response = array();
-		$data['cow'] = array();
-		$data['buffalo'] = array();
-		$data['society'] = array();
-        if($this->input->server('REQUEST_METHOD') == 'POST'){
-			$cid = $this->input->post("cid");
-			$sid = $this->input->post("society_id");
-			$society_list = $this->customer_model->get_customer_society($cid);
-			if(!empty($society_list))
-			{
-				foreach($society_list as $rw_soc)
-				{	
-					$data['society'][] = $rw_soc;
-				}
-			}
-			$transaction = $this->transaction_model->get_weekly_transaction($cid, $sid);
-			if(!empty($transaction))
-			{
-				foreach($transaction as $rw_txn)
-				{
-					if($rw_txn['type'] == 'B')
-					{
-						$data['buffalo'][] = $rw_txn;
-					}
-					else
-					{
-						$data['cow'][] = $rw_txn;
-					}
-				}
-				$http_response_code = 200;
-				$response['error'] = FALSE;
-				$response['message'] = "Transaction Found";
-				$response['data'] = $data;
-			}
-			else
-			{
-				$response['error'] = TRUE;
-				$response['message'] = "No transaction found";
-			}
-			
-		}else{
-			$response['error'] = TRUE;
-			$response['message'] = "Invalid method";
-		}
-		
-		http_response_code($http_response_code);
-		echo json_encode($response);
-    }
-	
-	function customer_range_transaction()
-	{
-		$http_response_code = 401;
-		if($this->input->server('REQUEST_METHOD') == 'POST')
-		{
-			$society = $this->input->post("society_id");
-			$from_date = date('Y-m-d', strtotime(str_replace('/', '-', $this->input->post("from_date"))));
-			$to_date = date('Y-m-d', strtotime(str_replace('/', '-', $this->input->post("to_date"))));
-			$cid = $this->input->post("cid");
-			$type = $this->input->post("type");
-			
-			$data_arr = array(
-				"society"=>$society,
-				"from_date"=>$from_date,
-				"to_date"=>$to_date,
-				"cid"=>$cid,
-				"type"=>$type
-			);
-			$transaction = $this->transaction_model->get_customRangeTxn($data_arr);
-			if(!empty($transaction))
-			{
-				$http_response_code = 200;
-				$response['error'] = FALSE;
-				$response['message'] = "data found";
-				$response['data'] = $transaction;
-			}else{
-				$response['error'] = TRUE;
-				$response['message'] = "No data found";
-			}
-		}
-		else
-		{
-			$response['error'] = TRUE;
-			$response['message'] = "Invalid method";
-		}
-		http_response_code($http_response_code);
-		echo json_encode($response);
-	}
-	
-	function weekly_txn_summary()
-	{
-		$http_response_code = 401;
-		$cow_array = array();
-		$buff_array = array();
-		if($this->input->server('REQUEST_METHOD') == 'POST')
-		{
-			// parameter may be exist
-			$cid = $this->input->post("cid");
-            $buff_array = $this->transaction_model->get_weekly_buff_txn($cid);
-            if(!$buff_array){
-                $buff_array = array();
-            }
-            $cow_array = $this->transaction_model->get_weekly_cow_txn($cid);
-            if(!$cow_array){
-                $cow_array = array();
-            }
-            /*echo "<pre>";
-			print_r($transaction_buff);exit;*/
-            if(!empty($buff_array) || !empty($cow_array))
-			{
-               $http_response_code = 200;
-                $response['error'] = FALSE;
-                $response['message'] = "Data found";
-                $response['data'] = array("cow"=>$cow_array, "buffalo"=> $buff_array);
-			}
-			else
-			{
-				$response['error'] = TRUE;
-				$response['message'] = "No transaction found";
-			}
-		}
-		else
-		{
-			$response['error'] = TRUE;
-			$response['message'] = "Invalid method";
-		}
-		http_response_code($http_response_code);
-		echo json_encode($response);
-	}
-
-	function monthly_txn_summary()
-    {
-        $http_response_code = 401;
-        $cow_array = array();
-        $buff_array = array();
-        if($this->input->server('REQUEST_METHOD') == 'POST')
-        {
-            // parameters
-            $cid = $this->input->post("cid");
-            $buff_array = $this->transaction_model->get_monthly_buff_txn($cid);
-            if(!$buff_array){
-                $buff_array = array();
-            }
-            $cow_array = $this->transaction_model->get_monthly_cow_txn($cid);
-            if(!$cow_array){
-                $cow_array = array();
-            }
-            /*print_r($cow_array);exit;*/
-            if(!empty($buff_array) || !empty($cow_array))
-            {
-                $http_response_code = 200;
-                $response['error'] = FALSE;
-                $response['message'] = "Data found";
-                $response['data'] = array("cow"=>$cow_array, "buffalo"=> $buff_array);
-            }
-            else
-            {
-                $response['error'] = TRUE;
-                $response['message'] = "No transaction found";
-            }
-        }
-        else
-        {
-            $response['error'] = TRUE;
-            $response['message'] = "Invalid method";
-        }
-        http_response_code($http_response_code);
-        echo json_encode($response);
-    }
-
-    function yearly_txn_summary()
-    {
-        $http_response_code = 401;
-        if($this->input->server('REQUEST_METHOD') == 'POST')
-        {
-            $cid = $this->input->post("cid");
-            $buff_array = $this->transaction_model->get_yearly_buff_txn($cid);
-            if(!$buff_array){
-                $buff_array = array();
-            }
-            $cow_array = $this->transaction_model->get_yearly_cow_txn($cid);
-            if(!$cow_array){
-                $cow_array = array();
-            }
-            /*print_r($cow_array);exit;*/
-            if(!empty($buff_array) || !empty($cow_array))
-            {
-                $http_response_code = 200;
-                $response['error'] = FALSE;
-                $response['message'] = "Data found";
-                $response['data'] = array("cow"=>$cow_array, "buffalo"=> $buff_array);
-            }
-            else
-            {
-                $response['error'] = TRUE;
-                $response['message'] = "No transaction found";
-            }
-        }
-        else
-        {
-            $response['error'] = TRUE;
-            $response['message'] = "Invalid method";
-        }
-        http_response_code($http_response_code);
-        echo json_encode($response);
-    }
-
     /**
      *  get machine by society_id
      */
     public function get_society_machine()
     {
         $http_response_code = 401;
-        if($this->input->server('REQUEST_METHOD') == 'POST')
-        {
+        if ($this->input->server('REQUEST_METHOD') == 'POST') {
             /*
              * society_id
             */
             /*$society_id = $this->input->post("society_id");*/
             $society_id = $this->check_header_authentication_for_society();
             $machines = $this->machine_model->allocated_soc_machine($society_id);
-            if(!empty($machines))
-            {
-                foreach($machines as $row)
-                {
-                    $data['machines'][] = array('machine_id'=>$row->machine_id, 'id'=>$row->id);
+            if (!empty($machines)) {
+                foreach ($machines as $row) {
+                    $data['machines'][] = array('machine_id' => $row->machine_id, 'id' => $row->id);
                 }
             }
             $http_response_code = 200;
             $response['error'] = FALSE;
             $response['data'] = $data;
-        }
-        else
-        {
+        } else {
             $response['error'] = TRUE;
             $response['message'] = "Invalid method";
         }
@@ -828,8 +800,7 @@ WHERE `u`.`id`=( SELECT `ud`.`dairy_id` FROM `users` `ud` WHERE `ud`.`id`=`custo
     public function import_customer_json()
     {
         $http_response_code = 401;
-        if($this->input->server('REQUEST_METHOD') == 'POST')
-        {
+        if ($this->input->server('REQUEST_METHOD') == 'POST') {
             /*
              * society_id
              * customers        json string
@@ -839,11 +810,9 @@ WHERE `u`.`id`=( SELECT `ud`.`dairy_id` FROM `users` `ud` WHERE `ud`.`id`=`custo
             /*$society_id = $this->input->post("society_id");*/
             $data = json_decode($this->input->post("customer_json"))->Customer;
             $machine_id = $this->input->post("machine_id");
-            if(!empty($data))
-            {
+            if (!empty($data)) {
                 $i = 2;
-                foreach($data as $row)
-                {
+                foreach ($data as $row) {
                     $col1 = $row->member_code;  // member code
                     $col2 = $row->name;  // customer name
                     $col3 = $row->mobile_number;  // customer mobile
@@ -868,34 +837,34 @@ WHERE `u`.`id`=( SELECT `ud`.`dairy_id` FROM `users` `ud` WHERE `ud`.`id`=`custo
                         $http_response_code = 200;
                         $response['error'] = FALSE;
                         $response['message'] = "Customer import successfully.";
-                    }else{
+                    } else {
                         $data_validate = array();
                         $exist_cust = $this->customer_model->get_customer_api_id($cid);
                         // check blank fields
-                        if($col1 != ""){
-                            $cust_data = array( "mem_code"=> $col1 );
+                        if ($col1 != "") {
+                            $cust_data = array("mem_code" => $col1);
                             $this->customer_model->update_single($cust_data, $cid);
                             $http_response_code = 200;
                             $response['error'] = FALSE;
                             $response['message'] = "Customer member code updated successfully on line $i";
                         }
 
-                        if($exist_cust->customer_name == "" && $col2 != ""){
-                            $cust_data = array( "customer_name"=> $col2 );
+                        if ($exist_cust->customer_name == "" && $col2 != "") {
+                            $cust_data = array("customer_name" => $col2);
                             $this->customer_model->update_single($cust_data, $cid);
                             $http_response_code = 200;
                             $response['error'] = FALSE;
                             $response['message'] = "Customer name updated successfully on line $i";
                         }
 
-                        if($exist_cust->mobile == "" && $col3 != ""){
-                            $cust_data = array( "mobile"=> $col3 );
+                        if ($exist_cust->mobile == "" && $col3 != "") {
+                            $cust_data = array("mobile" => $col3);
                             $this->customer_model->update_single($cust_data, $cid);
                             $http_response_code = 200;
                             $response['error'] = FALSE;
                             $response['message'] = "Customer mobile updated successfully on line $i";
                         }
-                        if($this->customer_model->check_exist_customer_machine($cid, $machine_id, $society_id)){
+                        if ($this->customer_model->check_exist_customer_machine($cid, $machine_id, $society_id)) {
                             $data_validate = array("Error" => "Customer already exist", "Line" => $i);
                             $http_response_code = 200;
                             $response['exist'][] = $data_validate;
@@ -903,11 +872,11 @@ WHERE `u`.`id`=( SELECT `ud`.`dairy_id` FROM `users` `ud` WHERE `ud`.`id`=`custo
                             $response['message'] = "Customer already exist";
                             $i++;
                             continue;
-                        }else{
+                        } else {
                             $cust_machine = array(
-                                "cid"=>$cid,
-                                "machine_id"=>$machine_id,
-                                "society_id"=>$society_id
+                                "cid" => $cid,
+                                "machine_id" => $machine_id,
+                                "society_id" => $society_id
                             );
                             $this->customer_model->insert_customer_machine($cust_machine);
                             $http_response_code = 200;
@@ -918,15 +887,11 @@ WHERE `u`.`id`=( SELECT `ud`.`dairy_id` FROM `users` `ud` WHERE `ud`.`id`=`custo
                         }
                     }
                 }
-            }
-            else
-            {
+            } else {
                 $response['error'] = TRUE;
                 $response['message'] = "Please try again letter";
             }
-        }
-        else
-        {
+        } else {
             $response['error'] = TRUE;
             $response['message'] = "Invalid method";
         }
@@ -937,8 +902,7 @@ WHERE `u`.`id`=( SELECT `ud`.`dairy_id` FROM `users` `ud` WHERE `ud`.`id`=`custo
     public function customer_list()
     {
         $http_response_code = 401;
-        if($this->input->server('REQUEST_METHOD') == 'POST')
-        {
+        if ($this->input->server('REQUEST_METHOD') == 'POST') {
             /*
              * society_id
              * machine_id
@@ -947,22 +911,18 @@ WHERE `u`.`id`=( SELECT `ud`.`dairy_id` FROM `users` `ud` WHERE `ud`.`id`=`custo
             /*$society = $this->input->post("society_id");*/
             /*$machine = $this->input->post("machine_id");*/
             $customers = $this->customer_model->get_society_customer($society);
-            if(!empty($customers))
-            {
-                foreach($customers as $row)
-                {
-                    $data[] = (array) $row;
+            if (!empty($customers)) {
+                foreach ($customers as $row) {
+                    $data[] = (array)$row;
                 }
                 $http_response_code = 200;
                 $response['error'] = FALSE;
                 $response['data'] = $data;
-            }else{
+            } else {
                 $response['error'] = TRUE;
                 $response['message'] = "No customers found";
             }
-        }
-        else
-        {
+        } else {
             $response['error'] = TRUE;
             $response['message'] = "Invalid method";
         }
@@ -973,8 +933,7 @@ WHERE `u`.`id`=( SELECT `ud`.`dairy_id` FROM `users` `ud` WHERE `ud`.`id`=`custo
     public function customer_filter()
     {
         $http_response_code = 401;
-        if($this->input->server('REQUEST_METHOD') == 'POST')
-        {
+        if ($this->input->server('REQUEST_METHOD') == 'POST') {
             /**
              * search string
              * society_id
@@ -983,18 +942,15 @@ WHERE `u`.`id`=( SELECT `ud`.`dairy_id` FROM `users` `ud` WHERE `ud`.`id`=`custo
             $string = $this->input->post("search");
             /*$society = $this->input->post("society_id");*/
             $customers = $this->customer_model->search_customer($string, $society);
-            if(!empty($customers))
-            {
+            if (!empty($customers)) {
                 $http_response_code = 200;
                 $response['message'] = "Customer found";
                 $response['data'] = $customers;
-            }else{
+            } else {
                 $response['error'] = TRUE;
                 $response['message'] = "No customers found";
             }
-        }
-        else
-        {
+        } else {
             $response['error'] = TRUE;
             $response['message'] = "Invalid method";
         }
