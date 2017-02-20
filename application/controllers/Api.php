@@ -478,23 +478,10 @@ WHERE `u`.`id`=( SELECT `ud`.`dairy_id` FROM `users` `ud` WHERE `ud`.`id`=`custo
 
     public function societyCustomerList()
     {
-        /*
-          param = society_id
-
-          return data:
-          {
-          error: true/false,
-          customer_list: json_array,
-          message: 'this is message'
-          }
-
-         */
-
         $response = array();
         $http_response_code = 401;
 
         if ($this->input->server("REQUEST_METHOD") === "POST") {
-            /*$society_id = $this->input->post('society_id');*/
             $society_id = $this->check_header_authentication_for_society();
 
             if ($society_id && $society_id != '') {
@@ -529,6 +516,12 @@ WHERE `u`.`id`=( SELECT `ud`.`dairy_id` FROM `users` `ud` WHERE `ud`.`id`=`custo
         echo json_encode($response);
     }
 
+    /**
+     * society weekly transaction summary
+     * Method: GET
+     * Headers: Authorization: api_key
+     * response type json
+     */
     function society_weekly_transaction()
     {
         $http_response_code = 401;
@@ -538,7 +531,6 @@ WHERE `u`.`id`=( SELECT `ud`.`dairy_id` FROM `users` `ud` WHERE `ud`.`id`=`custo
         $data['buffalo'] = array();
         $data['society'] = array();
         if ($this->input->server('REQUEST_METHOD') == 'GET') {
-            /*$cid = $this->input->post("cid");*/
             $sid = $this->check_header_authentication_for_society();
 
             $buff_array = $this->transaction_model->get_buff_soc_weekly_transaction($sid);
@@ -550,8 +542,7 @@ WHERE `u`.`id`=( SELECT `ud`.`dairy_id` FROM `users` `ud` WHERE `ud`.`id`=`custo
             if (!$cow_array) {
                 $cow_array = array();
             }
-            /*echo "<pre>";
-			print_r($transaction_buff);exit;*/
+
             if (!empty($buff_array) || !empty($cow_array)) {
                 $http_response_code = 200;
                 $response['error'] = FALSE;
@@ -569,6 +560,13 @@ WHERE `u`.`id`=( SELECT `ud`.`dairy_id` FROM `users` `ud` WHERE `ud`.`id`=`custo
         echo json_encode($response);
     }
 
+    /**
+     * society transaction summary by date & type filter
+     * Method: POST
+     * Headers: Authorization: api_key
+     * Params:  from_date, to_date, type
+     * response type json
+     */
     public function societyTransactionSummary()
     {
         $response = array();
@@ -576,8 +574,8 @@ WHERE `u`.`id`=( SELECT `ud`.`dairy_id` FROM `users` `ud` WHERE `ud`.`id`=`custo
 
         if ($this->input->server("REQUEST_METHOD") === "POST") {
             $society_id = $this->check_header_authentication_for_society();
-            $from_date = $this->input->post("from_date");
-            $to_date = $this->input->post("to_date");
+            $from_date = date('Y-m-d', strtotime(str_replace('/', '-', $this->input->post("from_date"))));     // format dd-mm-yyyy
+            $to_date = date('Y-m-d', strtotime(str_replace('/', '-', $this->input->post("to_date"))));         // format dd-mm-yyyy
             $type = ucfirst($this->input->post("type"));
 
             if($type == 'B') {
@@ -591,8 +589,7 @@ WHERE `u`.`id`=( SELECT `ud`.`dairy_id` FROM `users` `ud` WHERE `ud`.`id`=`custo
                     $cow_array = array();
                 }
             }
-            /*echo "<pre>";
-			print_r($transaction_buff);exit;*/
+
             if (!empty($buff_array) || !empty($cow_array)) {
                 $http_response_code = 200;
                 $response['error'] = FALSE;
@@ -616,7 +613,13 @@ WHERE `u`.`id`=( SELECT `ud`.`dairy_id` FROM `users` `ud` WHERE `ud`.`id`=`custo
         http_response_code($http_response_code);
         echo json_encode($response);
     }
-
+    /**
+     * transaction import by society
+     * Method: POST
+     * Headers: Authorization: api_key
+     * Params:  society_json
+     * response type json
+     */
     function import_json()
     {
         $response = array();
@@ -647,7 +650,6 @@ WHERE `u`.`id`=( SELECT `ud`.`dairy_id` FROM `users` `ud` WHERE `ud`.`id`=`custo
                     exit;
                 }
                 if ($row->aadhar == "") {
-//                    $this->session->set_flashdata("message","Line:$i Adhar no required");
                     $validation_error[] = array("message" => "Line:$i Adhar no required");
                     $i++;
                     continue;
@@ -657,9 +659,7 @@ WHERE `u`.`id`=( SELECT `ud`.`dairy_id` FROM `users` `ud` WHERE `ud`.`id`=`custo
                     $customer_data = array(
                         "adhar_no" => $row->aadhar,
                     );
-                    $cid = $this->customer_model->add_customer($customer_data, /* $row->deviceid */
-                        $machine_id, $society);
-//                    echo  = $this->db->insert_id();exit;
+                    $cid = $this->customer_model->add_customer($customer_data, $machine_id, $society);
                     $date = str_replace('/', '-', $row->date);
                     $transaction_single = array(
                         "dairy_id" => $dairy,
@@ -728,7 +728,6 @@ WHERE `u`.`id`=( SELECT `ud`.`dairy_id` FROM `users` `ud` WHERE `ud`.`id`=`custo
     {
         $response = array();
         if ($this->input->server('REQUEST_METHOD') == 'POST') {
-            /*$sid = $this->input->post("sid");*/
             $sid = $this->check_header_authentication_for_society();
             if ($txn_list = $this->transaction_model->get_txn_list($sid)) {
                 $response['error'] = FALSE;
@@ -754,7 +753,6 @@ WHERE `u`.`id`=( SELECT `ud`.`dairy_id` FROM `users` `ud` WHERE `ud`.`id`=`custo
     {
         $response = array();
         if ($this->input->post()) {
-            /*$sid = $this->input->post("sid");*/
             $sid = $this->check_header_authentication_for_society();
             $str = $this->input->post("search");
             if ($txn_list = $this->transaction_model->search_txn($sid, $str)) {
@@ -778,16 +776,15 @@ WHERE `u`.`id`=( SELECT `ud`.`dairy_id` FROM `users` `ud` WHERE `ud`.`id`=`custo
     }
 
     /**
-     *  get machine by society_id
+     * get society machines
+     * Method: POST
+     * Headers: Authorization: api_key
+     * response type json
      */
     public function get_society_machine()
     {
         $http_response_code = 401;
         if ($this->input->server('REQUEST_METHOD') == 'POST') {
-            /*
-             * society_id
-            */
-            /*$society_id = $this->input->post("society_id");*/
             $society_id = $this->check_header_authentication_for_society();
             $machines = $this->machine_model->allocated_soc_machine($society_id);
             if (!empty($machines)) {
@@ -806,17 +803,79 @@ WHERE `u`.`id`=( SELECT `ud`.`dairy_id` FROM `users` `ud` WHERE `ud`.`id`=`custo
         echo json_encode($response);
     }
 
+    /**
+     * customer list by society
+     * Method: POST
+     * Headers: Authorization: api_key
+     * response type json
+     */
+    public function customer_list()
+    {
+        $http_response_code = 401;
+        if ($this->input->server('REQUEST_METHOD') == 'POST') {
+            $society = $this->check_header_authentication_for_society();
+            $customers = $this->customer_model->get_society_customer($society);
+            if (!empty($customers)) {
+                foreach ($customers as $row) {
+                    $data[] = (array)$row;
+                }
+                $http_response_code = 200;
+                $response['error'] = FALSE;
+                $response['data'] = $data;
+            } else {
+                $response['error'] = TRUE;
+                $response['message'] = "No customers found";
+            }
+        } else {
+            $response['error'] = TRUE;
+            $response['message'] = "Invalid method";
+        }
+        http_response_code($http_response_code);
+        echo json_encode($response);
+    }
+
+    /**
+     * customer filter by search string
+     * Method: POST
+     * Headers: Authorization: api_key
+     * Params:  search_key
+     * response type json
+     */
+    public function customer_filter()
+    {
+        $http_response_code = 401;
+        if ($this->input->server('REQUEST_METHOD') == 'POST') {
+            $society = $this->check_header_authentication_for_society();
+            $string = $this->input->post("search");
+            $customers = $this->customer_model->search_customer($string, $society);
+            if (!empty($customers)) {
+                $http_response_code = 200;
+                $response['message'] = "Customer found";
+                $response['data'] = $customers;
+            } else {
+                $response['error'] = TRUE;
+                $response['message'] = "No customers found";
+            }
+        } else {
+            $response['error'] = TRUE;
+            $response['message'] = "Invalid method";
+        }
+        http_response_code($http_response_code);
+        echo json_encode($response);
+    }
+
+    /**
+     * customer import api
+     * Method: POST
+     * Headers: Authorization: api_key
+     * Params:  customer_json, machine_id
+     * response type json
+     */
     public function import_customer_json()
     {
         $http_response_code = 401;
         if ($this->input->server('REQUEST_METHOD') == 'POST') {
-            /*
-             * society_id
-             * customers        json string
-             * machine_id
-            */
             $society_id = $this->check_header_authentication_for_society();
-            /*$society_id = $this->input->post("society_id");*/
             $data = json_decode($this->input->post("customer_json"))->Customer;
             $machine_id = $this->input->post("machine_id");
             if (!empty($data)) {
@@ -899,65 +958,6 @@ WHERE `u`.`id`=( SELECT `ud`.`dairy_id` FROM `users` `ud` WHERE `ud`.`id`=`custo
             } else {
                 $response['error'] = TRUE;
                 $response['message'] = "Please try again letter";
-            }
-        } else {
-            $response['error'] = TRUE;
-            $response['message'] = "Invalid method";
-        }
-        http_response_code($http_response_code);
-        echo json_encode($response);
-    }
-
-    public function customer_list()
-    {
-        $http_response_code = 401;
-        if ($this->input->server('REQUEST_METHOD') == 'POST') {
-            /*
-             * society_id
-             * machine_id
-             * */
-            $society = $this->check_header_authentication_for_society();
-            /*$society = $this->input->post("society_id");*/
-            /*$machine = $this->input->post("machine_id");*/
-            $customers = $this->customer_model->get_society_customer($society);
-            if (!empty($customers)) {
-                foreach ($customers as $row) {
-                    $data[] = (array)$row;
-                }
-                $http_response_code = 200;
-                $response['error'] = FALSE;
-                $response['data'] = $data;
-            } else {
-                $response['error'] = TRUE;
-                $response['message'] = "No customers found";
-            }
-        } else {
-            $response['error'] = TRUE;
-            $response['message'] = "Invalid method";
-        }
-        http_response_code($http_response_code);
-        echo json_encode($response);
-    }
-
-    public function customer_filter()
-    {
-        $http_response_code = 401;
-        if ($this->input->server('REQUEST_METHOD') == 'POST') {
-            /**
-             * search string
-             * society_id
-             */
-            $society = $this->check_header_authentication_for_society();
-            $string = $this->input->post("search");
-            /*$society = $this->input->post("society_id");*/
-            $customers = $this->customer_model->search_customer($string, $society);
-            if (!empty($customers)) {
-                $http_response_code = 200;
-                $response['message'] = "Customer found";
-                $response['data'] = $customers;
-            } else {
-                $response['error'] = TRUE;
-                $response['message'] = "No customers found";
             }
         } else {
             $response['error'] = TRUE;
