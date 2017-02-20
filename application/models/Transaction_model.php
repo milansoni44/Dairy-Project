@@ -270,7 +270,14 @@ class Transaction_model extends CI_Model {
         $date_end = (isset($date_end)) ? $date_end : date('Y-m-d');
         $date_start = (isset($date_start)) ? $date_start : date('Y-m-d', strtotime('-16 days')); // TODO neeed change to 7 days
 
-        $q = $this->db->query("SELECT SUM(`t`.`weight`) AS `litre`, (SELECT CONCAT_WS('-',machine_name, machine_id) FROM machines WHERE `machines`.`id` = `t`.`deviceid`) AS machine,`t`.`type`, `s`.`name` AS `society_name`, `d`.`name` AS `dairy_name`, AVG(`t`.`fat`) AS `fat`, AVG(t.clr) AS `clr`, AVG(t.rate) AS `rate`, SUM(t.netamt) AS `netamt`, `t`.`shift`, AVG(`t`.`snf`) AS `snf` FROM transactions t
+        $q = $this->db->query("SELECT 
+                                ROUND(SUM(`t`.`weight`), 2) AS `litre`, 
+                                (SELECT CONCAT_WS('-',machine_name, machine_id) FROM machines WHERE `machines`.`id` = `t`.`deviceid`) AS machine,`t`.`type`, `s`.`name` AS `society_name`, `d`.`name` AS `dairy_name`, 
+                                ROUND(AVG(`t`.`fat`), 2) AS `fat`, 
+                                ROUND(AVG(t.clr), 2) AS `clr`, 
+                                ROUND(AVG(t.rate), 2) AS `rate`, 
+                                ROUND(SUM(t.netamt), 2) AS `netamt`, `t`.`shift`, 
+                                ROUND(AVG(`t`.`snf`), 2) AS `snf` FROM transactions t
 								LEFT JOIN `users` s ON s.id = t.society_id
 								LEFT JOIN `users` d ON d.id = t.dairy_id
 								WHERE `t`.`society_id` = '$sid' AND `t`.`type` = 'C' AND `t`.`date` BETWEEN '$date_start' AND '$date_end' GROUP BY `t`.`shift` ORDER BY `t`.`date` DESC");
