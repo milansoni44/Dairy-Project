@@ -265,10 +265,10 @@ class Transaction_model extends CI_Model {
         }
     }
 
-    function get_cow_soc_weekly_transaction($sid = NULL)
+    function get_cow_soc_weekly_transaction($sid = NULL, $date_start = NULL, $date_end = NULL)
     {
-        $date_end = date('Y-m-d');
-        $date_start = date('Y-m-d', strtotime('-16 days'));  // TODO neeed change to 7 days
+        $date_end = (isset($date_end)) ? $date_end : date('Y-m-d');
+        $date_start = (isset($date_start)) ? $date_start : date('Y-m-d', strtotime('-16 days')); // TODO neeed change to 7 days
 
         $q = $this->db->query("SELECT SUM(`t`.`weight`) AS `litre`, (SELECT CONCAT_WS('-',machine_name, machine_id) FROM machines WHERE `machines`.`id` = `t`.`deviceid`) AS machine,`t`.`type`, `s`.`name` AS `society_name`, `d`.`name` AS `dairy_name`, AVG(`t`.`fat`) AS `fat`, AVG(t.clr) AS `clr`, AVG(t.rate) AS `rate`, SUM(t.netamt) AS `netamt`, `t`.`shift`, AVG(`t`.`snf`) AS `snf` FROM transactions t
 								LEFT JOIN `users` s ON s.id = t.society_id
@@ -282,10 +282,10 @@ class Transaction_model extends CI_Model {
         return FALSE;
     }
 
-    function get_buff_soc_weekly_transaction($sid = NULL)
+    function get_buff_soc_weekly_transaction($sid = NULL, $date_start = NULL, $date_end = NULL)
     {
-        $date_end = date('Y-m-d');
-        $date_start = date('Y-m-d', strtotime('-16 days')); // TODO neeed change to 7 days
+        $date_end = (isset($date_end)) ? $date_end : date('Y-m-d');
+        $date_start = (isset($date_start)) ? $date_start : date('Y-m-d', strtotime('-16 days')); // TODO neeed change to 7 days
 
         $q = $this->db->query("SELECT  
 									ROUND(SUM(`t`.`weight`), 2) AS `litre`,

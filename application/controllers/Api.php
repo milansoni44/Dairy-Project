@@ -561,86 +561,45 @@ WHERE `u`.`id`=( SELECT `ud`.`dairy_id` FROM `users` `ud` WHERE `ud`.`id`=`custo
                 $response['error'] = TRUE;
                 $response['message'] = "No transaction found";
             }
-
-
         } else {
             $response['error'] = TRUE;
             $response['message'] = "Invalid method";
         }
-
         http_response_code($http_response_code);
         echo json_encode($response);
     }
 
     public function societyTransactionSummary()
     {
-        /*
-          param = society_id=11, date = Y-m-d, shift= E|M
-
-          return data:
-          {
-          error: true/false,
-          customer_list: json_array,
-          message: 'this is message'
-          }
-
-         */
-
         $response = array();
         $http_response_code = 401;
 
         if ($this->input->server("REQUEST_METHOD") === "POST") {
-            /*$society_id = $this->input->post('society_id');*/
             $society_id = $this->check_header_authentication_for_society();
-            $date = $this->input->post('date') ? date('Y-m-d', strtotime($this->input->post('date'))) : date('Y-m-d');
-            $shift = $this->input->post('shift');
+            $from_date = $this->input->post("from_date");
+            $to_date = $this->input->post("to_date");
 
-            if ($society_id && $society_id != '' && $shift && $shift != '') {
-                $result_cnt = $this->db->query("SELECT 
-					COUNT(*) AS total
-		FROM `transactions` WHERE `society_id`=" . $society_id . " AND `date`='" . $date . "' ");
-                if ($result_cnt->row("total") > 0) {
-                    $result_cow = $this->db->query("SELECT 
-                                            SUM(`weight`) AS `total_litre`, 
-                                            AVG(`fat`) AS `avg_fat`, 
-                                            AVG(`clr`) AS `avg_clr`, 
-                                            AVG(`snf`) AS `avg_snf`, 
-                                            SUM(`netamt`) AS `total_amount`, 
-                                            COUNT(`cid`) AS `producer`,
-                                            (SELECT `machine_id` FROM `machines` `m` WHERE `m`.`id` = `transactions`.`deviceid` ) AS `machine_code`
-                    FROM `transactions` WHERE `society_id`=" . $society_id . " AND shift='$shift' AND `type`='C' AND `date`='" . $date . "' ");
+            $buff_array = $this->transaction_model->get_buff_soc_weekly_transaction($society_id, $from_date, $to_date);
 
-                    $result_buf = $this->db->query("SELECT 
-                                            SUM(`weight`) AS `total_litre`, 
-                                            AVG(`fat`) AS `avg_fat`, 
-                                            AVG(`clr`) AS `avg_clr`, 
-                                            AVG(`snf`) AS `avg_snf`, 
-                                            SUM(`netamt`) AS `total_amount`, 
-                                            COUNT(`cid`) AS `producer`,
-                                            (SELECT `machine_id` FROM `machines` `m` WHERE `m`.`id` = `transactions`.`deviceid` ) AS `machine_code`
-                    FROM `transactions` WHERE `society_id`=" . $society_id . " AND shift='$shift' AND `type`='B' AND `date`='" . $date . "' ");
-
-                    $http_response_code = 200;
-                    $response = array(
-                        'error' => FALSE,
-                        'data' => array(
-                            'date_shift' => date("d-M-Y", strtotime($date)) . " ( " . ($shift == "E" ? "Evening" : "Morning") . " )",
-                            'cow' => $result_cow->row_array(),
-                            'buf' => $result_buf->row_array()
-                        )
-                    );
-                } else {
-                    $response = array(
-                        'error' => TRUE,
-                        'message' => "There is no transactions as of now."
-                    );
-                }
-            } else {
-                $response = array(
-                    'error' => TRUE,
-                    'message' => "Please provide society_id & shift"
-                );
+            if (!$buff_array) {
+                $buff_array = array();
             }
+            $cow_array = $this->transaction_model->get_cow_soc_weekly_transaction($society_id, $from_date, $to_date);
+            if (!$cow_array) {
+                $cow_array = array();
+            }
+            /*echo "<pre>";
+			print_r($transaction_buff);exit;*/
+            if (!empty($buff_array) || !empty($cow_array)) {
+                $http_response_code = 200;
+                $response['error'] = FALSE;
+                $response['message'] = "Data found";
+                $response['data'] = array("cow" => $cow_array, "buffalo" => $buff_array);
+            } else {
+                $response['error'] = TRUE;
+                $response['message'] = "No transaction found";
+            }
+
         } else {
             $response = array(
                 'error' => TRUE,
