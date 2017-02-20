@@ -578,15 +578,18 @@ WHERE `u`.`id`=( SELECT `ud`.`dairy_id` FROM `users` `ud` WHERE `ud`.`id`=`custo
             $society_id = $this->check_header_authentication_for_society();
             $from_date = $this->input->post("from_date");
             $to_date = $this->input->post("to_date");
+            $type = ucfirst($this->input->post("type"));
 
-            $buff_array = $this->transaction_model->get_buff_soc_weekly_transaction($society_id, $from_date, $to_date);
-
-            if (!$buff_array) {
-                $buff_array = array();
-            }
-            $cow_array = $this->transaction_model->get_cow_soc_weekly_transaction($society_id, $from_date, $to_date);
-            if (!$cow_array) {
-                $cow_array = array();
+            if($type == 'B') {
+                $buff_array = $this->transaction_model->get_buff_soc_weekly_transaction($society_id, $from_date, $to_date);
+                if (!$buff_array) {
+                    $buff_array = array();
+                }
+            }else {
+                $cow_array = $this->transaction_model->get_cow_soc_weekly_transaction($society_id, $from_date, $to_date);
+                if (!$cow_array) {
+                    $cow_array = array();
+                }
             }
             /*echo "<pre>";
 			print_r($transaction_buff);exit;*/
@@ -594,7 +597,11 @@ WHERE `u`.`id`=( SELECT `ud`.`dairy_id` FROM `users` `ud` WHERE `ud`.`id`=`custo
                 $http_response_code = 200;
                 $response['error'] = FALSE;
                 $response['message'] = "Data found";
-                $response['data'] = array("cow" => $cow_array, "buffalo" => $buff_array);
+                if($type == 'C') {
+                    $response['data'] = array("cow" => $cow_array);
+                }else{
+                    $response['data'] = array("buffalo" => $buff_array);
+                }
             } else {
                 $response['error'] = TRUE;
                 $response['message'] = "No transaction found";
