@@ -209,7 +209,7 @@ class Transaction_model extends CI_Model {
 
     function exist_machine($device = NULL) {
         $q = $this->db->get_where("machines", array("machine_id" => $device));
-//        echo $this->db->last_query();exit;
+        /*echo $this->db->last_query();exit;*/
         if ($q->num_rows() > 0) {
             return $q->row()->id;
         }
@@ -235,7 +235,7 @@ class Transaction_model extends CI_Model {
                             LEFT JOIN customers c ON c.id = t.cid
                             LEFT JOIN users d ON d.id = t.dairy_id
                             LEFT JOIN users s ON s.id = t.society_id
-                            WHERE s.id = '$id' AND `t`.`date` = CURDATE() GROUP BY `t`.`type`");
+                            WHERE s.id = '$id' AND `t`.`date` = CURDATE()");
         /*echo $this->db->last_query();exit;*/
         if ($q->num_rows() > 0) {
             return $q->result_array();
