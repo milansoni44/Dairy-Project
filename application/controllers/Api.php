@@ -626,32 +626,15 @@ WHERE `u`.`id`=( SELECT `ud`.`dairy_id` FROM `users` `ud` WHERE `ud`.`id`=`custo
         $validation_error = array();
         if ($this->input->server('REQUEST_METHOD') == 'POST') {
             $data = json_decode($this->input->post("society_json"))->transaction;
-            print_r(array_keys((array)$data[0]));exit;
-            $keys = array_keys((array)$data[0]);
-            if($keys[0] == 'member_code' && $keys[1] == "fat" && $keys[2] == "clr"){
-                $response['error'] = TRUE;
-                $response['message'] = "Invalid file";
-                http_response_code(400);
-                echo json_encode($response);
-                exit;
-            }
             $i = 0;
             foreach ($data as $row) {
-                $stat = $this->transaction_model->exist_machine($data[13]);
-                if ($stat === FALSE) {
-                    http_response_code(400);
-                    $response['error'] = TRUE;
-                    $response['message'] = "Machine not exist in the system.";
-                    echo json_encode($response);
-                    exit;
-                }
-
-                $society = $this->transaction_model->get_society_id($data[13])->society_id;
-                $dairy = $this->transaction_model->get_dairy_id($data[13])->dairy_id;
-                $machine_id = $this->transaction_model->get_machine_id($data[13])->mid;
+                $society = $this->transaction_model->get_society_id($row->deviceid)->society_id;
+                $dairy = $this->transaction_model->get_dairy_id($row->deviceid)->dairy_id;
+                $machine_id = $this->transaction_model->get_machine_id($row->deviceid)->mid;
                 $valid_society_machine = $this->transaction_model->check_mapped_society_machine($machine_id, $society);
+
                 if ($valid_society_machine === FALSE) {
-                    http_response_code(400);
+                    http_response_code(401);
                     $response['error'] = TRUE;
                     $response['message'] = "Machine is not allocate to society";
                     echo json_encode($response);
@@ -727,7 +710,7 @@ WHERE `u`.`id`=( SELECT `ud`.`dairy_id` FROM `users` `ud` WHERE `ud`.`id`=`custo
         } else {
             $response['error'] = TRUE;
             $response['message'] = "Invalid Method";
-            http_response_code(400);
+            http_response_code(401);
             echo json_encode($response);
         }
     }
