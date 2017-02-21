@@ -186,7 +186,7 @@ LEFT JOIN customers c ON c.id = t.cid WHERE t.dairy_id = '$id'");
         if(!$id) {
             $id = $this->session->userdata("id");
         }
-        $q = $this->db->query("SELECT * FROM customer_machine WHERE machine_id = '$machine' AND cid = '$cid' AND society_id = '$id'");
+        $q = $this->db->query("SELECT customer_machine.*, customers.customer_name FROM customer_machine LEFT JOIN customers ON customers.id = customer_machine.cid WHERE machine_id = '$machine' AND cid = '$cid' AND society_id = '$id'");
         /*echo $this->db->last_query();exit;*/
         if($q->num_rows() > 0){
             return $q->row();

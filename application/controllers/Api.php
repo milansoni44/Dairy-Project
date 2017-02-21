@@ -33,8 +33,8 @@ class Api extends CI_Controller
     public function check_header_authentication_for_society()
     {
         $headers = getallheaders();
-        if (isset($headers['Authorization_key'])) {
-            $api_key = $headers['Authorization_key'];
+        if (isset($headers['Authorization-Key'])) {
+            $api_key = $headers['Authorization-Key'];
             $id = $this->society_model->get_society_id($api_key);
             return $id;
         } else {
