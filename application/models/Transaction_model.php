@@ -230,12 +230,13 @@ class Transaction_model extends CI_Model {
     }
 
     function get_txn_list($id = NULL) {
-        $q = $this->db->query("SELECT t.fat, t.snf, t.rate, t.weight, t.type, t.clr, t.netamt, t.shift, t.date, t.memcode, m.machine_id, CONCAT_WS('-', c.customer_name,c.adhar_no) AS customer, d.name AS dairy_name, s.name AS soc_name FROM transactions t
+        $q = $this->db->query("SELECT t.id, t.fat, t.snf, t.rate, t.weight AS litre, t.type, t.clr, t.netamt, t.shift, t.date, t.memcode, m.machine_id, CONCAT_WS('-', c.customer_name,c.adhar_no) AS customer, d.name AS dairy_name, s.name AS soc_name FROM transactions t
                             LEFT JOIN machines m ON m.id = t.deviceid
                             LEFT JOIN customers c ON c.id = t.cid
                             LEFT JOIN users d ON d.id = t.dairy_id
                             LEFT JOIN users s ON s.id = t.society_id
-                            WHERE s.id = '$id'");
+                            WHERE s.id = '$id' AND `t`.`date` = CURDATE() GROUP BY `t`.`type`");
+        /*echo $this->db->last_query();exit;*/
         if ($q->num_rows() > 0) {
             return $q->result_array();
         }

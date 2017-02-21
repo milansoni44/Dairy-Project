@@ -33,8 +33,8 @@ class Api extends CI_Controller
     public function check_header_authentication_for_society()
     {
         $headers = getallheaders();
-        if (isset($headers['Authorization'])) {
-            $api_key = $headers['Authorization'];
+        if (isset($headers['Authorization_key'])) {
+            $api_key = $headers['Authorization_key'];
             $id = $this->society_model->get_society_id($api_key);
             return $id;
         } else {
@@ -626,7 +626,15 @@ WHERE `u`.`id`=( SELECT `ud`.`dairy_id` FROM `users` `ud` WHERE `ud`.`id`=`custo
         $validation_error = array();
         if ($this->input->server('REQUEST_METHOD') == 'POST') {
             $data = json_decode($this->input->post("society_json"))->transaction;
-//            print_r($data);exit;
+            print_r(array_keys((array)$data[0]));exit;
+            $keys = array_keys((array)$data[0]);
+            if($keys[0] == 'member_code' && $keys[1] == "fat" && $keys[2] == "clr"){
+                $response['error'] = TRUE;
+                $response['message'] = "Invalid file";
+                http_response_code(400);
+                echo json_encode($response);
+                exit;
+            }
             $i = 0;
             foreach ($data as $row) {
                 $stat = $this->transaction_model->exist_machine($data[13]);
@@ -727,12 +735,50 @@ WHERE `u`.`id`=( SELECT `ud`.`dairy_id` FROM `users` `ud` WHERE `ud`.`id`=`custo
     function list_transaction()
     {
         $response = array();
-        if ($this->input->server('REQUEST_METHOD') == 'POST') {
+        if ($this->input->server('REQUEST_METHOD') == 'GET') {
             $sid = $this->check_header_authentication_for_society();
-            if ($txn_list = $this->transaction_model->get_txn_list($sid)) {
+            $txn_list = $this->transaction_model->get_txn_list($sid);
+            $buff_txn = array();
+            $cow_txn = array();
+            if(!empty($txn_list)){
+                foreach($txn_list as $row){
+                    if($row['type'] == "B"){
+                        $buff_txn[] = $row;
+                    }
+                    if($row['type'] == "C"){
+                        $cow_txn[] = $row;
+                    }
+                }
                 $response['error'] = FALSE;
                 $response['message'] = "Data loaded successfully";
-                $response['data'] = $txn_list;
+                $response['data'] = array("Cow"=>$cow_txn, "Buffalo"=> $buff_txn);
+                http_response_code(200);
+                echo json_encode($response);
+            } else {
+                $response['error'] = TRUE;
+                $response['message'] = "No data found";
+                http_response_code(404);
+                echo json_encode($response);
+            }
+        } else {
+            $response['error'] = TRUE;
+            $response['message'] = "Please try again letter";
+            http_response_code(400);
+            echo json_encode($response);
+        }
+    }
+
+    public function view_transaction(){
+        $response = array();
+        if ($this->input->server('REQUEST_METHOD') == 'POST') {
+            $sid = $this->check_header_authentication_for_society();
+            $txn_id = $this->input->post("transaction_id");
+            $transaction = $this->transaction_model->get_transaction_by_id($txn_id);
+            /*print_r($transaction);exit;*/
+            if($transaction){
+                $response['error'] = FALSE;
+                $response['message'] = "Data loaded successfully";
+                $response['data'] = (array) $transaction;
                 http_response_code(200);
                 echo json_encode($response);
             } else {
