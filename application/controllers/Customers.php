@@ -82,11 +82,11 @@ class Customers extends MY_Controller {
 
         if (isset($_POST['submit'])) {
 //            print_r($_POST);exit;
-            if (!$this->customer_model->check_exist($_POST['mobile'], "mobile")) {
+            if ($this->customer_model->check_exist($_POST['mobile'], "mobile")) {
                 $this->session->set_flashdata("message1", "This mobile already exist");
                 redirect("customers", "refresh");
             }
-            if (!$this->customer_model->check_exist($_POST['adhar_no'], "adhar_no")) {
+            if ($this->customer_model->check_exist($_POST['adhar_no'], "adhar_no")) {
                 $this->session->set_flashdata("message1", "This adhar number already exist");
                 redirect("customers", "refresh");
             }
@@ -104,7 +104,7 @@ class Customers extends MY_Controller {
                 "ac_type" => $_POST['ac_type'],
                 "created_at" => date("Y-m-d"),
             );
-//            print_r($member_data);exit;
+            print_r($member_data);exit;
         }
 
         if (!empty($member_data) && $this->customer_model->add_customer($member_data)) {
