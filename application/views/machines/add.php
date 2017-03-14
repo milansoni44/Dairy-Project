@@ -76,7 +76,7 @@
 									<div class="form-group">
 										<label class="control-label col-md-2" style="text-align:right;">Number</label>
 										<div class="col-md-4">
-											<input type="number" name="num" class="form-control" id="num" autocomplete="off"/>
+											<input type="text" name="num" class="form-control" id="num" autocomplete="off"/>
 										</div>
 										<button class="btn btn-primary" id="add_row">Add Row</button>
 									</div>
@@ -96,111 +96,6 @@
             </aside><!-- /.right-side -->
 			<script>
 				var $add_machine_form = $("#add_machine_form");
-					$("#add_machine_submit_button").on("click", function()
-					{
-						var valid = 1;
-						$add_machine_form.find(".machine_id").each(function(index)
-						{
-							var $this = $(this);
-							//console.log( $this.val() );
-							if( $this.val() == "" )
-							{
-								$this.addClass("validation_error")
-								.attr("title", "Please insert machine id");
-								valid = 0;
-							}
-							else
-							{
-								$this.removeClass("validation_error").removeAttr("title");
-							}
-						})
-						.end()
-						.find(".machine_name").each(function(index)
-						{
-							var $this = $(this);
-							if( $this.val() == "" )
-							{
-								$this.addClass("validation_error")
-								.attr("title", "Please insert machine name");
-								valid = 0;
-							}
-							else
-							{
-								$this.removeClass("validation_error").removeAttr("title");
-							}
-						})
-						.end()
-						.find(".dairy_id").each(function(index)
-						{
-							var $this = $(this);
-							if( $this.val() == "" )
-							{
-								$this.addClass("validation_error")
-								.attr("title", "Please select dairy");
-								valid = 0;
-							}
-							else
-							{
-								$this.removeClass("validation_error").removeAttr("title");
-							}
-						})
-						.end()
-						.find(".validity").each(function(index)
-						{
-							var $this = $(this);
-							if( $this.val() == "" )
-							{
-								$this.addClass("validation_error")
-								.attr("title", "Please select validity");
-								valid = 0;
-							}
-							else
-							{
-								$this.removeClass("validation_error").removeAttr("title");
-							}
-						})
-						.end()
-						.find(".type").each(function(index)
-						{
-							var $this = $(this);
-							if( $this.val() == "" )
-							{
-								$this.addClass("validation_error")
-								.attr("title", "Please select machine type");
-								valid = 0;
-							}
-							else
-							{
-								$this.removeClass("validation_error").removeAttr("title");
-							}
-						})
-						.end()
-						.find(".start_validity_from").each(function(index)
-						{
-							var $this = $(this);
-							if( $this.val() == "" )
-							{
-								$this.addClass("validation_error")
-								.attr("title", "Please select start validity from");
-								valid = 0;
-							}
-							else
-							{
-								$this.removeClass("validation_error").removeAttr("title");
-							}
-						});
-						
-						if(valid==1)
-						{
-							$add_machine_form.submit();
-						}
-						else
-						{
-							//alert("hi false");
-							return false;
-						}
-					});
-					
 				var $box_body = $add_machine_form.find(".box-body").on("click", ".remove", function()
 					{
 						$(this).parent().parent().remove();
@@ -208,34 +103,150 @@
 				  , $sample_machine_add = $("#sample_machine_add")
 				  ;
 				
-				// /*
-				$("#num").change(function(e)
-				{
-					e.preventDefault();
-					var $this_val = $(this).val();
-					var total_child = $box_body.children(".form-group").length;
-					
-					if( $this_val > total_child )
+					// /*
+					var $num = $("#num").change(function(e)
 					{
-						var diff = $this_val - total_child;
-						var $fragment = $( document.createDocumentFragment() );
-						for(var i=0; i < diff; i++)
+						e.preventDefault();
+						var $this_val = $(this).val();
+						var total_child = $box_body.children(".form-group").length;
+						
+						if( $this_val > total_child )
 						{
-							$fragment.append(
-								$sample_machine_add.clone().show().removeAttr("id")
-								.find(".machine_lable").text("Machine "+ ( total_child+i+1 ) ).end()
-							);
+							var diff = $this_val - total_child;
+							var $fragment = $( document.createDocumentFragment() );
+							for(var i=0; i < diff; i++)
+							{
+								$fragment.append(
+									$sample_machine_add.clone().show().removeAttr("id")
+									.find(".machine_lable").text("Machine "+ ( total_child+i+1 ) ).end()
+								);
+							}
+							$box_body.append( $fragment );
 						}
-						$box_body.append( $fragment );
-					}
-					else
+						else
+						{
+							$box_body.find(".form-group:eq("+ ($this_val - 1) +")").nextAll().remove();
+						}
+					}); //*/
+			
+					$("#add_machine_submit_button").on("click", function()
 					{
-						$box_body.find(".form-group:eq("+ ($this_val - 1) +")").nextAll().remove();
-					}
-				}); //*/
+						var $num_val = $num.val();
+						if( $num_val != '' && !isNaN($num_val) && $num_val > 0 && ($box_body.find(".form-group").length > 0) )
+						{
+							var valid = 1;
+							$add_machine_form.find(".machine_id").each(function(index)
+							{
+								var $this = $(this);
+								//console.log( $this.val() );
+								if( $this.val() == "" )
+								{
+									$this.addClass("validation_error")
+									.attr("title", "Please insert machine id");
+									valid = 0;
+								}
+								else
+								{
+									$this.removeClass("validation_error").removeAttr("title");
+								}
+							})
+							.end()
+							.find(".machine_name").each(function(index)
+							{
+								var $this = $(this);
+								if( $this.val() == "" )
+								{
+									$this.addClass("validation_error")
+									.attr("title", "Please insert machine name");
+									valid = 0;
+								}
+								else
+								{
+									$this.removeClass("validation_error").removeAttr("title");
+								}
+							})
+							.end()
+							.find(".dairy_id").each(function(index)
+							{
+								var $this = $(this);
+								if( $this.val() == "" )
+								{
+									$this.addClass("validation_error")
+									.attr("title", "Please select dairy");
+									valid = 0;
+								}
+								else
+								{
+									$this.removeClass("validation_error").removeAttr("title");
+								}
+							})
+							.end()
+							.find(".validity").each(function(index)
+							{
+								var $this = $(this);
+								if( $this.val() == "" )
+								{
+									$this.addClass("validation_error")
+									.attr("title", "Please select validity");
+									valid = 0;
+								}
+								else
+								{
+									$this.removeClass("validation_error").removeAttr("title");
+								}
+							})
+							.end()
+							.find(".type").each(function(index)
+							{
+								var $this = $(this);
+								if( $this.val() == "" )
+								{
+									$this.addClass("validation_error")
+									.attr("title", "Please select machine type");
+									valid = 0;
+								}
+								else
+								{
+									$this.removeClass("validation_error").removeAttr("title");
+								}
+							})
+							.end()
+							.find(".start_validity_from").each(function(index)
+							{
+								var $this = $(this);
+								if( $this.val() == "" )
+								{
+									$this.addClass("validation_error")
+									.attr("title", "Please select start validity from");
+									valid = 0;
+								}
+								else
+								{
+									$this.removeClass("validation_error").removeAttr("title");
+								}
+							});
+							
+							if(valid==1)
+							{
+								$add_machine_form.submit();
+							}
+							else
+							{
+								//alert("hi false");
+								return false;
+							}
+						}
+						else
+						{
+							$num.val("");
+							alert("Please enter valid number");
+							return false;
+						}
+					});
+					
 				
 				$("#add_row").click(function()
 				{
-					$("#num").trigger("change");
+					$num.trigger("change");
 				});
 			</script>
