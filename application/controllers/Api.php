@@ -740,13 +740,13 @@ WHERE `u`.`id`=( SELECT `ud`.`dairy_id` FROM `users` `ud` WHERE `ud`.`id`=`custo
             } else {
                 $response['error'] = TRUE;
                 $response['message'] = "No data found";
-                http_response_code(404);
+                http_response_code(200);
                 echo json_encode($response);
             }
         } else {
             $response['error'] = TRUE;
             $response['message'] = "Please try again letter";
-            http_response_code(400);
+            http_response_code(401);
             echo json_encode($response);
         }
     }
