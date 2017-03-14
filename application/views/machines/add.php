@@ -74,7 +74,7 @@
                                 </div><!-- /.box-header -->
                                 
 									<div class="form-group">
-										<label class="control-label col-md-2" style="text-align:right;">Number</label>
+										<label class="control-label col-md-2" style="text-align:right;">Number <span style="color:red;">*</span></label>
 										<div class="col-md-4">
 											<input type="text" name="num" class="form-control" id="num" autocomplete="off"/>
 										</div>
