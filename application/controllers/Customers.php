@@ -104,7 +104,7 @@ class Customers extends MY_Controller {
                 "ac_type" => $_POST['ac_type'],
                 "created_at" => date("Y-m-d"),
             );
-            print_r($member_data);exit;
+            /*print_r($member_data);exit;*/
         }
 
         if (!empty($member_data) && $this->customer_model->add_customer($member_data)) {
