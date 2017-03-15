@@ -63,7 +63,7 @@
                                                     foreach($all_notification as $notify){
                                             ?>
                                             <tr>
-                                                <td><?php echo str_replace( "{dairy_name}", "you",$notify['message']); ?></td>
+                                                <td><?php echo str_replace( array("{dairy_name}", "{society_name}"), "you",$notify['message']); ?></td>
                                                 <td><?php echo date( "d-m-Y H:i a", strtotime($notify['created_at'])); ?></td>
                                             </tr>
                                             <?php
