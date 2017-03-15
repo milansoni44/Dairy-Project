@@ -1,5 +1,8 @@
 <script type="text/javascript">
     $(document).ready(function(){
+        jQuery.validator.addMethod("lettersonly", function(value, element) {
+            return this.optional(element) || /^[a-z\s]+$/i.test(value);
+        }, "Only alphabetical characters");
         $("#add_dairy_form").validate({
             rules: {
                 machine: "required",
@@ -15,6 +18,9 @@
                     number: true
                 },
                 type: "required",
+                bank_name:{
+                    lettersonly: true,
+                },
             },
             messages: {
                 machine: "Please select machine",
