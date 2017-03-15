@@ -40,16 +40,11 @@ class Auth extends CI_Controller{
         $this->form_validation->set_rules("uname","Username","trim|required|xss_clean");
         $this->form_validation->set_rules("password","Password","trim|required|xss_clean");
         
-        if($this->form_validation->run() == TRUE){
+        if(($this->form_validation->run() == TRUE)){
             $data = array(
                 "username"=> $this->input->post("uname"),
                 "password"=> md5($this->input->post("password"))
             );
-            
-//            print_r($data);exit;
-        }
-        
-        if(($this->form_validation->run() == TRUE)){
             $notification_num = 0;
             $user_data = $this->auth_model->check_login($data);
             if(!empty($user_data)){
@@ -89,7 +84,7 @@ class Auth extends CI_Controller{
                     "placeholder"=>"Username",
                     "class"=>"form-control"
                 );
-                $this->load->view("auth/login",$data);
+                redirect('auth/login','refresh');
             }
         }else{
             $data['errors'] = $this->form_validation->error_array();
