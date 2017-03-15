@@ -49,7 +49,7 @@ class Machines extends MY_Controller {
 	{
         if ($this->session->userdata("group") != "admin")
 		{
-            $this->session->set_falshdata("message", "Access Denied");
+            $this->session->set_flashdata("message", "Access Denied");
             redirect("/", "refresh");
         }
         // validation for machines
