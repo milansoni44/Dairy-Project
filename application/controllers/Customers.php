@@ -104,10 +104,11 @@ class Customers extends MY_Controller {
                 "ac_type" => $_POST['ac_type'],
                 "created_at" => date("Y-m-d"),
             );
-            /*print_r($member_data);exit;*/
+            /*echo "<pre>";
+            print_r($member_data);exit;*/
         }
 
-        if (!empty($member_data) && $this->customer_model->add_customer($member_data)) {
+        if (!empty($member_data) && $this->customer_model->add_customer($member_data, $this->input->post("machine"))) {
             $this->session->set_flashdata("success", "Member added successfully");
             redirect("customers", "refresh");
         } else {
