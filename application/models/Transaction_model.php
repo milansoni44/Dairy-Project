@@ -615,7 +615,7 @@ class Transaction_model extends CI_Model {
 
 	function custom_transactions_cow($data = array())
     {
-        $q = $this->db->select("CONCAT_WS(' ',c.customer_name, c.adhar_no) AS customer,t.fat,t.clr,t.snf,t.weight,t.rate,t.netamt,t.date, t.shift")
+        $q = $this->db->select("CONCAT_WS(' ',c.customer_name, c.adhar_no) AS customer,ROUND(t.fat,2) AS fat,ROUND(t.clr,2) AS clr,ROUND(t.snf,2) AS snf,ROUND(t.weight, 2) AS weight,t.rate,ROUND(t.netamt, 2) AS netamt,t.date, t.shift")
             ->from("transactions t")
             ->join("machines m", "m.id = t.deviceid", "LEFT")
             ->join("users s", "s.id = m.society_id", "LEFT")
@@ -654,7 +654,7 @@ class Transaction_model extends CI_Model {
     {
         /*print "<pre>";
         print_r($data);exit;*/
-        $q = $this->db->select("CONCAT_WS(' ',c.customer_name, c.adhar_no) AS customer,t.fat,t.clr,t.snf,t.weight,t.rate,t.netamt,t.date,t.shift")
+        $q = $this->db->select("CONCAT_WS(' ',c.customer_name, c.adhar_no) AS customer,ROUND(t.fat, 2) AS fat,ROUND(t.clr, 2) AS clr,ROUND(t.snf, 2) AS snf,ROUND(t.weight, 2) AS weight,t.rate,ROUND(t.netamt, 2) AS netamt,t.date,t.shift")
             ->from("transactions t")
             ->join("machines m", "m.id = t.deviceid", "LEFT")
             ->join("users s", "s.id = m.society_id", "LEFT")
@@ -708,7 +708,7 @@ class Transaction_model extends CI_Model {
         )*/
         $m_soc = explode(",", $data['society_id']);
         $where = " WHERE `t`.`type` = 'C' AND `m`.`status` = 1 AND (CURDATE() BETWEEN `m`.`from_date` AND `m`.`to_date`) AND";
-        $sql = "SELECT `s`.`name` AS `society_name`,AVG(`t`.`fat`) AS fat,AVG(`t`.`clr`) AS clr,AVG(`t`.`snf`) AS snf,SUM(`t`.`weight`) AS weight,AVG(`t`.`rate`) AS rate,SUM(`t`.`netamt`) AS netamt,`t`.`shift` FROM `transactions` `t` LEFT JOIN `machines` `m` ON `m`.`id` = `t`.`deviceid` LEFT JOIN `users` `s` ON `s`.`id` = `t`.`society_id` LEFT JOIN `users` `d` ON `d`.`id` = `t`.`dairy_id` LEFT JOIN `customers` `c` ON `c`.`id` = `t`.`cid`";
+        $sql = "SELECT `s`.`name` AS `society_name`,ROUND(AVG(`t`.`fat`), 2) AS fat,ROUND(AVG(`t`.`clr`), 2) AS clr,ROUND(AVG(`t`.`snf`), 2) AS snf,ROUND(SUM(`t`.`weight`), 2) AS weight,ROUND(AVG(`t`.`rate`), 2) AS rate,ROUND(SUM(`t`.`netamt`), 2) AS netamt,`t`.`shift` FROM `transactions` `t` LEFT JOIN `machines` `m` ON `m`.`id` = `t`.`deviceid` LEFT JOIN `users` `s` ON `s`.`id` = `t`.`society_id` LEFT JOIN `users` `d` ON `d`.`id` = `t`.`dairy_id` LEFT JOIN `customers` `c` ON `c`.`id` = `t`.`cid`";
 
         if($data['shift'] == "M" || $data['shift'] == "E"){
             $where.= " `t`.`shift` = '".$data['shift']."' AND";
@@ -755,7 +755,7 @@ class Transaction_model extends CI_Model {
     public function custom_transactions_buff_summary($data = array())
     {
         $where = " WHERE `t`.`type` = 'B' AND `m`.`status` = 1 AND (CURDATE() BETWEEN `m`.`from_date` AND `m`.`to_date`) AND";
-        $sql = "SELECT `s`.`name` AS `society_name`,AVG(`t`.`fat`) AS fat,AVG(`t`.`clr`) AS clr,AVG(`t`.`snf`) AS snf,SUM(`t`.`weight`) AS weight,AVG(`t`.`rate`) AS rate,SUM(`t`.`netamt`) AS netamt,`t`.`shift` FROM `transactions` `t` LEFT JOIN `machines` `m` ON `m`.`id` = `t`.`deviceid` LEFT JOIN `users` `s` ON `s`.`id` = `t`.`society_id` LEFT JOIN `users` `d` ON `d`.`id` = `t`.`dairy_id` LEFT JOIN `customers` `c` ON `c`.`id` = `t`.`cid`";
+        $sql = "SELECT `s`.`name` AS `society_name`,ROUND(AVG(`t`.`fat`), 2) AS fat,ROUND(AVG(`t`.`clr`), 2) AS clr,ROUND(AVG(`t`.`snf`), 2) AS snf,ROUND(SUM(`t`.`weight`), 2) AS weight,ROUND(AVG(`t`.`rate`), 2) AS rate,ROUND(SUM(`t`.`netamt`), 2) AS netamt,`t`.`shift` FROM `transactions` `t` LEFT JOIN `machines` `m` ON `m`.`id` = `t`.`deviceid` LEFT JOIN `users` `s` ON `s`.`id` = `t`.`society_id` LEFT JOIN `users` `d` ON `d`.`id` = `t`.`dairy_id` LEFT JOIN `customers` `c` ON `c`.`id` = `t`.`cid`";
 
         if($data['shift'] == "M" || $data['shift'] == "E"){
             $where.= " `t`.`shift` = '".$data['shift']."' AND";

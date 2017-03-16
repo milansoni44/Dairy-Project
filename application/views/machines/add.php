@@ -107,25 +107,35 @@
 					var $num = $("#num").change(function(e)
 					{
 						e.preventDefault();
-						var $this_val = $(this).val();
+						var $this = $(this);
+						var $this_val = $this.val();
 						var total_child = $box_body.children(".form-group").length;
 						
-						if( $this_val > total_child )
+						if( $this_val != '' && !isNaN($this_val) && $this_val > 0 )
 						{
-							var diff = $this_val - total_child;
-							var $fragment = $( document.createDocumentFragment() );
-							for(var i=0; i < diff; i++)
+							if( $this_val > total_child )
 							{
-								$fragment.append(
-									$sample_machine_add.clone().show().removeAttr("id")
-									.find(".machine_lable").text("Machine "+ ( total_child+i+1 ) ).end()
-								);
+								var diff = $this_val - total_child;
+								var $fragment = $( document.createDocumentFragment() );
+								for(var i=0; i < diff; i++)
+								{
+									$fragment.append(
+										$sample_machine_add.clone().show().removeAttr("id")
+										.find(".machine_lable").text("Machine "+ ( total_child+i+1 ) ).end()
+									);
+								}
+								$box_body.append( $fragment );
 							}
-							$box_body.append( $fragment );
+							else
+							{
+								$box_body.find(".form-group:eq("+ ($this_val - 1) +")").nextAll().remove();
+							}
 						}
 						else
 						{
-							$box_body.find(".form-group:eq("+ ($this_val - 1) +")").nextAll().remove();
+							alert("Please enter valid number. Only positive numbers are allowed.");
+							$this.val("");
+							return false;
 						}
 					}); //*/
 			
@@ -239,7 +249,7 @@
 						else
 						{
 							$num.val("");
-							alert("Please enter valid number");
+							alert("Please enter valid number. Only positive numbers are allowed.");
 							return false;
 						}
 					});
