@@ -149,7 +149,7 @@ class Transactions extends MY_Controller {
                             continue;
                         }else{
                             $this->session->set_flashdata("message", "Invalid transaction file.");
-                            redirect("transactions/import", "refresh");
+                            redirect("transactions/import_txn", "refresh");
                         }
                     }
                 }
