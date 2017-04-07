@@ -860,8 +860,9 @@ class Transaction_model extends CI_Model {
         if($data['cid']){
             $this->db->where("t.cid", $data['cid']);
         }
+        $this->db->where("CURDATE() BETWEEN m.from_date AND m.to_date");
         $q = $this->db->get();
-//        echo $this->db->last_query();exit;
+        echo $this->db->last_query();exit;
         if($q->num_rows() > 0){
             return $q->result_array();
         }
@@ -893,6 +894,7 @@ class Transaction_model extends CI_Model {
         if($data['cid']){
             $this->db->where("t.cid", $data['cid']);
         }
+        $this->db->where("CURDATE() BETWEEN m.from_date AND m.to_date");
         $q = $this->db->get();
 //        echo $this->db->last_query();exit;
         if($q->num_rows() > 0){
