@@ -116,6 +116,8 @@ class Favourite_report extends MY_Controller
 		}
 
 		$this->data['society_info'] = $this->society_model->get_society();
+//        echo "<pre>";
+//        print_r($this->data['society_info']);exit;
 		$this->load->view("common/header", $this->data);
 		$this->load->view("favourite_report/add", $this->data);
 		$this->load->view("common/footer");
