@@ -292,89 +292,16 @@
                                                 </select>
                                             </div>
                                         </div>
-
-                                        <!--<div class="form-group">-->
-                                            <!--<label class="control-label col-md-2" for="favourite">Favourite Report</label>-->
-                                            <!--<div class="col-md-4">
-                                                <select class="form-control" name="favourite" id="favourite">
-                                                    <option value="">Select Report</option>
-                                                    <?php
-/*                                                        if(!empty($favourite_report)){
-                                                            foreach($favourite_report as $rw_fav){
-                                                    */?>
-                                                    <option value="<?php /*echo $rw_fav['id']; */?>"><?php /*echo $rw_fav['report_name']; */?></option>
-                                                    <?php
-/*                                                            }
-                                                        }
-                                                    */?>
-                                                </select>
-                                            </div>-->
-<!--<script>
-$("#favourite").change(function(e)
-{
-	e.preventDefault();
-	$.ajax(
-	{
-		type   : "POST",cache: false,
-		url    : "<?php /*echo base_url().'/index.php/transactions/run_favourite_reports';*/?>",
-		data   : 'report_id='+$(this).val(),
-		success: function(data)
-		{
-			var transaction = JSON.parse(data);
-			var len = transaction.length;
-			var i=0;
-			var $fragment = $( document.createDocumentFragment() );
-			var total_fat = 0;
-			var total_clr = 0;
-			var total_snf = 0;
-			var total_litre = 0;
-			var total_netamt = 0;
-			for( ; i<len; i++ )
-			{
-				total_fat    += parseFloat(transaction[i].fat);
-				total_clr    += parseFloat(transaction[i].clr);
-				total_snf    += parseFloat(transaction[i].snf);
-				total_litre  += parseFloat(transaction[i].weight);
-				total_netamt += parseFloat(transaction[i].netamt);
-				
-				$fragment.append( 
-					$('<tr>').addClass( (i%2==0) ? "odd" : "even" )
-					.append( $('<td>').html( transaction[i].customer_name ) )
-					.append( $('<td>').html( transaction[i].fat ) )          
-					.append( $('<td>').html( transaction[i].clr ) )          
-					.append( $('<td>').html( transaction[i].snf ) )          
-					.append( $('<td>').html( transaction[i].weight ) )       
-					.append( $('<td>').html( transaction[i].rate ) )         
-					.append( $('<td>').html( transaction[i].netamt ) )       
-					.append( $('<td>').html( transaction[i].date ) )
-				);
-			}
-			
-			var avg_fat = total_fat / len;
-			var avg_clr = total_clr / len;
-			var avg_snf = total_snf / len;
-			//var $('<tr>').append(  );
-			$("#example2").find("tbody").html( $fragment )
-			.end()
-			.find("tfoot tr :nth-child(2)").html( "AVG Fat: "+ avg_fat)
-			.next().html( "AVG CLR: "+ avg_clr)
-			.next().html( "AVG SNF: "+ avg_snf)
-			.next().html( "Total: "+ total_litre)
-			.next()
-			.next().html( "Total: "+ total_netamt)
-			;
-		}
-	});
-});
-</script>-->
-                                        <!--</div>-->
                                         <div>
                                             <input type="submit" name="submit" value="Submit" class="btn btn-primary" />
                                         </div>
                                     </div>
                                 </form>
                                 <div class="box-body table-responsive">
-                                    <span style="font-weight: bold; font-size: x-large;">Cow</span>
+                                    <div>
+                                        <span style="font-weight: bold; font-size: x-large;">Cow</span>
+                                        <span class="pull-right" style="margin-bottom: 12px;"><a class="btn btn-primary" href="<?php echo base_url(); ?>index.php/transactions/export_cow/<?php echo ($this->input->post("date")) ? $this->input->post("date") : date('Y-m-d'); ?>/<?php echo ($this->input->post("to_date")) ? $this->input->post("to_date") : date('Y-m-d'); ?>/<?php echo ($this->input->post('shift')) ? $this->input->post('shift'):'All'; ?>/<?php echo ($this->input->post('customer')) ? $this->input->post('customer'):'All'; ?>">Export Cow</a></span>
+                                    </div>
                                     <table id="example2" class="table table-bordered table-hover">
                                         <thead>
                                             <tr>
@@ -404,7 +331,10 @@ $("#favourite").change(function(e)
                                             </tr>
                                         </tfoot>
                                     </table>
-                                    <span style="font-weight: bold; font-size: x-large;">Buffalo</span>
+                                    <div>
+                                        <span style="font-weight: bold; font-size: x-large;">Buffalo</span>
+                                        <span class="pull-right" style="margin-bottom: 12px; margin-top: 10px;"><a class="btn btn-primary" href="<?php echo base_url(); ?>index.php/transactions/export_buff/<?php echo ($this->input->post("date")) ? $this->input->post("date") : date('Y-m-d'); ?>/<?php echo ($this->input->post("to_date")) ? $this->input->post("to_date") : date('Y-m-d'); ?>/<?php echo ($this->input->post('shift')) ? $this->input->post('shift'):'All'; ?>/<?php echo ($this->input->post('customer')) ? $this->input->post('customer'):'All'; ?>">Export Buffalo</a></span>
+                                    </div>
                                     <table id="example_buff" class="table table-bordered table-hover">
                                         <thead>
                                             <tr>

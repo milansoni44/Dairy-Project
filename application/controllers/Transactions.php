@@ -22,6 +22,9 @@ class Transactions extends MY_Controller {
         $this->load->library("session");
         $this->load->library("form_validation");
         $this->load->database();
+        if(!$this->auth_lib->is_logged_in()){
+            redirect("auth/login","refresh");
+        }
     }
 
     function index() {
@@ -232,6 +235,10 @@ class Transactions extends MY_Controller {
 
     function daily()
 	{
+        if ($this->session->userdata("group") == "dairy" || $this->session->userdata("group") == "admin") {
+            $this->session->set_flashdata("message", "Access Denied");
+            redirect("/", "refresh");
+        }
         // validation
         $this->form_validation->set_rules("date", "Date", "trim|required|callback_check_future");
         $this->form_validation->set_rules("to_date", "Date", "trim|required|callback_check_dates");
@@ -326,6 +333,7 @@ class Transactions extends MY_Controller {
         if ($shift != "All") {
             $this->datatables->where("t.shift", $shift);
         }
+        $this->datatables->where("t.society_id", $this->session->userdata("id"));
         $this->datatables->add_column('Action','<a data-toggle="modal" data-target="#view-modal" data-id="$1" id="getUser" href="#">View</a>', 't.id');
         echo $this->datatables->generate();
     }
@@ -348,6 +356,7 @@ class Transactions extends MY_Controller {
         if ($shift != "All") {
             $this->datatables->where("t.shift", $shift);
         }
+        $this->datatables->where("t.society_id", $this->session->userdata("id"));
         $this->datatables->add_column('Action','<a data-toggle="modal" data-target="#view-modal" data-id="$1" id="getUser" href="#">View</a>', 't.id');
         echo $this->datatables->generate();
     }
@@ -551,6 +560,116 @@ class Transactions extends MY_Controller {
                                     </tr>
                                 </tbody>
                             </table>';
+    }
+
+    public function export_cow($start_date = NULL, $end_date = NULL, $shift = 'All', $customer = 'All')
+    {
+        if ($this->session->userdata("group") == "dairy" || $this->session->userdata("group") == "admin") {
+            $this->session->set_flashdata("message", "Access Denied");
+            redirect("/", "refresh");
+        }
+        $id = $this->session->userdata("id");
+        $start_date = !($start_date) ? date('Y-m-d') : $start_date;
+        $end_date = !($end_date) ? date('Y-m-d') : $end_date;
+        $shift = !($shift == "All") ? $shift : NULL;
+        $customer = !($customer == "All") ? $customer : NULL;
+//        $start_date = !($start_date) ? '2017-01-01' : $start_date;
+//        $end_date = !($end_date) ? date('Y-m-d') : $end_date;
+//        $shift = !($shift == "All") ? $shift : NULL;
+//        $customer = !($customer == "All") ? $customer : NULL;
+
+        $data = array(
+            "id"=>$id,
+            "start_date"=>$start_date,
+            "end_date"=>$end_date,
+            "shift"=>$shift,
+            "cid"=>$customer
+        );
+        $cow_date = $this->transaction_model->export_cow($data);
+//        echo "<pre>";
+//        print_r($cow_date);exit;
+        $file_name = "cow_transaction";
+        if(!empty($cow_date))
+        {
+            /*print "<pre>";
+            print_r($transactions_cow);exit;*/
+            foreach($cow_date as $cow){
+                $data_final[] = array_values($cow);
+            }
+
+            $fp = fopen('php://output', 'w');
+
+            if ($fp && $cow_date) {
+                header('Content-Type: text/csv');
+                header('Content-Disposition: attachment; filename="' . $file_name . '.csv"');
+                header('Pragma: no-cache');
+                header('Expires: 0');
+                fputcsv($fp, array("customer", "adhar", "deviceid", "fat", "clr", "snf", "litre", "rate/litre", "amount", "shift", "date"));
+
+                foreach($data_final as $rr){
+                    fputcsv($fp, $rr);
+                }
+                die;
+            }
+        }else{
+            $this->session->set_flashdata("message", "No Cow Data Found");
+            redirect("/", "refresh");
+        }
+    }
+
+    public function export_buff($start_date = NULL, $end_date = NULL, $shift = 'All', $customer = 'All')
+    {
+        if ($this->session->userdata("group") == "dairy" || $this->session->userdata("group") == "admin") {
+            $this->session->set_flashdata("message", "Access Denied");
+            redirect("/", "refresh");
+        }
+        $id = $this->session->userdata("id");
+        $start_date = !($start_date) ? date('Y-m-d') : $start_date;
+        $end_date = !($end_date) ? date('Y-m-d') : $end_date;
+        $shift = !($shift == "All") ? $shift : NULL;
+        $customer = !($customer == "All") ? $customer : NULL;
+//        $start_date = !($start_date) ? '2017-01-01' : $start_date;
+//        $end_date = !($end_date) ? date('Y-m-d') : $end_date;
+//        $shift = !($shift == "All") ? $shift : NULL;
+//        $customer = !($customer == "All") ? $customer : NULL;
+
+        $data = array(
+            "id"=>$id,
+            "start_date"=>$start_date,
+            "end_date"=>$end_date,
+            "shift"=>$shift,
+            "cid"=>$customer
+        );
+        $buff_date = $this->transaction_model->export_buff($data);
+//        echo "<pre>";
+//        print_r($cow_date);exit;
+        $file_name = "cow_transaction";
+        if(!empty($buff_date))
+        {
+            /*print "<pre>";
+            print_r($transactions_cow);exit;*/
+            foreach($buff_date as $cow){
+                $data_final[] = array_values($cow);
+            }
+
+            $fp = fopen('php://output', 'w');
+
+            if ($fp && $buff_date) {
+                header('Content-Type: text/csv');
+                header('Content-Disposition: attachment; filename="' . $file_name . '.csv"');
+                header('Pragma: no-cache');
+                header('Expires: 0');
+                fputcsv($fp, array("customer", "adhar", "deviceid", "fat", "clr", "snf", "litre", "rate/litre", "amount", "shift", "date"));
+
+                foreach($data_final as $rr){
+                    fputcsv($fp, $rr);
+                }
+                die;
+            }
+        }else{
+            $this->session->set_flashdata("message", "No Buffalo Data Found");
+            redirect("/", "refresh");
+        }
     }
 }
 

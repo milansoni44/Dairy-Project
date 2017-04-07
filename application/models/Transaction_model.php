@@ -834,6 +834,72 @@ class Transaction_model extends CI_Model {
 		}
 		return $data;
 	}
+
+	public function export_cow($data = array())
+    {
+        /*Array
+        (
+            [id] => 24
+            [start_date] => 2017-01-01
+            [end_date] => 2017-04-07
+            [shift] =>
+            [cid] =>
+        )*/
+        $this->db->select("c.customer_name,c.adhar_no,m.machine_id,t.fat,t.clr,t.snf,t.weight,t.rate,t.netamt,t.shift,t.date")
+            ->from("transactions t")
+            ->join("customers c", "c.id = t.cid", "LEFT")
+            ->join("machines m", "m.id = t.deviceid", "LEFT")
+            ->where("t.society_id", $data['id'])
+            ->where("t.date >=", $data['start_date'])
+            ->where("t.date <=", $data['end_date'])
+            ->where("t.type", "C");
+        if($data['shift']){
+            $this->db->where("t.shift", $data['shift']);
+        }
+
+        if($data['cid']){
+            $this->db->where("t.cid", $data['cid']);
+        }
+        $q = $this->db->get();
+//        echo $this->db->last_query();exit;
+        if($q->num_rows() > 0){
+            return $q->result_array();
+        }
+        return FALSE;
+    }
+
+    public function export_buff($data = array())
+    {
+        /*Array
+        (
+            [id] => 24
+            [start_date] => 2017-01-01
+            [end_date] => 2017-04-07
+            [shift] =>
+            [cid] =>
+        )*/
+        $this->db->select("c.customer_name,c.adhar_no,m.machine_id,t.fat,t.clr,t.snf,t.weight,t.rate,t.netamt,t.shift,t.date")
+            ->from("transactions t")
+            ->join("customers c", "c.id = t.cid", "LEFT")
+            ->join("machines m", "m.id = t.deviceid", "LEFT")
+            ->where("t.society_id", $data['id'])
+            ->where("t.date >=", $data['start_date'])
+            ->where("t.date <=", $data['end_date'])
+            ->where("t.type", "B");
+        if($data['shift']){
+            $this->db->where("t.shift", $data['shift']);
+        }
+
+        if($data['cid']){
+            $this->db->where("t.cid", $data['cid']);
+        }
+        $q = $this->db->get();
+//        echo $this->db->last_query();exit;
+        if($q->num_rows() > 0){
+            return $q->result_array();
+        }
+        return FALSE;
+    }
 }
 
 /** application/Models/Transaction_model.php */
