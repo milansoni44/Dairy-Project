@@ -77,7 +77,18 @@ class Welcome extends MY_Controller {
         $data['monthly_cow_summary_eve'] = $eve_cow_month;
 		$data['monthly_buff_summary_eve'] = $eve_buff_month;
 		$data['month_dates'] = $date_arr;
-		/* End Monthly milk collection date wise */
+        /* End Monthly milk collection date wise */
+        /**
+         * upcomming renewal
+         */
+        if($this->session->userdata("group") == "admin"){
+            $data['renewal'] = $this->machine_model->get_upcomming_renewal();
+        }
+//        echo "<pre>";
+//        print_r($data['renewal']);exit;
+        /**
+         * end upcomming renewal
+         */
         $this->load->view('common/header', $this->data);
 		if($this->session->userdata("group") == "society"){
 			$this->load->view('welcome_message_society', $data);
