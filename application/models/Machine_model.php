@@ -307,7 +307,7 @@ WHERE m.dairy_id = '$id'");
             ->from("machines")
             ->join("users ud","ud.id = machines.dairy_id","LEFT")
             ->join("users us","us.id = machines.society_id","LEFT")
-            ->where("to_date >=", $today)
+//            ->where("to_date >=", $today)
             ->where("to_date <=", $last_month)
             ->get();
 //        echo $this->db->last_query();exit;

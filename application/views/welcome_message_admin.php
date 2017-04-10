@@ -49,6 +49,9 @@
                                     <div class="col-sm-12 col-md-12">
                                         <div class="box-body table-responsive">
                                             <table id="example2" class="table table-bordered table-hover">
+                                                <?php
+                                                if(!empty($renewal)){
+                                                ?>
                                                 <thead>
                                                 <tr>
                                                     <th style="width: 5%;">Machine ID</th>
@@ -63,7 +66,6 @@
                                                 </thead>
                                                 <tbody>
                                                 <?php
-                                                if(!empty($renewal)){
                                                     foreach($renewal as $row){
                                                         ?>
                                                         <tr>
@@ -75,11 +77,15 @@
                                                             <td><?php echo $row->from_date; ?></td>
                                                             <td><?php echo $row->to_date; ?></td>
                                                             <td>
-                                                                <a href="<?php echo base_url(); ?>index.php/machines/edit/<?php echo $row->id; ?>/renew">Edit</a>
+                                                                <a href="<?php echo base_url(); ?>index.php/machines/edit/<?php echo $row->id; ?>/renew">Renew</a>
                                                             </td>
                                                         </tr>
                                                         <?php
                                                     }
+                                                }else{
+                                                ?>
+                                                    <tr><td colspan="8">No upcomming renewal as of now.</td></tr>
+                                                <?php
                                                 }
                                                 ?>
                                                 </tbody>
