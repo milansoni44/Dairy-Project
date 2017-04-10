@@ -42,14 +42,15 @@
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
                     <h1>
-                        Machines
-                        <small><?php if(!$msg){ ?>Edit <?php }else{ ?>Renew<?php } ?> Machines</small>
+                        Renew Machine
+                        <small>Renew Machine</small>
                     </h1>
                     <ol class="breadcrumb">
                         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-                        <li class="active"><?php if(!$msg){ ?>Edit <?php }else{ ?>Renew<?php } ?> Machines</li>
+                        <li class="active">Renew Machine</li>
                     </ol>
                 </section>
+
                 <!-- Main content -->
                 <section class="content">
 
@@ -58,26 +59,26 @@
                         <div class="col-xs-12">
                             <div class="box">
                                 <div class="box-header">
-                                    <h3 class="box-title"><?php if(!$msg){ ?>Edit <?php }else{ ?>Renew<?php } ?> Machines </h3>
+                                    <h3 class="box-title">Renew Machine</h3>
                                 </div><!-- /.box-header -->
-                                <form role="form" class="form-horizontal" id="add_dairy_form" action="<?php echo base_url(); ?>index.php/machines/edit/<?php echo $id; ?>/<?php echo $msg; ?>" method="post">
+                                <form role="form" class="form-horizontal" id="add_dairy_form" action="<?php echo base_url(); ?>index.php/machines/renew/<?php echo $id; ?>" method="post">
                                     <div class="box-body">
-                                        <div class="form-group" >
+                                        <div class="form-group">
                                             <label class="control-label col-md-2" for="machine_id">Machine ID</label>
                                             <div class="col-md-4">
-                                                <input type="text" name="machine_id" id="machine_id" class="form-control" value="<?php echo $machine->machine_id; ?>" disabled />
+                                                <input type="text" name="machine_id" id="machine_id" class="form-control" value="" />
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="control-label col-md-2" for="machine_name">Machine Name <span style="color: red;">*</span></label>
                                             <div class="col-md-4">
-                                                <input type="text" name="machine_name" id="machine_name" class="form-control" value="<?php echo $machine->machine_name; ?>" <?php echo ($msg) ? 'disabled=disabled' : ''; ?>"/>
+                                                <input type="text" name="machine_name" id="machine_name" class="form-control" value=""/>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="control-label col-md-2" for="machine_type">Machine Type <span style="color: red;">*</span></label>
                                             <div class="col-md-4">
-                                                <select class="form-control" id="machine_type" name="type" <?php echo ($msg) ? 'disabled=disabled' : ''; ?>>
+                                                <select class="form-control" id="machine_type" name="type">
                                                     <option value="">--Select Type--</option>
                                                     <option value="USB" <?php if($machine->machine_type == "USB"){?>selected <?php } ?>>USB</option>
                                                     <option value="BLUETOOTH" <?php if($machine->machine_type == "BLUETOOTH"){?>selected <?php } ?>>BLUETOOTH</option>
@@ -88,7 +89,7 @@
                                         <div class="form-group">
                                             <label class="control-label col-md-2" for="dairy_id">Dairy <span style="color: red;">*</span></label>
                                             <div class="col-md-4">
-                                                <select class="form-control" id="dairy_id" name="dairy_id" <?php echo ($msg) ? 'disabled=disabled' : ''; ?>>
+                                                <select class="form-control" id="dairy_id" name="dairy_id">
                                                     <option value="">--Select Dairy--</option>
                                                     <?php 
                                                         if(!empty($dairy_info)) {

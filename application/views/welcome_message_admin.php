@@ -36,4 +36,60 @@
                     }
                     ?>
                 </section>
+                <div class="row">
+                    <!-- Left col -->
+                    <section class="col-lg-12 connectedSortable">
+                        <!-- Box (with bar chart) -->
+                        <div class="box box-danger" id="loading-example">
+                            <div class="box-header">
+                                <h3 class="box-title">Upcomming Renewal</h3>
+                            </div><!-- /.box-header -->
+                            <div class="box-body no-padding">
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="box-body table-responsive">
+                                            <table id="example2" class="table table-bordered table-hover">
+                                                <thead>
+                                                <tr>
+                                                    <th style="width: 5%;">Machine ID</th>
+                                                    <th style="width: 10%;">Type</th>
+                                                    <th style="width: 10%;">Name</th>
+                                                    <th style="width: 10%;">Dairy</th>
+                                                    <th style="width: 10%;">Society</th>
+                                                    <th style="width: 10%;">From Date</th>
+                                                    <th style="width: 30%;">To Date</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <?php
+                                                if(!empty($renewal)){
+                                                    foreach($renewal as $row){
+                                                        ?>
+                                                        <tr>
+                                                            <td><?php echo $row->machine_id; ?></td>
+                                                            <td><?php echo $row->machine_type; ?></td>
+                                                            <td><?php echo $row->machine_name; ?></td>
+                                                            <td><?php echo $row->dairy_name; ?></td>
+                                                            <td><?php echo $row->society_name; ?></td>
+                                                            <td><?php echo $row->from_date; ?></td>
+                                                            <td><?php echo $row->to_date; ?></td>
+                                                            <td>
+                                                                <a href="<?php echo base_url(); ?>index.php/machines/edit/<?php echo $row->id; ?>/renew">Edit</a>
+                                                            </td>
+                                                        </tr>
+                                                        <?php
+                                                    }
+                                                }
+                                                ?>
+                                                </tbody>
+                                            </table>
+                                        </div><!-- /.box-body -->
+                                    </div>
+                                </div><!-- /.row - inside box -->
+                            </div><!-- /.box-body -->
+                        </div><!-- /.box -->
+
+                    </section><!-- /.Left col -->
+                </div>
             </aside><!-- /.right-side -->

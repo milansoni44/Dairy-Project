@@ -125,13 +125,14 @@ class Machines extends MY_Controller {
         }
     }
 
-    function edit($id = NULL) {
+    function edit($id = NULL, $msg = NULL) {
         if ($this->session->userdata("group") != "admin") {
             $this->session->set_falshdata("message", "Access Denied");
             redirect("/", "refresh");
         }
 
         if (isset($_POST['submit'])) {
+//            echo $msg;exit;
 //            echo "<pre>";
 //            print_r($_POST);exit;
 //            var_dump($_POST['validity']);
@@ -144,17 +145,24 @@ class Machines extends MY_Controller {
                 $from_date = NULL;
                 $to_date = NULL;
             }
-            $machine_data = array(
+            if(!$msg){
+                $machine_data = array(
 //                "machine_id" => $_POST['machine_id'],
-                "machine_name" => htmlentities($_POST['machine_name'], ENT_QUOTES),
-                "machine_type" => $_POST['type'],
-                "dairy_id" => $_POST['dairy_id'],
-                "from_date"=> $from_date,
-                "to_date"=> $to_date
-            );
+                    "machine_name" => htmlentities($_POST['machine_name'], ENT_QUOTES),
+                    "machine_type" => $_POST['type'],
+                    "dairy_id" => $_POST['dairy_id'],
+                    "from_date"=> $from_date,
+                    "to_date"=> $to_date
+                );
+            }else{
+                $machine_data = array(
+                    "from_date"=> $from_date,
+                    "to_date"=> $to_date
+                );
+            }
 
-            /*echo "<pre>";
-            print_r($machine_data);exit;*/
+//            echo "<pre>";
+//            print_r($machine_data);exit;
         }
 
         if (!empty($machine_data) && $this->machine_model->edit_machine($machine_data, $id)) {
@@ -163,6 +171,7 @@ class Machines extends MY_Controller {
         } else {
 //            $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
             $data['machine'] = $this->machine_model->get_machine_by_id($id);
+            $data['msg'] = $msg;
             $data['dairy_info'] = $this->dairy_model->get_dairy();
             $data['id'] = $id;
             $this->load->view("common/header", $this->data);
@@ -383,6 +392,15 @@ class Machines extends MY_Controller {
                 redirect("machines/allocate", "refresh");
             }
         }
+    }
+
+    public function renew($id = NULL)
+    {
+//        echo $id;exit;
+        $data['id'] = $id;
+        $this->load->view("common/header", $this->data);
+        $this->load->view("machines/renew", $data);
+        $this->load->view("common/footer");
     }
 
 }

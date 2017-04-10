@@ -298,6 +298,27 @@ WHERE m.dairy_id = '$id'");
         }
         return FALSE;
     }
+
+    public function get_upcomming_renewal()
+    {
+        $today = date('Y-m-d');
+        $last_month = date('Y-m-d',strtotime('+30 days'));
+        $q = $this->db->select("machines.*, ud.name as dairy_name, us.name as society_name")
+            ->from("machines")
+            ->join("users ud","ud.id = machines.dairy_id","LEFT")
+            ->join("users us","us.id = machines.society_id","LEFT")
+            ->where("to_date >=", $today)
+            ->where("to_date <=", $last_month)
+            ->get();
+//        echo $this->db->last_query();exit;
+        if($q->num_rows() > 0){
+            foreach($q->result() as $row){
+                $row1[] = $row;
+            }
+            return $row1;
+        }
+        return false;
+    }
 }
 
 /** application/Models/Machine_model.php */
