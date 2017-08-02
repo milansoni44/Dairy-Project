@@ -144,6 +144,7 @@
                                     </div>
                                     <div class="box-footer">
                                         <input type="submit" name="submit" id="submit" value="Submit" class="btn btn-primary" />
+                                        <a class="btn btn-danger" href="<?php echo base_url(); ?>index.php/customers">Cancel</a>
                                     </div>
                                 </form>
                             </div><!-- /.box -->

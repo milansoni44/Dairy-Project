@@ -74,6 +74,7 @@
                                     </div>
                                     <div class="box-footer">
                                         <button type="submit" class="btn btn-primary" name="submit">Submit</button>
+                                        <a class="btn btn-danger" href="<?php echo base_url(); ?>index.php/machines/allocate">Cancel</a>
                                     </div>
                                 </form>
                             </div><!-- /.box -->

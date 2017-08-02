@@ -237,7 +237,7 @@
                                     </div>
                                     <div class="box-footer">
                                         <button type="submit" class="btn btn-primary">Submit</button>
-                                        <button type="submit" class="btn btn-primary" onclick="window.location = "window.location = "";";">Cancel</button>
+                                        <a href="<?php echo base_url(); ?>index.php/dairy" class="btn btn-danger">Cancel</a>
                                     </div>
                                 </form>
                             </div><!-- /.box -->

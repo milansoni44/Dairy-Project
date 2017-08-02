@@ -187,6 +187,8 @@ class Machines extends MY_Controller {
         if ($this->session->userdata("group") == "dairy") {
 //            $data['notifications'] = $this->auth_lib->get_machines($this->session->userdata("group"), $this->session->userdata("id"));
             $data['allocated_machines'] = $this->machine_model->allocated_dairy_machine();
+//            echo "<pre>";
+//            print_r($data['allocated_machines']);exit;
             $this->load->view("common/header", $this->data);
             $this->load->view("machines/allocated_machines", $data);
             $this->load->view("common/footer");

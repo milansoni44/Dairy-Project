@@ -143,6 +143,7 @@
                                 </div>
                                 <div class="col-md-2">
                                    <input type="submit" name="submit" value="Submit" id="submit" class="btn btn-primary" />
+                                    <a class="btn btn-danger" href="<?php echo base_url(); ?>">Cancel</a>
                                </div>
                             </div>
                         </div>

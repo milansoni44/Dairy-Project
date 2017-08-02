@@ -53,6 +53,7 @@
                                     </div>
                                     <div class="box-footer">
                                         <input type="submit" name="submit" class="btn btn-primary" />
+                                        <a href="<?php echo base_url(); ?>index.php/rate" class="btn btn-danger">Cancel</a>
                                     </div>
                                 </form>
                             </div><!-- /.box -->

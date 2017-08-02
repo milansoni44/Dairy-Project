@@ -53,6 +53,7 @@
                                     </div>
                                     <div class="box-footer">
                                         <input type="submit" name="submit" class="btn btn-primary" />
+                                        <a class="btn btn-danger" href="<?php echo base_url(); ?>index.php/rate/cfat_clr">Cancel</a>
                                     </div>
                                 </form>
                             </div><!-- /.box -->

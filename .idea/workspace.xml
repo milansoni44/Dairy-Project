@@ -4,16 +4,29 @@
     <list default="true" id="c05f97b8-a531-4429-9299-6b37ec3e5486" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/config/config.php" afterPath="$PROJECT_DIR$/application/config/config.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/controllers/Api.php" afterPath="$PROJECT_DIR$/application/controllers/Api.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/controllers/Customers.php" afterPath="$PROJECT_DIR$/application/controllers/Customers.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/controllers/Machines.php" afterPath="$PROJECT_DIR$/application/controllers/Machines.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/controllers/Transactions.php" afterPath="$PROJECT_DIR$/application/controllers/Transactions.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/views/customers/index.php" afterPath="$PROJECT_DIR$/application/views/customers/index.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/views/customers/add.php" afterPath="$PROJECT_DIR$/application/views/customers/add.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/views/customers/import.php" afterPath="$PROJECT_DIR$/application/views/customers/import.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/views/dairy/add.php" afterPath="$PROJECT_DIR$/application/views/dairy/add.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/views/dairy/edit.php" afterPath="$PROJECT_DIR$/application/views/dairy/edit.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/views/favourite_report/add.php" afterPath="$PROJECT_DIR$/application/views/favourite_report/add.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/views/machines/allocate_to_soc.php" afterPath="$PROJECT_DIR$/application/views/machines/allocate_to_soc.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/views/machines/allocated_machines.php" afterPath="$PROJECT_DIR$/application/views/machines/allocated_machines.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/views/machines/allocated_to_society.php" afterPath="$PROJECT_DIR$/application/views/machines/allocated_to_society.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/views/machines/edit.php" afterPath="$PROJECT_DIR$/application/views/machines/edit.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/views/rate/bfat.php" afterPath="$PROJECT_DIR$/application/views/rate/bfat.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/views/rate/bfat_clr_import.php" afterPath="$PROJECT_DIR$/application/views/rate/bfat_clr_import.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/views/rate/bfat_snf.php" afterPath="$PROJECT_DIR$/application/views/rate/bfat_snf.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/views/rate/cfat.php" afterPath="$PROJECT_DIR$/application/views/rate/cfat.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/views/rate/cfat_clr_import.php" afterPath="$PROJECT_DIR$/application/views/rate/cfat_clr_import.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/views/rate/cfat_snf.php" afterPath="$PROJECT_DIR$/application/views/rate/cfat_snf.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/views/rate/cfat_snf_import.php" afterPath="$PROJECT_DIR$/application/views/rate/cfat_snf_import.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/views/society/add.php" afterPath="$PROJECT_DIR$/application/views/society/add.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/views/society/edit.php" afterPath="$PROJECT_DIR$/application/views/society/edit.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/views/society/index.php" afterPath="$PROJECT_DIR$/application/views/society/index.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/views/transactions/daily.php" afterPath="$PROJECT_DIR$/application/views/transactions/daily.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/views/transactions/dairy_txn.php" afterPath="$PROJECT_DIR$/application/views/transactions/dairy_txn.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/views/transactions/import.php" afterPath="$PROJECT_DIR$/application/views/transactions/import.php" />
     </list>
     <ignored path="dairysuite.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -44,115 +57,118 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="add.php" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/application/views/dairy/add.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="125">
-              <caret line="190" column="30" selection-start-line="190" selection-start-column="30" selection-end-line="190" selection-end-column="30" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="edit.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/application/views/dairy/edit.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="646">
-              <caret line="38" column="48" selection-start-line="38" selection-start-column="48" selection-end-line="38" selection-end-column="48" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="add.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/application/views/society/add.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="782">
-              <caret line="46" column="17" selection-start-line="42" selection-start-column="16" selection-end-line="46" selection-end-column="17" />
+            <state relative-caret-position="372">
+              <caret line="262" column="40" selection-start-line="262" selection-start-column="40" selection-end-line="262" selection-end-column="126" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="edit.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/application/views/machines/edit.php">
+      <file leaf-file-name="allocate.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/application/views/machines/allocate.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1003">
-              <caret line="59" column="77" selection-start-line="59" selection-start-column="77" selection-end-line="59" selection-end-column="77" />
+            <state relative-caret-position="-102">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Api.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/application/controllers/Api.php">
+      <file leaf-file-name="Machines.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/application/controllers/Machines.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1938">
-              <caret line="118" column="45" selection-start-line="118" selection-start-column="45" selection-end-line="118" selection-end-column="45" />
+            <state relative-caret-position="264">
+              <caret line="206" column="86" selection-start-line="206" selection-start-column="64" selection-end-line="206" selection-end-column="86" />
               <folding>
-                <marker date="1497620946694" expanded="true" signature="2537:2581" ph="SELECT `id` customers" />
-                <marker date="1497620946694" expanded="true" signature="2797:2850" ph="UPDATE `cust... " />
-                <marker date="1497620946694" expanded="true" signature="5578:5664" ph="SELECT COUNT... customers" />
-                <marker date="1497620946694" expanded="true" signature="5764:5809" ph="UPDATE `cust... " />
-                <marker date="1497620946694" expanded="true" signature="5877:6082" ph="SELECT *, (C... customers" />
-                <marker date="1497620946694" expanded="true" signature="6215:6651" ph="SELECT `soci... customer_machine" />
-                <marker date="1497620946694" expanded="true" signature="6238:6319" ph="SELECT `u`.`... users" />
-                <marker date="1497620946694" expanded="true" signature="6343:6428" ph="SELECT `u`.`... users" />
-                <marker date="1497620946694" expanded="true" signature="6448:6591" ph="SELECT `u`.`... users" />
-                <marker date="1497620946694" expanded="true" signature="6501:6589" ph="SELECT `ud`.... users" />
-                <marker date="1497620946694" expanded="true" signature="17861:17981" ph="SELECT * FRO... customers" />
-                <marker date="1497620946694" expanded="true" signature="17905:17961" ph="SELECT `cid`... customer_machine" />
+                <marker date="1501654092094" expanded="true" signature="2214:2311" ph="SELECT COUNT... machines" />
+                <marker date="1501654092094" expanded="true" signature="2979:3160" ph="INSERT INTO `notification`... " />
+                <marker date="1501654092094" expanded="true" signature="12229:12358" ph="INSERT INTO `notification`... " />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="config.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/application/config/config.php">
+      <file leaf-file-name="allocated_to_society.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/application/views/machines/allocated_to_society.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="510">
-              <caret line="30" column="49" selection-start-line="30" selection-start-column="49" selection-end-line="30" selection-end-column="49" />
+            <state relative-caret-position="459">
+              <caret line="87" column="32" selection-start-line="87" selection-start-column="32" selection-end-line="87" selection-end-column="32" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="edit.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/application/views/society/edit.php">
+      <file leaf-file-name="daily.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/application/views/transactions/daily.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="374">
-              <caret line="22" column="33" selection-start-line="22" selection-start-column="33" selection-end-line="22" selection-end-column="33" />
+            <state relative-caret-position="187">
+              <caret line="11" column="43" selection-start-line="11" selection-start-column="42" selection-end-line="11" selection-end-column="43" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="index.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/application/views/customers/index.php">
+      <file leaf-file-name="Transactions.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/application/controllers/Transactions.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1819">
-              <caret line="107" column="148" selection-start-line="107" selection-start-column="148" selection-end-line="107" selection-end-column="148" />
+            <state relative-caret-position="247">
+              <caret line="293" column="99" selection-start-line="293" selection-start-column="99" selection-end-line="293" selection-end-column="99" />
+              <folding>
+                <marker date="1501655423273" expanded="true" signature="24770:27856" ph="..." />
+                <marker date="1501655423273" expanded="true" signature="24822:27856" ph="..." />
+                <marker date="1501655423273" expanded="true" signature="24901:27856" ph="..." />
+                <marker date="1501655423273" expanded="true" signature="24941:27819" ph="..." />
+                <marker date="1501655423273" expanded="true" signature="24982:25306" ph="..." />
+                <marker date="1501655423273" expanded="true" signature="25347:25667" ph="..." />
+                <marker date="1501655423273" expanded="true" signature="25708:26016" ph="..." />
+                <marker date="1501655423273" expanded="true" signature="26057:26359" ph="..." />
+                <marker date="1501655423273" expanded="true" signature="26400:26708" ph="..." />
+                <marker date="1501655423273" expanded="true" signature="26749:27060" ph="..." />
+                <marker date="1501655423273" expanded="true" signature="27101:27415" ph="..." />
+                <marker date="1501655423273" expanded="true" signature="27456:27778" ph="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="allocated_machines.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/application/views/machines/allocated_machines.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="408">
+              <caret line="69" column="76" selection-start-line="69" selection-start-column="76" selection-end-line="69" selection-end-column="76" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="index.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/application/views/society/index.php">
+      <file leaf-file-name="Machine_model.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/application/models/Machine_model.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="850">
-              <caret line="50" column="60" selection-start-line="50" selection-start-column="60" selection-end-line="50" selection-end-column="60" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Dairy.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/application/controllers/Dairy.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2125">
-              <caret line="125" column="9" selection-start-line="125" selection-start-column="9" selection-end-line="125" selection-end-column="9" />
-              <folding />
+            <state relative-caret-position="213">
+              <caret line="211" column="35" selection-start-line="211" selection-start-column="13" selection-end-line="211" selection-end-column="35" />
+              <folding>
+                <marker date="1491830834042" expanded="true" signature="622:1036" ph="INSERT INTO `machines`... " />
+                <marker date="1491830834042" expanded="true" signature="1417:1644" ph="SELECT machi... machines" />
+                <marker date="1491830834042" expanded="true" signature="1953:2021" ph="SELECT * FRO... machines" />
+                <marker date="1491830834042" expanded="true" signature="2380:2470" ph="SELECT id as... machines" />
+                <marker date="1491830834042" expanded="true" signature="3092:3192" ph="SELECT m.*, machines" />
+                <marker date="1491830834042" expanded="true" signature="3555:3614" ph="SELECT machi... machines" />
+                <marker date="1491830834042" expanded="true" signature="5551:5671" ph="SELECT m.id,... machines" />
+                <marker date="1491830834042" expanded="true" signature="5824:6001" ph="SELECT m.id,... machines" />
+                <marker date="1491830834042" expanded="true" signature="7277:7324" ph="SELECT * FRO... machines" />
+                <marker date="1491830834042" expanded="true" signature="7652:7691" ph="SELECT * FRO... machines" />
+                <marker date="1491830834042" expanded="true" signature="8175:8214" ph="SELECT * FRO... machines" />
+                <marker date="1491830834042" expanded="true" signature="8693:8905" ph="SELECT COUNT... notification" />
+                <marker date="1491830834042" expanded="true" signature="8982:9196" ph="SELECT COUNT... notification" />
+                <marker date="1491830834042" expanded="true" signature="9480:9615" ph="SELECT COUNT... machines" />
+                <marker date="1491830834042" expanded="true" signature="9515:9581" ph="SELECT COUNT... machines" />
+                <marker date="1491830834042" expanded="true" signature="9768:9954" ph="SELECT COUNT... machines" />
+                <marker date="1491830834042" expanded="true" signature="9803:9897" ph="SELECT COUNT... machines" />
+                <marker date="1491830834042" expanded="true" signature="10405:10465" ph="UPDATE machi... " />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -170,53 +186,57 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/application/controllers/Test.php" />
-        <option value="$PROJECT_DIR$/application/views/machines/allocate_to_soc.php" />
-        <option value="$PROJECT_DIR$/application/views/machines/index.php" />
-        <option value="$PROJECT_DIR$/application/views/machines/edit_allocate.php" />
-        <option value="$PROJECT_DIR$/application/views/customers/society_index.php" />
         <option value="$PROJECT_DIR$/application/views/transactions/daily_report.php" />
         <option value="$PROJECT_DIR$/application/views/customers/edit.php" />
         <option value="$PROJECT_DIR$/application/views/favourite_report/index.php" />
         <option value="$PROJECT_DIR$/application/views/favourite_report/run.php" />
-        <option value="$PROJECT_DIR$/application/views/transactions/import.php" />
-        <option value="$PROJECT_DIR$/application/views/customers/import.php" />
         <option value="$PROJECT_DIR$/application/views/auth/login.php" />
         <option value="$PROJECT_DIR$/system/libraries/Upload.php" />
         <option value="$PROJECT_DIR$/application/controllers/Dairy.php" />
-        <option value="$PROJECT_DIR$/application/views/machines/allocated_machines.php" />
         <option value="$PROJECT_DIR$/application/core/MY_Controller.php" />
-        <option value="$PROJECT_DIR$/application/views/favourite_report/add.php" />
         <option value="$PROJECT_DIR$/application/models/Favourite_report_model.php" />
-        <option value="$PROJECT_DIR$/application/views/transactions/dairy_txn.php" />
         <option value="$PROJECT_DIR$/application/views/welcome_message_society.php" />
         <option value="$PROJECT_DIR$/application/views/common/header.php" />
         <option value="$PROJECT_DIR$/application/controllers/Society.php" />
         <option value="$PROJECT_DIR$/application/views/machines/add.php" />
         <option value="$PROJECT_DIR$/application/controllers/Auth.php" />
-        <option value="$PROJECT_DIR$/application/views/customers/add.php" />
         <option value="$PROJECT_DIR$/application/models/Customer_model.php" />
         <option value="$PROJECT_DIR$/application/views/notification/index.php" />
         <option value="$PROJECT_DIR$/application/models/Society_model.php" />
         <option value="$PROJECT_DIR$/application/controllers/Favourite_report.php" />
-        <option value="$PROJECT_DIR$/application/views/transactions/daily.php" />
         <option value="$PROJECT_DIR$/application/models/Transaction_model.php" />
         <option value="$PROJECT_DIR$/application/views/machines/renew.php" />
         <option value="$PROJECT_DIR$/application/controllers/Welcome.php" />
-        <option value="$PROJECT_DIR$/application/controllers/Machines.php" />
         <option value="$PROJECT_DIR$/application/views/welcome_message_admin.php" />
         <option value="$PROJECT_DIR$/application/models/Machine_model.php" />
         <option value="$PROJECT_DIR$/application/controllers/Customers.php" />
-        <option value="$PROJECT_DIR$/application/controllers/Transactions.php" />
-        <option value="$PROJECT_DIR$/application/views/dairy/edit.php" />
-        <option value="$PROJECT_DIR$/application/views/society/add.php" />
-        <option value="$PROJECT_DIR$/application/views/society/edit.php" />
         <option value="$PROJECT_DIR$/application/views/customers/index.php" />
         <option value="$PROJECT_DIR$/application/views/society/index.php" />
-        <option value="$PROJECT_DIR$/application/views/machines/edit.php" />
         <option value="$PROJECT_DIR$/application/controllers/Api.php" />
         <option value="$PROJECT_DIR$/application/config/config.php" />
+        <option value="$PROJECT_DIR$/application/views/customers/add.php" />
+        <option value="$PROJECT_DIR$/application/views/customers/import.php" />
+        <option value="$PROJECT_DIR$/application/views/favourite_report/add.php" />
+        <option value="$PROJECT_DIR$/application/views/transactions/dairy_txn.php" />
+        <option value="$PROJECT_DIR$/application/views/transactions/import.php" />
+        <option value="$PROJECT_DIR$/application/views/machines/allocate_to_soc.php" />
+        <option value="$PROJECT_DIR$/application/views/society/add.php" />
+        <option value="$PROJECT_DIR$/application/views/rate/bfat.php" />
+        <option value="$PROJECT_DIR$/application/views/rate/bfat_snf.php" />
+        <option value="$PROJECT_DIR$/application/views/rate/bfat_clr_import.php" />
+        <option value="$PROJECT_DIR$/application/views/rate/cfat.php" />
+        <option value="$PROJECT_DIR$/application/views/rate/cfat_snf.php" />
+        <option value="$PROJECT_DIR$/application/views/rate/cfat_snf_import.php" />
+        <option value="$PROJECT_DIR$/application/views/rate/cfat_clr_import.php" />
         <option value="$PROJECT_DIR$/application/views/dairy/add.php" />
+        <option value="$PROJECT_DIR$/application/views/society/edit.php" />
+        <option value="$PROJECT_DIR$/application/views/dairy/edit.php" />
+        <option value="$PROJECT_DIR$/application/views/machines/edit.php" />
+        <option value="$PROJECT_DIR$/application/controllers/Machines.php" />
+        <option value="$PROJECT_DIR$/application/views/machines/allocated_machines.php" />
+        <option value="$PROJECT_DIR$/application/views/machines/allocated_to_society.php" />
+        <option value="$PROJECT_DIR$/application/controllers/Transactions.php" />
+        <option value="$PROJECT_DIR$/application/views/transactions/daily.php" />
       </list>
     </option>
   </component>
@@ -258,7 +278,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -291,9 +311,107 @@
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dairysuite" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dairysuite" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="application" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="views" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dairysuite" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dairysuite" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="application" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="views" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="transactions" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dairysuite" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dairysuite" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="application" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="views" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="machines" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dairysuite" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dairysuite" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="application" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="models" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dairysuite" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dairysuite" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="application" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="controllers" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -408,14 +526,8 @@
       <workItem from="1493187686401" duration="5101000" />
       <workItem from="1497620551724" duration="1289000" />
       <workItem from="1499854641962" duration="682000" />
-      <workItem from="1501649485291" duration="22000" />
-    </task>
-    <task id="LOCAL-00029" summary="machine testing">
-      <created>1486446667310</created>
-      <option name="number" value="00029" />
-      <option name="presentableId" value="LOCAL-00029" />
-      <option name="project" value="LOCAL" />
-      <updated>1486446667310</updated>
+      <workItem from="1501649485291" duration="959000" />
+      <workItem from="1501651272823" duration="4309000" />
     </task>
     <task id="LOCAL-00030" summary="testing machine count bug fix">
       <created>1486449201219</created>
@@ -753,11 +865,18 @@
       <option name="project" value="LOCAL" />
       <updated>1491830930794</updated>
     </task>
-    <option name="localTasksCounter" value="78" />
+    <task id="LOCAL-00078" summary="new changes on 08-02-2017">
+      <created>1501649566657</created>
+      <option name="number" value="00078" />
+      <option name="presentableId" value="LOCAL-00078" />
+      <option name="project" value="LOCAL" />
+      <updated>1501649566658</updated>
+    </task>
+    <option name="localTasksCounter" value="79" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="253369000" />
+    <option name="totallyTimeSpent" value="258615000" />
   </component>
   <component name="TodoView" selected-index="3">
     <todo-panel id="selected-file">
@@ -769,7 +888,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31877023" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -844,7 +963,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="modification customer api" />
     <MESSAGE value="api structure change" />
     <MESSAGE value="society weekly transaction summary bug fix" />
     <MESSAGE value="society transaction summary with date parameters" />
@@ -869,153 +987,14 @@
     <MESSAGE value="bug fix" />
     <MESSAGE value="export daily transaction" />
     <MESSAGE value="renewal enhancement" />
-    <option name="LAST_COMMIT_MESSAGE" value="renewal enhancement" />
+    <MESSAGE value="new changes on 08-02-2017" />
+    <option name="LAST_COMMIT_MESSAGE" value="new changes on 08-02-2017" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/application/config/routes.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="51" column="41" selection-start-line="51" selection-start-column="41" selection-end-line="51" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/application/models/Dairy_model.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/system/libraries/Upload.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="453" column="35" selection-start-line="453" selection-start-column="35" selection-end-line="453" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/application/views/machines/allocated_machines.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="63" column="60" selection-start-line="63" selection-start-column="60" selection-end-line="63" selection-end-column="60" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/application/core/MY_Controller.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="33" column="78" selection-start-line="33" selection-start-column="78" selection-end-line="33" selection-end-column="78" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/application/views/favourite_report/add.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="417">
-          <caret line="99" column="42" selection-start-line="99" selection-start-column="42" selection-end-line="99" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/application/views/common/header.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="20" column="24" selection-start-line="20" selection-start-column="24" selection-end-line="20" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/system/libraries/Form_validation.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="176" column="24" selection-start-line="176" selection-start-column="24" selection-end-line="176" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/system/helpers/form_helper.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="20" column="69" selection-start-line="20" selection-start-column="67" selection-end-line="20" selection-end-column="74" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/system/core/Security.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-3211">
-          <caret line="355" column="45" selection-start-line="355" selection-start-column="36" selection-end-line="355" selection-end-column="45" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$APPLICATION_HOME_DIR$/plugins/php/lib/php.jar!/com/jetbrains/php/lang/psi/stubs/data/apache.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="178">
-          <caret line="104" column="9" selection-start-line="104" selection-start-column="9" selection-end-line="104" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/application/models/Auth_model.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="31" selection-start-line="8" selection-start-column="20" selection-end-line="8" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/application/controllers/Society.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="80" column="92" selection-start-line="80" selection-start-column="92" selection-end-line="80" selection-end-column="92" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/application/views/auth/login.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="73" column="81" selection-start-line="73" selection-start-column="81" selection-end-line="73" selection-end-column="81" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/application/models/Customer_model.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1683">
-          <caret line="99" column="45" selection-start-line="99" selection-start-column="45" selection-end-line="99" selection-end-column="45" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/application/controllers/Notification.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-170">
-          <caret line="20" column="14" selection-start-line="20" selection-start-column="14" selection-end-line="20" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/application/views/notification/index.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="445">
-          <caret line="65" column="105" selection-start-line="65" selection-start-column="105" selection-end-line="65" selection-end-column="105" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/application/views/customers/add.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="21" column="38" selection-start-line="21" selection-start-column="38" selection-end-line="21" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/application/views/transactions/import.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="547">
-          <caret line="70" column="41" selection-start-line="70" selection-start-column="41" selection-end-line="70" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/application/controllers/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/application/models/Society_model.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="187">
@@ -1041,13 +1020,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-674">
           <caret line="57" column="54" selection-start-line="57" selection-start-column="54" selection-end-line="57" selection-end-column="54" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/application/views/transactions/dairy_txn.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="27" column="31" selection-start-line="27" selection-start-column="31" selection-end-line="27" selection-end-column="31" />
         </state>
       </provider>
     </entry>
@@ -1100,13 +1072,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/application/views/transactions/daily.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="499">
-          <caret line="401" column="18" selection-start-line="373" selection-start-column="12" selection-end-line="401" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/application/views/machines/renew.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="289">
@@ -1118,6 +1083,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1258">
           <caret line="74" column="58" selection-start-line="74" selection-start-column="58" selection-end-line="74" selection-end-column="58" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1129,79 +1095,28 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/application/models/Machine_model.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5304">
-          <caret line="312" column="10" selection-start-line="312" selection-start-column="10" selection-end-line="312" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/application/controllers/Customers.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1445">
           <caret line="85" column="47" selection-start-line="85" selection-start-column="47" selection-end-line="85" selection-end-column="47" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/application/controllers/Transactions.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="468">
-          <caret line="166" column="53" selection-start-line="166" selection-start-column="53" selection-end-line="166" selection-end-column="53" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/application/controllers/Machines.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2975">
-          <caret line="179" column="9" selection-start-line="179" selection-start-column="8" selection-end-line="179" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/application/controllers/Dairy.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2125">
-          <caret line="125" column="9" selection-start-line="125" selection-start-column="9" selection-end-line="125" selection-end-column="9" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/application/views/dairy/edit.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="646">
-          <caret line="38" column="48" selection-start-line="38" selection-start-column="48" selection-end-line="38" selection-end-column="48" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/application/views/society/add.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="782">
-          <caret line="46" column="17" selection-start-line="42" selection-start-column="16" selection-end-line="46" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/application/views/society/edit.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="22" column="33" selection-start-line="22" selection-start-column="33" selection-end-line="22" selection-end-column="33" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/application/views/customers/index.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1819">
-          <caret line="107" column="148" selection-start-line="107" selection-start-column="148" selection-end-line="107" selection-end-column="148" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/application/views/society/index.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="850">
-          <caret line="50" column="60" selection-start-line="50" selection-start-column="60" selection-end-line="50" selection-end-column="60" />
-          <folding />
+          <folding>
+            <marker date="1492066018526" expanded="true" signature="18094:18316" ph="SELECT c.mem... customers" />
+            <marker date="1492066018526" expanded="true" signature="19470:22060" ph="..." />
+            <marker date="1492066018526" expanded="true" signature="19522:22060" ph="..." />
+            <marker date="1492066018526" expanded="true" signature="19601:22060" ph="..." />
+            <marker date="1492066018526" expanded="true" signature="19641:22023" ph="..." />
+            <marker date="1492066018526" expanded="true" signature="19682:19858" ph="..." />
+            <marker date="1492066018526" expanded="true" signature="19899:20082" ph="..." />
+            <marker date="1492066018526" expanded="true" signature="20123:20292" ph="..." />
+            <marker date="1492066018526" expanded="true" signature="20333:20506" ph="..." />
+            <marker date="1492066018526" expanded="true" signature="20547:20712" ph="..." />
+            <marker date="1492066018526" expanded="true" signature="20753:20921" ph="..." />
+            <marker date="1492066018526" expanded="true" signature="20962:21137" ph="..." />
+            <marker date="1492066018526" expanded="true" signature="21178:21343" ph="..." />
+            <marker date="1492066018526" expanded="true" signature="21384:21556" ph="..." />
+            <marker date="1492066018526" expanded="true" signature="21597:21768" ph="..." />
+            <marker date="1492066018526" expanded="true" signature="21809:21982" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1212,17 +1127,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/application/views/machines/edit.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1003">
-          <caret line="59" column="77" selection-start-line="59" selection-start-column="77" selection-end-line="59" selection-end-column="77" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/application/controllers/Api.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1938">
+        <state relative-caret-position="357">
           <caret line="118" column="45" selection-start-line="118" selection-start-column="45" selection-end-line="118" selection-end-column="45" />
           <folding>
             <marker date="1497620946694" expanded="true" signature="2537:2581" ph="SELECT `id` customers" />
@@ -1241,24 +1148,308 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/application/views/society/index.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="547">
+          <caret line="50" column="60" selection-start-line="50" selection-start-column="60" selection-end-line="50" selection-end-column="60" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/controllers/Dairy.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="547">
+          <caret line="125" column="9" selection-start-line="125" selection-start-column="9" selection-end-line="125" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/application/config/config.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="510">
-          <caret line="30" column="49" selection-start-line="30" selection-start-column="49" selection-end-line="30" selection-end-column="49" />
+        <state relative-caret-position="102">
+          <caret line="15" column="73" selection-start-line="15" selection-start-column="73" selection-end-line="15" selection-end-column="73" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/views/customers/add.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="391">
+          <caret line="146" column="40" selection-start-line="146" selection-start-column="40" selection-end-line="146" selection-end-column="128" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/views/customers/import.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="363">
+          <caret line="81" column="128" selection-start-line="81" selection-start-column="128" selection-end-line="81" selection-end-column="128" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/views/auth/forgot.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/views/auth/reset_password.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/views/auth/login.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="73" column="81" selection-start-line="73" selection-start-column="81" selection-end-line="73" selection-end-column="81" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/views/customers/society_index.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="482">
+          <caret line="81" column="130" selection-start-line="81" selection-start-column="130" selection-end-line="81" selection-end-column="130" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/views/customers/index.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1904">
+          <caret line="131" column="39" selection-start-line="131" selection-start-column="39" selection-end-line="131" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/views/transactions/import.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="394">
+          <caret line="64" column="125" selection-start-line="64" selection-start-column="125" selection-end-line="64" selection-end-column="125" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/views/transactions/dairy_txn.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="482">
+          <caret line="145" column="36" selection-start-line="145" selection-start-column="36" selection-end-line="145" selection-end-column="105" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/views/favourite_report/add.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="114" column="0" selection-start-line="114" selection-start-column="0" selection-end-line="115" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/views/machines/allocate_to_soc.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="363">
+          <caret line="76" column="65" selection-start-line="76" selection-start-column="65" selection-end-line="76" selection-end-column="65" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/views/rate/cfat_clr_import.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="363">
+          <caret line="55" column="120" selection-start-line="55" selection-start-column="120" selection-end-line="55" selection-end-column="120" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/views/rate/cfat_snf_index.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/views/rate/cfat_snf_import.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="363">
+          <caret line="55" column="132" selection-start-line="55" selection-start-column="40" selection-end-line="55" selection-end-column="132" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/views/rate/cfat_snf.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="363">
+          <caret line="55" column="128" selection-start-line="55" selection-start-column="128" selection-end-line="55" selection-end-column="128" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/views/rate/cfat.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="363">
+          <caret line="55" column="40" selection-start-line="55" selection-start-column="40" selection-end-line="55" selection-end-column="128" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/views/rate/bfat_clr_import.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="363">
+          <caret line="55" column="40" selection-start-line="55" selection-start-column="40" selection-end-line="55" selection-end-column="132" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/views/rate/bfat_snf.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="363">
+          <caret line="55" column="40" selection-start-line="55" selection-start-column="40" selection-end-line="55" selection-end-column="132" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/views/rate/bfat.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="363">
+          <caret line="55" column="123" selection-start-line="55" selection-start-column="123" selection-end-line="55" selection-end-column="123" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/application/views/dairy/add.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="125">
-          <caret line="190" column="30" selection-start-line="190" selection-start-column="30" selection-end-line="190" selection-end-column="30" />
+        <state relative-caret-position="346">
+          <caret line="239" column="40" selection-start-line="239" selection-start-column="40" selection-end-line="239" selection-end-column="124" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/views/society/edit.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="372">
+          <caret line="273" column="40" selection-start-line="273" selection-start-column="40" selection-end-line="273" selection-end-column="126" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/views/machines/edit.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="346">
+          <caret line="108" column="57" selection-start-line="108" selection-start-column="57" selection-end-line="108" selection-end-column="57" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/views/dairy/edit.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="363">
+          <caret line="259" column="126" selection-start-line="259" selection-start-column="126" selection-end-line="259" selection-end-column="126" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/views/society/add.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="372">
+          <caret line="262" column="40" selection-start-line="262" selection-start-column="40" selection-end-line="262" selection-end-column="126" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/views/machines/allocate.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-102">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/views/machines/allocated_machines.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="408">
+          <caret line="69" column="76" selection-start-line="69" selection-start-column="76" selection-end-line="69" selection-end-column="76" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/controllers/Machines.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="264">
+          <caret line="206" column="86" selection-start-line="206" selection-start-column="64" selection-end-line="206" selection-end-column="86" />
+          <folding>
+            <marker date="1501654092094" expanded="true" signature="2214:2311" ph="SELECT COUNT... machines" />
+            <marker date="1501654092094" expanded="true" signature="2979:3160" ph="INSERT INTO `notification`... " />
+            <marker date="1501654092094" expanded="true" signature="12229:12358" ph="INSERT INTO `notification`... " />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/models/Machine_model.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="213">
+          <caret line="211" column="35" selection-start-line="211" selection-start-column="13" selection-end-line="211" selection-end-column="35" />
+          <folding>
+            <marker date="1491830834042" expanded="true" signature="622:1036" ph="INSERT INTO `machines`... " />
+            <marker date="1491830834042" expanded="true" signature="1417:1644" ph="SELECT machi... machines" />
+            <marker date="1491830834042" expanded="true" signature="1953:2021" ph="SELECT * FRO... machines" />
+            <marker date="1491830834042" expanded="true" signature="2380:2470" ph="SELECT id as... machines" />
+            <marker date="1491830834042" expanded="true" signature="3092:3192" ph="SELECT m.*, machines" />
+            <marker date="1491830834042" expanded="true" signature="3555:3614" ph="SELECT machi... machines" />
+            <marker date="1491830834042" expanded="true" signature="5551:5671" ph="SELECT m.id,... machines" />
+            <marker date="1491830834042" expanded="true" signature="5824:6001" ph="SELECT m.id,... machines" />
+            <marker date="1491830834042" expanded="true" signature="7277:7324" ph="SELECT * FRO... machines" />
+            <marker date="1491830834042" expanded="true" signature="7652:7691" ph="SELECT * FRO... machines" />
+            <marker date="1491830834042" expanded="true" signature="8175:8214" ph="SELECT * FRO... machines" />
+            <marker date="1491830834042" expanded="true" signature="8693:8905" ph="SELECT COUNT... notification" />
+            <marker date="1491830834042" expanded="true" signature="8982:9196" ph="SELECT COUNT... notification" />
+            <marker date="1491830834042" expanded="true" signature="9480:9615" ph="SELECT COUNT... machines" />
+            <marker date="1491830834042" expanded="true" signature="9515:9581" ph="SELECT COUNT... machines" />
+            <marker date="1491830834042" expanded="true" signature="9768:9954" ph="SELECT COUNT... machines" />
+            <marker date="1491830834042" expanded="true" signature="9803:9897" ph="SELECT COUNT... machines" />
+            <marker date="1491830834042" expanded="true" signature="10405:10465" ph="UPDATE machi... " />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/views/machines/allocated_to_society.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="459">
+          <caret line="87" column="32" selection-start-line="87" selection-start-column="32" selection-end-line="87" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/controllers/Transactions.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="247">
+          <caret line="293" column="99" selection-start-line="293" selection-start-column="99" selection-end-line="293" selection-end-column="99" />
+          <folding>
+            <marker date="1501655423273" expanded="true" signature="24770:27856" ph="..." />
+            <marker date="1501655423273" expanded="true" signature="24822:27856" ph="..." />
+            <marker date="1501655423273" expanded="true" signature="24901:27856" ph="..." />
+            <marker date="1501655423273" expanded="true" signature="24941:27819" ph="..." />
+            <marker date="1501655423273" expanded="true" signature="24982:25306" ph="..." />
+            <marker date="1501655423273" expanded="true" signature="25347:25667" ph="..." />
+            <marker date="1501655423273" expanded="true" signature="25708:26016" ph="..." />
+            <marker date="1501655423273" expanded="true" signature="26057:26359" ph="..." />
+            <marker date="1501655423273" expanded="true" signature="26400:26708" ph="..." />
+            <marker date="1501655423273" expanded="true" signature="26749:27060" ph="..." />
+            <marker date="1501655423273" expanded="true" signature="27101:27415" ph="..." />
+            <marker date="1501655423273" expanded="true" signature="27456:27778" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/views/transactions/daily.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="11" column="43" selection-start-line="11" selection-start-column="42" selection-end-line="11" selection-end-column="43" />
           <folding />
         </state>
       </provider>
     </entry>
   </component>
   <component name="webServersAuthStorage">
-    <data>AAAAsCHy45YxLi8ecjRkFZBy0iOr/l88S2u8zpE2xM34dyZCc2h8us3SA7z9bRV2mzorl9Ohur7+GPTLYoKqJPwV1DhR7b0KCJ/dvaz1bvORaIpkAqB3KAX9Va82lX5Y1eRmR+5OqODOD+lpzp4H9tMnB0CbaNAltKUfEyAnvwykbcVv7QwyhAQWM3V3PpovDt3KfitNYyHU1PzY8p2aRjPmJX6VtOIW9YF08rBFLKZysI+ApdupnLpScQD7TDW+qpfWcg==</data>
+    <data>AAAAsDzBmOm4RwxtT6/dU4TlLJd3nOGmhH5iqybtoUCwINurOVSDlvVVUNJpZdDubp6LddVdNwfNa+tqkF7r3lcBgrV85XyvfqjCfhfggg0uJEyEkttWMc7ZDpkpVMVlun1+AnSuVJfJ3XojUyD1AYikURTYXcl6lxUq9PTJ3jNiHuJFaovunHNYWcbb8nFgTaClYanrI9cP7e4ca27wKKgSgmDIhqnO1JLhYO1T7YZGKiltcq+DPbLF7yrOWI5vILd3rw==</data>
   </component>
 </project>

@@ -112,6 +112,7 @@
                             <button type="submit" id="add_favourite_report_submit_button" class="btn btn-primary">
                                 Submit
                             </button>
+                            <a class="btn btn-danger" href="<?php echo base_url(); ?>">Cancel</a>
                         </div>
                     </form>
                 </div><!-- /.box -->

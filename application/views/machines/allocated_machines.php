@@ -49,6 +49,8 @@
                                                 <th>Machine Name</th>
                                                 <th>Machine Type</th>
                                                 <th>Validity</th>
+                                                <th>Allocation Date</th>
+                                                <th>Expiry Date</th>
                                                 <th>Society</th>
                                                 <th>Status</th>
                                                 <th>Actions</th>
@@ -64,6 +66,8 @@
                                                 <td><?php echo $row->machine_name; ?></td>
                                                 <td><?php echo $row->machine_type; ?></td>
                                                 <td><?php echo $row->validity; ?></td>
+                                                <td><?php echo $row->from_date; ?></td>
+                                                <td><?php echo $row->to_date; ?></td>
                                                 <td><?php echo $row->name; ?></td>
                                                 <td><?php if($row->status == '1'){ ?> Activate<?php }else{ ?>Deactivate <?php } ?></td>
                                                 <td>

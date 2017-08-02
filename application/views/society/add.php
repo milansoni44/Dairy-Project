@@ -260,6 +260,7 @@
                                     </div>
                                     <div class="box-footer">
                                         <button type="submit" class="btn btn-primary">Submit</button>
+                                        <a class="btn btn-danger" href="<?php echo base_url(); ?>index.php/society">Cancel</a>
                                     </div>
                                 </form>
                             </div><!-- /.box -->

@@ -106,7 +106,7 @@
                                     </div>
                                     <div class="box-footer">
                                         <button type="submit" class="btn btn-primary" name="submit">Submit</button>
-                                        <a href="<?php echo base_url(); ?>index.php/machines" class="btn btn-primary" name="submit">Cancel</a>
+                                        <a href="<?php echo base_url(); ?>index.php/machines" class="btn btn-danger" name="submit">Cancel</a>
                                     </div>
                                 </form>
                             </div><!-- /.box -->
