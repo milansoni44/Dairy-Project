@@ -49,14 +49,17 @@ class Customers extends MY_Controller {
 
         if ($this->input->post()) {
             $id = $this->input->post("society");
-            $data['customers'] = $this->customer_model->get_society_customer($id);
+            $machine = $this->input->post("machine");
+            $data['customers'] = $this->customer_model->get_society_customer($id, $machine);
             if ($this->session->userdata("group") == "dairy") {
                 $data['society'] = $this->society_model->get_society();
             }
+            $data['machine'] = $this->machine_model->mapped_society_machine( $machine );
             $this->load->view("common/header", $this->data);
             $this->load->view("customers/society_index", $data);
             $this->load->view("common/footer");
         } else {
+            $data['machine'] = array();
             $data['customers'] = $this->customer_model->get_customer();
             if ($this->session->userdata("group") == "dairy") {
                 $data['society'] = $this->society_model->get_society();
@@ -72,6 +75,19 @@ class Customers extends MY_Controller {
                 ->from("customers c")
                 ->join("users u", "u.id = c.society_id", "LEFT");
         echo $this->datatables->generate();
+    }
+
+    function allocated_to_society() {
+        $allocated_machines = $this->machine_model->society_machine($this->input->post("soc_id"));
+        if( $allocated_machines )
+        {
+            echo json_encode(array("error"=>false, "society_machine"=>$allocated_machines));
+        }
+        else
+        {
+            echo json_encode(array("error"=>true, "society_machine"=>"No Machine found"));
+        }
+        exit;
     }
 
     function add() {

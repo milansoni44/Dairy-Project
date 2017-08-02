@@ -4,10 +4,45 @@
                     $("#form_milk_supplier").validate({
                         rules: {
                             society: "required",
+                            machine: "required"
                         },
                         messages: {
                             society: "Please select society",
+                            machine: "Please select machine"
                         }
+                    });
+
+                    $("#society").on("change", function(e){
+                        e.preventDefault();
+                        var $this = $(this);
+                        var $soc_id = $(this).val();
+//                        alert($soc_id);
+                        $.ajax({
+                            url: "<?php echo base_url(); ?>index.php/customers/allocated_to_society",
+                            type: "POST",
+                            dataType: "json",
+                            cache: false,
+                            data: { soc_id: $soc_id },
+                            success: function(data)
+                            {
+                                console.log(typeof data.error);
+                                if( data.error === true )
+                                {
+                                    alert("No machine found.");
+                                    $this.val('');
+                                    $("#machine").find('option').remove().end().append("<option value=''>-- Select Machine --</option>");
+                                    return false;
+                                }
+                                else
+                                {
+                                    var select = "";
+                                    $.each(data.society_machine, function(key, val){
+                                        select += "<option value='"+val.id+"'>"+val.machine_id+"</option>";
+                                    });
+                                    $("#machine").append(select);
+                                }
+                            }
+                        });
                     });
                 });
             </script>
@@ -73,6 +108,22 @@
                                                 ?>
                                                 <option value="<?php echo $row_soc->id; ?>" <?php if(isset($_POST['society']) && $_POST['society'] == $row_soc->id){ ?>selected  <?php } ?>><?php echo $row_soc->name; ?></option>
                                                 <?php 
+                                                        }
+                                                    }
+                                                ?>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <select class="form-control" name="machine" id="machine">
+                                                <option value="">--Select machine--</option>
+                                                <?php
+                                                    if( !empty($machine) )
+                                                    {
+                                                        foreach($machine as $m)
+                                                        {
+                                                ?>
+                                                            <option value="<?php echo $m->id; ?>" <?php if(isset($_POST['machine']) && $_POST['machine'] == $m->id){ ?>selected  <?php } ?>><?php echo $m->machine_id; ?></option>
+                                                <?php
                                                         }
                                                     }
                                                 ?>

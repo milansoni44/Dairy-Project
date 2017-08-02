@@ -218,6 +218,17 @@ WHERE m.dairy_id = '$id'");
             }
             return $row1;
         }
+        return false;
+    }
+
+    function society_machine( $id = NULL ){
+        $q = $this->db->query("SELECT * FROM machines WHERE society_id = '$id'");
+        if($q->num_rows() > 0){
+            foreach($q->result() as $row){
+                $row1[] = $row;
+            }
+            return $row1;
+        }
     }
     
     function get_dairyMachine_by_id($id = NULL){
