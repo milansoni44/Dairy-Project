@@ -15,7 +15,13 @@
                     required: true,
                     number: true,
                     minlength: 10,
-                    maxlength: 12,
+                    maxlength: 10,
+                },
+                pincode: {
+                    required: true,
+                    number: true,
+                    minlength: 6,
+                    maxlength: 6,
                 }
             },
             messages: {
@@ -31,8 +37,13 @@
                 mobile: {
                     required: "Please enter mobile",
                     number: "Only numeric value is allowed",
-                    minlength: "Minimum 10 character allowed",
-                    maxlength: "Maximum 12 character allowed",
+                    minlength: "Minimum 10 number allowed",
+                    maxlength: "Maximum 10 number allowed",
+                },
+                pincode: {
+                    number: "Only numeric value is allowed",
+                    minlength: "Minimum 6 number allowed",
+                    maxlength: "Maximum 6 number allowed",
                 }
             }
         });
@@ -156,6 +167,24 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
+                                            <label class="control-label col-md-2" for="state">State</label>
+                                            <div class="col-md-4">
+                                                <select name="state" class="form-control" id="states">
+                                                    <option value="">Select State</option>
+                                                    <?php
+                                                    if(!empty($states)){
+                                                        foreach($states as $s){
+                                                            ?>
+                                                            <option value="<?php echo $s->id; ?>"><?php echo $s->name; ?></option>
+                                                            <?php
+                                                        }
+                                                    }
+                                                    ?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div id="city_content"></div>
+                                        <div class="form-group">
                                             <label class="control-label col-md-2" for="area">Area</label>
                                             <div class="col-md-4">
                                                 <input type="text" class="form-control" name="area" id="area" value="<?php echo set_value("area"); ?>" />
@@ -174,15 +203,6 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="control-label col-md-2" for="contact_person">Contact Person</label>
-                                            <div class="col-md-4">
-                                                <input type="text" class="form-control" name="contact_person" id="contact_person" value="<?php echo set_value("contact_person"); ?>" />
-                                                <?php if(isset($errors['contact_person'])){
-                                                    echo "<label class='error'>".$errors['contact_person']."</label>";
-                                                } ?>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
                                             <label class="control-label col-md-2" for="pincode">Pincode</label>
                                             <div class="col-md-4">
                                                 <input type="text" class="form-control" name="pincode" id="pincode" value="<?php echo set_value("pincode"); ?>" />
@@ -192,23 +212,14 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="control-label col-md-2" for="state">State</label>
+                                            <label class="control-label col-md-2" for="contact_person">Contact Person</label>
                                             <div class="col-md-4">
-                                                <select name="state" class="form-control" id="states">
-                                                    <option value="">Select State</option>
-                                                    <?php 
-                                                        if(!empty($states)){
-                                                            foreach($states as $s){
-                                                    ?>
-                                                    <option value="<?php echo $s->id; ?>"><?php echo $s->name; ?></option>
-                                                    <?php
-                                                            }
-                                                        }
-                                                    ?>
-                                                </select>
+                                                <input type="text" class="form-control" name="contact_person" id="contact_person" value="<?php echo set_value("contact_person"); ?>" />
+                                                <?php if(isset($errors['contact_person'])){
+                                                    echo "<label class='error'>".$errors['contact_person']."</label>";
+                                                } ?>
                                             </div>
                                         </div>
-                                        <div id="city_content"></div>
                                         <div class="form-group">
                                             <label class="control-label col-md-2" for="ac_no"> A/c No</label>
                                             <div class="col-md-4">

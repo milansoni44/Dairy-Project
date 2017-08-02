@@ -15,7 +15,13 @@
                     required: true,
                     number: true,
                     minlength: 10,
-                    maxlength: 12,
+                    maxlength: 10,
+                },
+                pincode: {
+                    required: true,
+                    number: true,
+                    minlength: 6,
+                    maxlength: 6,
                 }
             },
             messages: {
@@ -31,8 +37,13 @@
                 mobile: {
                     required: "Please enter mobile",
                     number: "Only numeric value is allowed",
-                    minlength: "Minimum 10 character allowed",
-                    maxlength: "Maximum 12 character allowed",
+                    minlength: "Minimum 10 number allowed",
+                    maxlength: "Maximum 10 number allowed",
+                },
+                pincode: {
+                    number: "Only numeric value is allowed",
+                    minlength: "Minimum 6 number allowed",
+                    maxlength: "Maximum 6 number allowed",
                 }
             }
         });

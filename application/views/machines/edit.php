@@ -14,10 +14,7 @@
                             },
                             dairy_id: {
                                 required: true,
-                            },
-                            /*validity: {
-                                required: true,
-                            }*/
+                            }
                         },
                         messages: {
 //                            machine_id: "Please enter machine id",
@@ -30,10 +27,7 @@
                             },
                             dairy_id: {
                                 required: "Please select dairy"
-                            },
-                            /*validity: {
-                                required: "Please select validity"
-                            }*/
+                            }
                         }
                     });
                 });
@@ -102,18 +96,6 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <!--<div class="form-group">
-                                            <label class="control-label col-md-2" for="validity">Validity</label>
-                                            <div class="col-md-4">
-                                                <select class="form-control" id="validity" name="validity" >
-                                                    <option value="">--Select Validity--</option>
-                                                    <option value="3m" <?php /*if($machine->validity == "3m"){*/?>selected <?php /*} */?>> 3 Months</option>
-                                                    <option value="6m" <?php /*if($machine->validity == "6m"){*/?>selected <?php /*} */?>> 6 Months</option>
-                                                    <option value="9m" <?php /*if($machine->validity == "9m"){*/?>selected <?php /*} */?>> 9 Months</option>
-                                                    <option value="1y" <?php /*if($machine->validity == "1y"){*/?>selected <?php /*} */?>> 1 Year</option>
-                                                </select>
-                                            </div>
-                                        </div>-->
                                         <?php if(!$machine->from_date){ $date_range = ''; }else{ $date_range = date('m/d/Y', strtotime($machine->from_date))." - ".date('m/d/Y', strtotime($machine->to_date)); } ?>
                                         <div class="form-group">
                                             <label class="control-label col-md-2" for="date_range">Validity</label>
@@ -124,6 +106,7 @@
                                     </div>
                                     <div class="box-footer">
                                         <button type="submit" class="btn btn-primary" name="submit">Submit</button>
+                                        <a href="<?php echo base_url(); ?>index.php/machines" class="btn btn-primary" name="submit">Cancel</a>
                                     </div>
                                 </form>
                             </div><!-- /.box -->

@@ -15,7 +15,12 @@
                     required: true,
                     number: true,
                     minlength: 10,
-                    maxlength: 12,
+                    maxlength: 10,
+                },
+                pincode:{
+                    number: true,
+                    minlength: 6,
+                    maxlength: 6,
                 }
             },
             messages: {
@@ -31,8 +36,13 @@
                 mobile: {
                     required: "Please enter mobile",
                     number: "Only numeric value is allowed",
-                    minlength: "Minimum 10 character allowed",
-                    maxlength: "Maximum 12 character allowed",
+                    minlength: "Minimum 10 number allowed",
+                    maxlength: "Maximum 12 number allowed",
+                },
+                pincode: {
+                    number: "Only numeric value is allowed",
+                    minlength: "Minimum 6 number allowed",
+                    maxlength: "Maximum 6 number allowed",
                 }
             }
         });
@@ -144,7 +154,7 @@
                                         <div class="form-group">
                                             <label class="control-label col-md-2" for="mobile">Mobile <span style="color:red;">*</span></label>
                                             <div class="col-md-4">
-                                                <input type="text" name="mobile" class="form-control" id="mobile" value="<?php echo set_value("mobile"); ?>"/>
+                                                <input type="text" name="mobile" class="form-control" id="mobile" value="<?php echo set_value("mobile"); ?>" maxlength="10" pattern="[0-9]+"/>
                                                 <?php if(isset($errors['mobile'])){
                                                     echo "<label class='error'>".$errors['mobile']."</label>";
                                                 } ?>
@@ -159,6 +169,24 @@
                                                 } ?>
                                             </div>
                                         </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-2" for="state">State</label>
+                                            <div class="col-md-4">
+                                                <select name="state" class="form-control" id="states">
+                                                    <option value="">Select State</option>
+                                                    <?php
+                                                    if(!empty($states)){
+                                                        foreach($states as $s){
+                                                            ?>
+                                                            <option value="<?php echo $s->id; ?>"><?php echo $s->name; ?></option>
+                                                            <?php
+                                                        }
+                                                    }
+                                                    ?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div id="city_content"></div>
                                         <div class="form-group">
                                             <label class="control-label col-md-2" for="area">Area</label>
                                             <div class="col-md-4">
@@ -178,15 +206,6 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="control-label col-md-2" for="contact_person">Contact Person</label>
-                                            <div class="col-md-4">
-                                                <input type="text" class="form-control" name="contact_person" id="contact_person" value="<?php echo set_value("contact_person"); ?>"/>
-                                                <?php if(isset($errors['contact_person'])){
-                                                    echo "<label class='error'>".$errors['contact_person']."</label>";
-                                                } ?>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
                                             <label class="control-label col-md-2" for="pincode">Pincode</label>
                                             <div class="col-md-4">
                                                 <input type="text" class="form-control" name="pincode" id="pincode" value="<?php echo set_value("pincode"); ?>" />
@@ -196,22 +215,15 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="control-label col-md-2" for="state">State</label>
+                                            <label class="control-label col-md-2" for="contact_person">Contact Person</label>
                                             <div class="col-md-4">
-                                                <select name="state" class="form-control" id="states">
-                                                    <option value="">Select State</option>
-                                                    <?php 
-                                                        if(!empty($states)){
-                                                            foreach($states as $s){
-                                                    ?>
-                                                    <option value="<?php echo $s->id; ?>"><?php echo $s->name; ?></option>
-                                                    <?php
-                                                            }
-                                                        }
-                                                    ?>
-                                                </select>
+                                                <input type="text" class="form-control" name="contact_person" id="contact_person" value="<?php echo set_value("contact_person"); ?>"/>
+                                                <?php if(isset($errors['contact_person'])){
+                                                    echo "<label class='error'>".$errors['contact_person']."</label>";
+                                                } ?>
                                             </div>
                                         </div>
+
                                         <div class="form-group">
                                             <label class="control-label col-md-2" for="logo">Logo</label>
                                             <div class="col-md-4">
@@ -222,10 +234,10 @@
                                                 <img id="blah" src="#" alt="your image" onerror="this.style.display='none'"/>
                                             </div>
                                         </div>
-                                        <div id="city_content"></div>
                                     </div>
                                     <div class="box-footer">
                                         <button type="submit" class="btn btn-primary">Submit</button>
+                                        <button type="submit" class="btn btn-primary" onclick="window.location = "window.location = "";";">Cancel</button>
                                     </div>
                                 </form>
                             </div><!-- /.box -->

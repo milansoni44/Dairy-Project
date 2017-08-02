@@ -82,10 +82,10 @@ class Customers extends MY_Controller {
 
         if (isset($_POST['submit'])) {
 //            print_r($_POST);exit;
-            if ($this->customer_model->check_exist($_POST['mobile'], "mobile")) {
-                $this->session->set_flashdata("message1", "This mobile already exist");
-                redirect("customers", "refresh");
-            }
+//            if ($this->customer_model->check_exist($_POST['mobile'], "mobile")) {
+//                $this->session->set_flashdata("message1", "This mobile already exist");
+//                redirect("customers", "refresh");
+//            }
             if ($this->customer_model->check_exist($_POST['adhar_no'], "adhar_no")) {
                 $this->session->set_flashdata("message1", "This adhar number already exist");
                 redirect("customers", "refresh");

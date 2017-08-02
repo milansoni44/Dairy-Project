@@ -46,9 +46,9 @@
                                         <thead>
                                             <tr>
                                                 <?php if($this->session->userdata("group") == "admin"){ ?>
-                                                <th>Dairy</th>
+                                                <th>Dairy Name</th>
                                                 <?php } ?>
-                                                <th>Name</th>
+                                                <th>Society Name</th>
                                                 <th>Username</th>
                                                 <th>Address</th>
                                                 <th>Area</th>

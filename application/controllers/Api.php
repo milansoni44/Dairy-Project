@@ -109,6 +109,7 @@ class Api extends CI_Controller
                         $msg = urlencode($msg);
 
                         curl_setopt($ch, CURLOPT_URL, "http://ip.shreesms.net/smsserver/SMS10N.aspx?Userid=BPUNGI&UserPassword=12345&PhoneNumber=$mobile&Text=$msg");
+                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
                         $output = curl_exec($ch);
 
                         curl_close($ch);
@@ -160,7 +161,7 @@ class Api extends CI_Controller
           message: 'this is message'
           }
 
-         */
+        */
         $response = array();
         $http_response_code = 401;
         if ($this->input->server("REQUEST_METHOD") === "POST") {

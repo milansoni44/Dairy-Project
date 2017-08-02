@@ -147,6 +147,7 @@ class Transactions extends MY_Controller {
 //                        print_r($trans);exit;
                         $this->transaction_model->insert_single($trans);
                     } else {
+//                        echo $data[0];exit;
                         if($data[0] == "CUST" && $data[1] == "FAT" && $data[2] == "CLR" && $data[3] == "SNF"){
                             $i++;
                             continue;
